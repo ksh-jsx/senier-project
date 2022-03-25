@@ -1,0 +1,29 @@
+BEGIN_FUNCTION_MAP
+	.SFID,현재가(주식일자별),HKST01010400,DIGSIGN=0,RECLEN=4,SERVERNO=F,DESCRIPTION=J	000660	D	1,VERSION=00000001,CREATER=ITGEN,CREDATE=20100123,MODIFYER=김봉규,MODDATE=20100827,JOURNALLOG=0;
+	BEGIN_DATA_MAP
+	InBlock4, InBlock4, input, toutblk=OutBlock4, desc=toutblk=OutBlock4;
+	begin
+		FID 조건 시장 분류 코드, FID_COND_MRKT_DIV_CODE, FID_COND_MRKT_DIV_CODE, string, 2, 9100, 9999, 2, , , ;
+		FID 입력 종목코드, FID_INPUT_ISCD, FID_INPUT_ISCD, string, 12, 9030, 9999, 12, , , ;
+		FID 기간 분류 코드, FID_PERIOD_DIV_CODE, FID_PERIOD_DIV_CODE, string, 32, 9104, 9999, 32, , , ;
+		FID 수정주가 원주가 가격, FID_ORG_ADJ_PRC, FID_ORG_ADJ_PRC, numstring, 10, 9105, 9999, 10, , , ;
+	end
+	OutBlock4, OutBlock4, output, occurs=30;
+	begin
+		주식 영업 일자, STCK_BSOP_DATE, STCK_BSOP_DATE, string, 8, 67, 1003, 8, , , ;
+		주식 시가2, STCK_OPRC, STCK_OPRC, numstring, 10, 17, 1003, 10, , attr, ;
+		주식 최고가, STCK_HGPR, STCK_HGPR, numstring, 10, 18, 1003, 10, , attr, ;
+		주식 최저가, STCK_LWPR, STCK_LWPR, numstring, 10, 19, 1003, 10, , attr, ;
+		주식 종가, STCK_CLPR, STCK_CLPR, numstring, 10, 4, 1003, 10, , attr, ;
+		누적 거래량, ACML_VOL, ACML_VOL, numstring, 18, 14, 1003, 18, , attr, ;
+		전일 대비 거래량 비율, PRDY_VRSS_VOL_RATE, PRDY_VRSS_VOL_RATE, numstring, 8.4, 15, 1003, 8.4, , attr, ;
+		전일 대비, PRDY_VRSS, PRDY_VRSS, numstring, 10, 5, 1003, 10, , attr, ;
+		전일 대비 부호, PRDY_VRSS_SIGN, PRDY_VRSS_SIGN, string, 1, 6, 1003, 1, , , ;
+		전일 대비율, PRDY_CTRT, PRDY_CTRT, numstring, 8.2, 7, 1003, 8.2, , attr, ;
+		HTS 외국인 소진율, HTS_FRGN_EHRT, HTS_FRGN_EHRT, numstring, 8.2, 41, 1003, 8.2, , attr, ;
+		외국인 순매수 수량, FRGN_NTBY_QTY, FRGN_NTBY_QTY, numstring, 12, 201, 1003, 12, , attr, ;
+		락 구분 코드, FLNG_CLS_CODE, FLNG_CLS_CODE, string, 2, 1905, 1003, 2, , , ;
+		누적 분할 비율, ACML_PRTT_RATE, ACML_PRTT_RATE, numstring, 8.4, 414, 1003, 8.4, , , ;
+	end
+	END_DATA_MAP
+END_FUNCTION_MAP

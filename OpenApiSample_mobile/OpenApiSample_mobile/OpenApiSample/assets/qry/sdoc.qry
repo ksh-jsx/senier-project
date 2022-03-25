@@ -1,0 +1,66 @@
+BEGIN_FUNCTION_MAP
+	T,주식 일별 주문 체결 조회,TSC9109R,SDOC;
+	BEGIN_DATA_MAP
+	TSC9109RI1, input, ;
+	begin
+		0, CANO,            string, 8,  0, 0, , acc;
+		1, ACNT_PRDT_CD,    string, 2,  0, 0, , prod;
+		2, PWD,             string, 84, 0, 0, , ;
+		3, INQR_STRT_DT,    string, 8,  0, 0, , ;
+		4, INQR_END_DT,     string, 8,  0, 0, , ;
+		5, SLL_BUY_DVSN_CD, string, 2,  0, 0, , ;
+		6, INQR_DVSN,       string, 2,  0, 0, , ;
+		7, PDNO,            string, 12, 0, 0, , ;
+		8, CCLD_DVSN,       string, 2,  0, 0, , ;
+		9, ORD_GNO_BRNO,    string, 5,  0, 0, , ;
+		10, ODNO,           string, 10, 0, 0, , ;
+		11, INQR_DVSN_3,    string, 2,  0, 0, , ;
+		12, INQR_DVSN_1,    string, 1,  0, 0, , ;
+		13, CTX_AREA_FK100, string, 100, 0, 0, , ;
+		14, CTX_AREA_NK100, string, 100, 0, 0, , ;
+	end
+	OCCURS_OUT1, output, occurs=100;
+	begin
+		0, ORD_DT,               string, 8,  0, 0, , ;
+		1, ORD_GNO_BRNO,         string, 5,  0, 0, , ;
+		2, ODNO,                 string, 10, 0, 0, , ;
+		3, ORGN_ODNO,            string, 10, 0, 0, , ;
+		4, ORD_DVSN_NAME,        string, 60, 0, 0, , ;
+		5, SLL_BUY_DVSN_CD,      string, 2,  0, 0, , ;
+		6, SLL_BUY_DVSN_CD_NAME, string, 60, 0, 0, , ;
+		7, PDNO,                 string, 12, 0, 0, , ;
+		8, PRDT_NAME,            string, 60, 0, 0, , ;
+		9, ORD_QTY,              long,   4,  0, 0, , ,10;
+		10, ORD_UNPR,            int64,  8,  0, 0, , ,19;
+		11, ORD_TMD,             string, 6,  0, 0, , ;
+		12, TOT_CCLD_QTY,        long,   4,  0, 0, , ,10;
+		13, AVG_PRVS,            int64,  8,  0, 0, , ,19;
+		14, CNCL_YN,             string, 1,  0, 0, , ;
+		15, TOT_CCLD_AMT,        int64,  8,  0, 0, , ,19;
+		16, LOAN_DT,             string, 8,  0, 0, , ;
+		17, ORDR_EMPNO,          string, 60, 0, 0, , ;
+		18, ORD_DVSN_CD,         string, 2,  0, 0, , ;
+		19, CNCL_CFRM_QTY,       long,   4,  0, 0, , ;
+		20, RMN_QTY,             long,   4,  0, 0, , ,10;
+		21, RJCT_QTY,            long,   4,  0, 0, , ,10;
+		22, CCLD_CNDT_NAME,      string, 10, 0, 0, , ;
+		23, INQR_IP_ADDR,        string, 15, 0, 0, , ;
+		24, CPBC_ORDP_ORD_RCIT_DVSN_CD,  string, 2, 0, 0, , ;
+		25, CPBC_ORDP_INFM_MTHD_DVSN_CD, string, 2, 0, 0, , ;
+		26, INFM_TMD,            string, 6,  0, 0, , ;
+		27, CTAC_TLNO,           string, 20, 0, 0, , ;
+		28, PRDT_TYPE_CD,        string, 3,  0, 0, , ;
+		29, EXCG_DVSN_CD,        string, 2,  0, 0, , ;
+		30, CPBC_ORDP_MTRL_DVSN_CD,      string, 2, 0, 0, , ;
+		31, ORD_ORGNO,           string, 5,  0, 0, , ;
+	end
+	TSC9109RO3, output, ;
+	begin
+		0, TOT_ORD_QTY,    long,   4, 0, 0, , ,10;
+		1, TOT_CCLD_QTY,   long,   4, 0, 0, , ,10;
+		2, PCHS_AVG_PRIC,  double, 8, 0, 0, , ,18.4;
+		3, TOT_CCLD_AMT,   int64,  8, 0, 0, , ,19;
+		4, PRSM_TLEX_SMTL, int64,  8, 0, 0, , ,19;
+	end
+	END_DATA_MAP
+END_FUNCTION_MAP

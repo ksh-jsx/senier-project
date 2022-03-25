@@ -1,0 +1,27 @@
+BEGIN_FUNCTION_MAP
+	T,주식신용매수주문,TTC0852U,SCBO,ORDER;
+	BEGIN_DATA_MAP
+	TTC0852UI1, input, ;
+	begin
+		0,  CANO,         string, 8,  0, 0, , acc;
+		1,  ACNT_PRDT_CD, string, 2,  0, 0, , prod;
+		2,  ACNT_PWD,     string, 84, 0, 0, , ;
+		3,  PDNO,         string, 12, 0, 0, , ;
+		4,  BUY_TYPE,     string, 2,  0, 0, , ;
+		5,  CRDT_TYPE,    string, 2,  0, 0, , ;
+		6,  LOAN_DT,      string, 8,  0, 0, , ;
+		7,  ORD_DVSN,     string, 2,  0, 0, , ;
+		8,  ORD_QTY,      long,   4,  0, 0, , , 10;
+		9,  ORD_UNPR,     int64,  8,  0, 0, , , 19;
+		10, CTAC_TLNO,    string, 20, 0, 0, , ;
+		11, RSVN_ORD_YN,  string, 1,  0, 0, , ;
+		12, EMGC_ORD_YN,  string, 1,  0, 0, , ;
+	end
+	TTC0852UO2, output,;
+	begin
+		0, KRX_FWDG_ORD_ORGNO, string, 5, 0, 0, , ;
+		1, ODNO, string, 10, 0, 0, , ;
+		2, ORD_TMD, string, 6, 0, 0, , ;
+	end
+	END_DATA_MAP
+END_FUNCTION_MAP

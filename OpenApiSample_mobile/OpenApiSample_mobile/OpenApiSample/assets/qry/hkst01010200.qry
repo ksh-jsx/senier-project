@@ -1,0 +1,84 @@
+BEGIN_FUNCTION_MAP
+	.SFID,현재가(호가),HKST01010200,COMPRESS,DIGSIGN=0,RECLEN=4,SERVERNO=F,DESCRIPTION=J	000660,VERSION=00000001,CREATER=ITGEN,CREDATE=20100123,MODIFYER=Administra,MODDATE=20100811,JOURNALLOG=0;
+	BEGIN_DATA_MAP
+	InBlock2, InBlock2, input, toutblk=OutBlock2, desc=toutblk=OutBlock2;
+	begin
+		FID 조건 시장 분류 코드, FID_COND_MRKT_DIV_CODE, FID_COND_MRKT_DIV_CODE, string, 2, 9100, 9999, 2, , , ;
+		FID 입력 종목코드, FID_INPUT_ISCD, FID_INPUT_ISCD, string, 12, 9030, 9999, 12, , , ;
+	end
+	OutBlock2, OutBlock2, output;
+	begin
+		호가 접수 시간, ASPR_ACPT_HOUR, ASPR_ACPT_HOUR, string, 6, 12, 1001, 6, , attr, ;
+		매도호가1, ASKP1, ASKP1, numstring, 10, 500, 1001, 10, , attr, ;
+		매도호가2, ASKP2, ASKP2, numstring, 10, 501, 1001, 10, , attr, ;
+		매도호가3, ASKP3, ASKP3, numstring, 10, 502, 1001, 10, , attr, ;
+		매도호가4, ASKP4, ASKP4, numstring, 10, 503, 1001, 10, , attr, ;
+		매도호가5, ASKP5, ASKP5, numstring, 10, 504, 1001, 10, , attr, ;
+		매도호가6, ASKP6, ASKP6, numstring, 10, 505, 1001, 10, , attr, ;
+		매도호가7, ASKP7, ASKP7, numstring, 10, 506, 1001, 10, , attr, ;
+		매도호가8, ASKP8, ASKP8, numstring, 10, 507, 1001, 10, , attr, ;
+		매도호가9, ASKP9, ASKP9, numstring, 10, 508, 1001, 10, , attr, ;
+		매도호가10, ASKP10, ASKP10, numstring, 10, 509, 1001, 10, , attr, ;
+		매수호가1, BIDP1, BIDP1, numstring, 10, 510, 1001, 10, , attr, ;
+		매수호가2, BIDP2, BIDP2, numstring, 10, 511, 1001, 10, , attr, ;
+		매수호가3, BIDP3, BIDP3, numstring, 10, 512, 1001, 10, , attr, ;
+		매수호가4, BIDP4, BIDP4, numstring, 10, 513, 1001, 10, , attr, ;
+		매수호가5, BIDP5, BIDP5, numstring, 10, 514, 1001, 10, , attr, ;
+		매수호가6, BIDP6, BIDP6, numstring, 10, 515, 1001, 10, , attr, ;
+		매수호가7, BIDP7, BIDP7, numstring, 10, 516, 1001, 10, , attr, ;
+		매수호가8, BIDP8, BIDP8, numstring, 10, 517, 1001, 10, , attr, ;
+		매수호가9, BIDP9, BIDP9, numstring, 10, 518, 1001, 10, , attr, ;
+		매수호가10, BIDP10, BIDP10, numstring, 10, 519, 1001, 10, , attr, ;
+		매도호가 잔량1, ASKP_RSQN1, ASKP_RSQN1, numstring, 12, 520, 1001, 12, , attr, ;
+		매도호가 잔량2, ASKP_RSQN2, ASKP_RSQN2, numstring, 12, 521, 1001, 12, , attr, ;
+		매도호가 잔량3, ASKP_RSQN3, ASKP_RSQN3, numstring, 12, 522, 1001, 12, , attr, ;
+		매도호가 잔량4, ASKP_RSQN4, ASKP_RSQN4, numstring, 12, 523, 1001, 12, , attr, ;
+		매도호가 잔량5, ASKP_RSQN5, ASKP_RSQN5, numstring, 12, 524, 1001, 12, , attr, ;
+		매도호가 잔량6, ASKP_RSQN6, ASKP_RSQN6, numstring, 12, 525, 1001, 12, , attr, ;
+		매도호가 잔량7, ASKP_RSQN7, ASKP_RSQN7, numstring, 12, 526, 1001, 12, , attr, ;
+		매도호가 잔량8, ASKP_RSQN8, ASKP_RSQN8, numstring, 12, 527, 1001, 12, , attr, ;
+		매도호가 잔량9, ASKP_RSQN9, ASKP_RSQN9, numstring, 12, 528, 1001, 12, , attr, ;
+		매도호가 잔량10, ASKP_RSQN10, ASKP_RSQN10, numstring, 12, 529, 1001, 12, , attr, ;
+		매수호가 잔량1, BIDP_RSQN1, BIDP_RSQN1, numstring, 12, 530, 1001, 12, , attr, ;
+		매수호가 잔량2, BIDP_RSQN2, BIDP_RSQN2, numstring, 12, 531, 1001, 12, , attr, ;
+		매수호가 잔량3, BIDP_RSQN3, BIDP_RSQN3, numstring, 12, 532, 1001, 12, , attr, ;
+		매수호가 잔량4, BIDP_RSQN4, BIDP_RSQN4, numstring, 12, 533, 1001, 12, , attr, ;
+		매수호가 잔량5, BIDP_RSQN5, BIDP_RSQN5, numstring, 12, 534, 1001, 12, , attr, ;
+		매수호가 잔량6, BIDP_RSQN6, BIDP_RSQN6, numstring, 12, 535, 1001, 12, , attr, ;
+		매수호가 잔량7, BIDP_RSQN7, BIDP_RSQN7, numstring, 12, 536, 1001, 12, , attr, ;
+		매수호가 잔량8, BIDP_RSQN8, BIDP_RSQN8, numstring, 12, 537, 1001, 12, , attr, ;
+		매수호가 잔량9, BIDP_RSQN9, BIDP_RSQN9, numstring, 12, 538, 1001, 12, , attr, ;
+		매수호가 잔량10, BIDP_RSQN10, BIDP_RSQN10, numstring, 12, 539, 1001, 12, , attr, ;
+		매도호가 잔량 증감1, ASKP_RSQN_ICDC1, ASKP_RSQN_ICDC1, numstring, 10, 540, 1001, 10, , attr, ;
+		매도호가 잔량 증감2, ASKP_RSQN_ICDC2, ASKP_RSQN_ICDC2, numstring, 10, 541, 1001, 10, , attr, ;
+		매도호가 잔량 증감3, ASKP_RSQN_ICDC3, ASKP_RSQN_ICDC3, numstring, 10, 542, 1001, 10, , attr, ;
+		매도호가 잔량 증감4, ASKP_RSQN_ICDC4, ASKP_RSQN_ICDC4, numstring, 10, 543, 1001, 10, , attr, ;
+		매도호가 잔량 증감5, ASKP_RSQN_ICDC5, ASKP_RSQN_ICDC5, numstring, 10, 544, 1001, 10, , attr, ;
+		매도호가 잔량 증감6, ASKP_RSQN_ICDC6, ASKP_RSQN_ICDC6, numstring, 10, 545, 1001, 10, , attr, ;
+		매도호가 잔량 증감7, ASKP_RSQN_ICDC7, ASKP_RSQN_ICDC7, numstring, 10, 546, 1001, 10, , attr, ;
+		매도호가 잔량 증감8, ASKP_RSQN_ICDC8, ASKP_RSQN_ICDC8, numstring, 10, 547, 1001, 10, , attr, ;
+		매도호가 잔량 증감9, ASKP_RSQN_ICDC9, ASKP_RSQN_ICDC9, numstring, 10, 548, 1001, 10, , attr, ;
+		매도호가 잔량 증감10, ASKP_RSQN_ICDC10, ASKP_RSQN_ICDC10, numstring, 10, 549, 1001, 10, , attr, ;
+		매수호가 잔량 증감1, BIDP_RSQN_ICDC1, BIDP_RSQN_ICDC1, numstring, 10, 550, 1001, 10, , attr, ;
+		매수호가 잔량 증감2, BIDP_RSQN_ICDC2, BIDP_RSQN_ICDC2, numstring, 10, 551, 1001, 10, , attr, ;
+		매수호가 잔량 증감3, BIDP_RSQN_ICDC3, BIDP_RSQN_ICDC3, numstring, 10, 552, 1001, 10, , attr, ;
+		매수호가 잔량 증감4, BIDP_RSQN_ICDC4, BIDP_RSQN_ICDC4, numstring, 10, 553, 1001, 10, , attr, ;
+		매수호가 잔량 증감5, BIDP_RSQN_ICDC5, BIDP_RSQN_ICDC5, numstring, 10, 554, 1001, 10, , attr, ;
+		매수호가 잔량 증감6, BIDP_RSQN_ICDC6, BIDP_RSQN_ICDC6, numstring, 10, 555, 1001, 10, , attr, ;
+		매수호가 잔량 증감7, BIDP_RSQN_ICDC7, BIDP_RSQN_ICDC7, numstring, 10, 556, 1001, 10, , attr, ;
+		매수호가 잔량 증감8, BIDP_RSQN_ICDC8, BIDP_RSQN_ICDC8, numstring, 10, 557, 1001, 10, , attr, ;
+		매수호가 잔량 증감9, BIDP_RSQN_ICDC9, BIDP_RSQN_ICDC9, numstring, 10, 558, 1001, 10, , attr, ;
+		매수호가 잔량 증감10, BIDP_RSQN_ICDC10, BIDP_RSQN_ICDC10, numstring, 10, 559, 1001, 10, , attr, ;
+		총 매도호가 잔량, TOTAL_ASKP_RSQN, TOTAL_ASKP_RSQN, numstring, 12, 560, 1001, 12, , attr, ;
+		총 매수호가 잔량, TOTAL_BIDP_RSQN, TOTAL_BIDP_RSQN, numstring, 12, 561, 1001, 12, , attr, ;
+		총 매도호가 잔량 증감, TOTAL_ASKP_RSQN_ICDC, TOTAL_ASKP_RSQN_ICDC, numstring, 10, 562, 1001, 10, , attr, ;
+		총 매수호가 잔량 증감, TOTAL_BIDP_RSQN_ICDC, TOTAL_BIDP_RSQN_ICDC, numstring, 10, 563, 1001, 10, , attr, ;
+		시간외 총 매도호가 증감, OVTM_TOTAL_ASKP_ICDC, OVTM_TOTAL_ASKP_ICDC, numstring, 10, 582, 1001, 10, , attr, ;
+		시간외 총 매수호가 증감, OVTM_TOTAL_BIDP_ICDC, OVTM_TOTAL_BIDP_ICDC, numstring, 10, 583, 1001, 10, , attr, ;
+		시간외 총 매도호가 잔량, OVTM_TOTAL_ASKP_RSQN, OVTM_TOTAL_ASKP_RSQN, numstring, 12, 584, 1001, 12, , attr, ;
+		시간외 총 매수호가 잔량, OVTM_TOTAL_BIDP_RSQN, OVTM_TOTAL_BIDP_RSQN, numstring, 12, 585, 1001, 12, , attr, ;
+		순매수 호가 잔량, NTBY_ASPR_RSQN, NTBY_ASPR_RSQN, numstring, 12, 644, 1001, 12, , attr, ;
+		신 장운영 구분 코드, NEW_MKOP_CLS_CODE, NEW_MKOP_CLS_CODE, string, 2, 1904, 1001, 2, , , ;
+	end
+	END_DATA_MAP
+END_FUNCTION_MAP

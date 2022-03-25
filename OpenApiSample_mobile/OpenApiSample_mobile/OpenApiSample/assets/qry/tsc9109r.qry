@@ -1,0 +1,66 @@
+BEGIN_FUNCTION_MAP
+	.FuncBiz,ASSC계좌주문체결내역조회,TSC9109R,ATTR,DIGSIGN=0,RECLEN=4,SERVERNO=D,VERSION=00000001,CREATER=skcc1013,CREDATE=20110121,JOURNALLOG=0;
+	BEGIN_DATA_MAP
+	TSC9109RI1, TSC9109RI1, input, attr;
+	begin
+		종합계좌번호, CANO, CANO, string, 8, 0, 0, 8, , attr, ;
+		계좌상품코드, ACNT_PRDT_CD, ACNT_PRDT_CD, string, 2, 0, 0, 2, , attr, ;
+		비밀번호, PWD, PWD, string, 84, 0, 0, 84, , attr, ;
+		조회시작일자, INQR_STRT_DT, INQR_STRT_DT, string, 8, 0, 0, 8, , attr, ;
+		조회종료일자, INQR_END_DT, INQR_END_DT, string, 8, 0, 0, 8, , attr, ;
+		매도매수구분코드, SLL_BUY_DVSN_CD, SLL_BUY_DVSN_CD, string, 2, 0, 0, 2, , attr, ;
+		조회구분, INQR_DVSN, INQR_DVSN, string, 2, 0, 0, 2, , attr, ;
+		상품번호, PDNO, PDNO, string, 12, 0, 0, 12, , attr, ;
+		체결구분, CCLD_DVSN, CCLD_DVSN, string, 2, 0, 0, 2, , attr, ;
+		주문채번지점번호, ORD_GNO_BRNO, ORD_GNO_BRNO, string, 5, 0, 0, 5, , attr, ;
+		주문번호, ODNO, ODNO, string, 10, 0, 0, 10, , attr, ;
+		조회구분3, INQR_DVSN_3, INQR_DVSN_3, string, 2, 0, 0, 2, , attr, ;
+		조회구분1, INQR_DVSN_1, INQR_DVSN_1, string, 1, 0, 0, 1, , attr, ;
+		연속조회검색조건100, CTX_AREA_FK100, CTX_AREA_FK100, string, 100, 0, 0, 100, , attr, ;
+		연속조회키100, CTX_AREA_NK100, CTX_AREA_NK100, string, 100, 0, 0, 100, , attr, ;
+	end
+	OCCURS_OUT1, OCCURS_OUT1, output, occurs, attr;
+	begin
+		주문일자, ORD_DT, ORD_DT, string, 8, 0, 0, 8, , attr, ;
+		주문채번지점번호, ORD_GNO_BRNO, ORD_GNO_BRNO, string, 5, 0, 0, 5, , attr, ;
+		주문번호, ODNO, ODNO, string, 10, 0, 0, 10, , attr, ;
+		원주문번호, ORGN_ODNO, ORGN_ODNO, string, 10, 0, 0, 10, , attr, ;
+		주문구분명, ORD_DVSN_NAME, ORD_DVSN_NAME, string, 60, 0, 0, 60, , attr, ;
+		매도매수구분코드, SLL_BUY_DVSN_CD, SLL_BUY_DVSN_CD, string, 2, 0, 0, 2, , attr, ;
+		매도매수구분코드명, SLL_BUY_DVSN_CD_NAME, SLL_BUY_DVSN_CD_NAME, string, 60, 0, 0, 60, , attr, ;
+		상품번호, PDNO, PDNO, string, 12, 0, 0, 12, , attr, ;
+		상품명, PRDT_NAME, PRDT_NAME, string, 60, 0, 0, 60, , attr, ;
+		주문수량, ORD_QTY, ORD_QTY, long, 4, 0, 0, 10, , attr, ;
+		주문단가, ORD_UNPR, ORD_UNPR, int64, 8, 0, 0, 19, , attr, ;
+		주문시각, ORD_TMD, ORD_TMD, string, 6, 0, 0, 6, , attr, ;
+		총체결수량, TOT_CCLD_QTY, TOT_CCLD_QTY, long, 4, 0, 0, 10, , attr, ;
+		평균가, AVG_PRVS, AVG_PRVS, int64, 8, 0, 0, 19, , attr, ;
+		취소여부, CNCL_YN, CNCL_YN, string, 1, 0, 0, 1, , attr, ;
+		총체결금액, TOT_CCLD_AMT, TOT_CCLD_AMT, int64, 8, 0, 0, 19, , attr, ;
+		대출일자, LOAN_DT, LOAN_DT, string, 8, 0, 0, 8, , attr, ;
+		주문자사번, ORDR_EMPNO, ORDR_EMPNO, string, 60, 0, 0, 60, , attr, ;
+		주문구분코드, ORD_DVSN_CD, ORD_DVSN_CD, string, 2, 0, 0, 2, , attr, ;
+		취소확인수량, CNCL_CFRM_QTY, CNCL_CFRM_QTY, long, 4, 0, 0, 10, , attr, ;
+		잔여수량, RMN_QTY, RMN_QTY, long, 4, 0, 0, 10, , attr, ;
+		거부수량, RJCT_QTY, RJCT_QTY, long, 4, 0, 0, 10, , attr, ;
+		체결조건명, CCLD_CNDT_NAME, CCLD_CNDT_NAME, string, 10, 0, 0, 10, , attr, ;
+		조회IP주소, INQR_IP_ADDR, INQR_IP_ADDR, string, 15, 0, 0, 15, , attr, ;
+		전산주문표주문접수구분코드, CPBC_ORDP_ORD_RCIT_DVSN_CD, CPBC_ORDP_ORD_RCIT_DVSN_CD, string, 2, 0, 0, 2, , attr, ;
+		전산주문표통보방법구분코드, CPBC_ORDP_INFM_MTHD_DVSN_CD, CPBC_ORDP_INFM_MTHD_DVSN_CD, string, 2, 0, 0, 2, , attr, ;
+		통보시각, INFM_TMD, INFM_TMD, string, 6, 0, 0, 6, , attr, ;
+		연락전화번호, CTAC_TLNO, CTAC_TLNO, string, 20, 0, 0, 20, , attr, ;
+		상품유형코드, PRDT_TYPE_CD, PRDT_TYPE_CD, string, 3, 0, 0, 3, , attr, ;
+		거래소구분코드, EXCG_DVSN_CD, EXCG_DVSN_CD, string, 2, 0, 0, 2, , attr, ;
+		전산주문표자료구분코드, CPBC_ORDP_MTRL_DVSN_CD, CPBC_ORDP_MTRL_DVSN_CD, string, 2, 0, 0, 2, , attr, ;
+		주문조직번호, ORD_ORGNO, ORD_ORGNO, string, 5, 0, 0, 5, , attr, ;
+	end
+	TSC9109RO3, TSC9109RO3, output, attr;
+	begin
+		총주문수량, TOT_ORD_QTY, TOT_ORD_QTY, long, 4, 0, 0, 10, , attr, ;
+		총체결수량, TOT_CCLD_QTY, TOT_CCLD_QTY, long, 4, 0, 0, 10, , attr, ;
+		매입평균가격, PCHS_AVG_PRIC, PCHS_AVG_PRIC, double, 8, 0, 0, 18.4, , attr, ;
+		총체결금액, TOT_CCLD_AMT, TOT_CCLD_AMT, int64, 8, 0, 0, 19, , attr, ;
+		추정제비용합계, PRSM_TLEX_SMTL, PRSM_TLEX_SMTL, int64, 8, 0, 0, 19, , attr, ;
+	end
+	END_DATA_MAP
+END_FUNCTION_MAP

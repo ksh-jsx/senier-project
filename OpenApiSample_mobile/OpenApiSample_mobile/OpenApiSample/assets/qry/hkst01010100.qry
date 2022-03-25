@@ -1,0 +1,87 @@
+BEGIN_FUNCTION_MAP
+	.SFID,현재가(시세),HKST01010100,DIGSIGN=0,RECLEN=4,SERVERNO=F,DESCRIPTION=J	000660,VERSION=00000001,CREATER=ITGEN,CREDATE=20100123,MODIFYER=네오식,MODDATE=20100927,JOURNALLOG=0;
+	BEGIN_DATA_MAP
+	InBlock1, InBlock1, input, toutblk=OutBlock1, desc=toutblk=OutBlock1;
+	begin
+		FID 조건 시장 분류 코드, FID_COND_MRKT_DIV_CODE, FID_COND_MRKT_DIV_CODE, string, 2, 9100, 9999, 2, , , ;
+		FID 입력 종목코드, FID_INPUT_ISCD, FID_INPUT_ISCD, string, 12, 9030, 9999, 12, , , ;
+	end
+	OutBlock1, OutBlock1, output;
+	begin
+		종목 상태 구분 코드, ISCD_STAT_CLS_CODE, ISCD_STAT_CLS_CODE, string, 3, 6016, 1000, 3, , , ;
+		증거금 비율, MARG_RATE, MARG_RATE, numstring, 8.4, 144, 1000, 8.4, , attr, ;
+		대표 시장 한글 명, RPRS_MRKT_KOR_NAME, RPRS_MRKT_KOR_NAME, string, 40, 824, 1000, 40, , , ;
+		신 고가 저가 구분 코드, NEW_HGPR_LWPR_CLS_CODE, NEW_HGPR_LWPR_CLS_CODE, string, 10, 6521, 1000, 10, , , ;
+		업종 한글 종목명, BSTP_KOR_ISNM, BSTP_KOR_ISNM, string, 40, 822, 1000, 40, , , ;
+		임시 정지 여부, TEMP_STOP_YN, TEMP_STOP_YN, string, 1, 6167, 1000, 1, , , ;
+		시가 범위 연장 여부, OPRC_RANG_CONT_YN, OPRC_RANG_CONT_YN, string, 1, 6168, 1000, 1, , , ;
+		종가 범위 연장 여부, CLPR_RANG_CONT_YN, CLPR_RANG_CONT_YN, string, 1, 6169, 1000, 1, , , ;
+		신용 가능 여부, CRDT_ABLE_YN, CRDT_ABLE_YN, string, 1, 6378, 1000, 1, , , ;
+		보증금 비율 구분 코드, GRMN_RATE_CLS_CODE, GRMN_RATE_CLS_CODE, string, 3, 6134, 1000, 3, , , ;
+		ELW 발행 여부, ELW_PBLC_YN, ELW_PBLC_YN, string, 1, 6135, 1000, 1, , , ;
+		주식 현재가, STCK_PRPR, STCK_PRPR, numstring, 10, 4, 1000, 10, , attr, ;
+		전일 대비, PRDY_VRSS, PRDY_VRSS, numstring, 10, 5, 1000, 10, , attr, ;
+		전일 대비 부호, PRDY_VRSS_SIGN, PRDY_VRSS_SIGN, string, 1, 6, 1000, 1, , , ;
+		전일 대비율, PRDY_CTRT, PRDY_CTRT, numstring, 8.2, 7, 1000, 8.2, , attr, ;
+		누적 거래 대금, ACML_TR_PBMN, ACML_TR_PBMN, numstring, 18, 16, 1000, 18, , attr, ;
+		누적 거래량, ACML_VOL, ACML_VOL, numstring, 18, 14, 1000, 18, , attr, ;
+		전일 대비 거래량 비율, PRDY_VRSS_VOL_RATE, PRDY_VRSS_VOL_RATE, numstring, 8.4, 15, 1000, 8.4, , attr, ;
+		주식 시가2, STCK_OPRC, STCK_OPRC, numstring, 10, 17, 1000, 10, , attr, ;
+		주식 최고가, STCK_HGPR, STCK_HGPR, numstring, 10, 18, 1000, 10, , attr, ;
+		주식 최저가, STCK_LWPR, STCK_LWPR, numstring, 10, 19, 1000, 10, , attr, ;
+		주식 상한가, STCK_MXPR, STCK_MXPR, numstring, 10, 26, 1000, 10, , attr, ;
+		주식 하한가, STCK_LLAM, STCK_LLAM, numstring, 10, 27, 1000, 10, , attr, ;
+		주식 기준가, STCK_SDPR, STCK_SDPR, numstring, 10, 24, 1000, 10, , attr, ;
+		가중 평균 주식 가격, WGHN_AVRG_STCK_PRC, WGHN_AVRG_STCK_PRC, numstring, 19.2, 38, 1000, 19.2, , attr, ;
+		HTS 외국인 소진율, HTS_FRGN_EHRT, HTS_FRGN_EHRT, numstring, 8.2, 41, 1000, 8.2, , attr, ;
+		외국인 순매수 수량, FRGN_NTBY_QTY, FRGN_NTBY_QTY, numstring, 12, 201, 1000, 12, , attr, ;
+		프로그램매매 순매수 수량, PGTR_NTBY_QTY, PGTR_NTBY_QTY, numstring, 18, 2450, 1000, 18, , attr, ;
+		피벗 2차 디저항 가격, PVT_SCND_DMRS_PRC, PVT_SCND_DMRS_PRC, numstring, 10, 48, 1000, 10, , attr, ;
+		피벗 1차 디저항 가격, PVT_FRST_DMRS_PRC, PVT_FRST_DMRS_PRC, numstring, 10, 49, 1000, 10, , attr, ;
+		피벗 포인트 값, PVT_PONT_VAL, PVT_PONT_VAL, numstring, 10, 50, 1000, 10, , attr, ;
+		피벗 1차 디지지 가격, PVT_FRST_DMSP_PRC, PVT_FRST_DMSP_PRC, numstring, 10, 51, 1000, 10, , attr, ;
+		피벗 2차 디지지 가격, PVT_SCND_DMSP_PRC, PVT_SCND_DMSP_PRC, numstring, 10, 52, 1000, 10, , attr, ;
+		디저항 값, DMRS_VAL, DMRS_VAL, numstring, 10, 296, 1000, 10, , attr, ;
+		디지지 값, DMSP_VAL, DMSP_VAL, numstring, 10, 295, 1000, 10, , attr, ;
+		자본금, CPFN, CPFN, numstring, 22, 29, 1000, 22, , attr, ;
+		제한 폭 가격, RSTC_WDTH_PRC, RSTC_WDTH_PRC, numstring, 10, 6165, 1000, 10, , attr, ;
+		주식 액면가, STCK_FCAM, STCK_FCAM, numstring, 11, 39, 1000, 11, , attr, ;
+		주식 대용가, STCK_SSPR, STCK_SSPR, numstring, 10, 25, 1000, 10, , attr, ;
+		호가단위, ASPR_UNIT, ASPR_UNIT, numstring, 10, 6166, 1000, 10, , attr, ;
+		HTS 매매 수량 단위 값, HTS_DEAL_QTY_UNIT_VAL, HTS_DEAL_QTY_UNIT_VAL, numstring, 10, 11, 1000, 10, , attr, ;
+		상장 주수, LSTN_STCN, LSTN_STCN, numstring, 18, 30, 1000, 18, , attr, ;
+		HTS 시가총액, HTS_AVLS, HTS_AVLS, numstring, 18, 28, 1000, 18, , attr, ;
+		PER, PER, PER, numstring, 8.2, 42, 1000, 8.2, , attr, ;
+		PBR, PBR, PBR, numstring, 8.2, 43, 1000, 8.2, , attr, ;
+		결산 월, STAC_MONTH, STAC_MONTH, string, 2, 44, 1000, 2, , , ;
+		거래량 회전율, VOL_TNRT, VOL_TNRT, numstring, 8.2, 187, 1000, 8.2, , attr, ;
+		EPS, EPS, EPS, numstring, 11.2, 210, 1000, 11.2, , attr, ;
+		BPS, BPS, BPS, numstring, 11.2, 212, 1000, 11.2, , attr, ;
+		250일 최고가, D250_HGPR, D250_HGPR, numstring, 10, 6067, 1000, 10, , attr, ;
+		250일 최고가 일자, D250_HGPR_DATE, D250_HGPR_DATE, string, 8, 6069, 1000, 8, , , ;
+		250일 최고가 대비 현재가 비율, D250_HGPR_VRSS_PRPR_RATE, D250_HGPR_VRSS_PRPR_RATE, numstring, 8.4, 6073, 1000, 8.4, , attr, ;
+		250일 최저가, D250_LWPR, D250_LWPR, numstring, 10, 6068, 1000, 10, , attr, ;
+		250일 최저가 일자, D250_LWPR_DATE, D250_LWPR_DATE, string, 8, 6070, 1000, 8, , , ;
+		250일 최저가 대비 현재가 비율, D250_LWPR_VRSS_PRPR_RATE, D250_LWPR_VRSS_PRPR_RATE, numstring, 8.4, 6074, 1000, 8.4, , attr, ;
+		주식 연중 최고가, STCK_DRYY_HGPR, STCK_DRYY_HGPR, numstring, 10, 157, 1000, 10, , attr, ;
+		연중 최고가 대비 현재가 비율, DRYY_HGPR_VRSS_PRPR_RATE, DRYY_HGPR_VRSS_PRPR_RATE, numstring, 8.4, 6071, 1000, 8.4, , attr, ;
+		연중 최고가 일자, DRYY_HGPR_DATE, DRYY_HGPR_DATE, string, 8, 352, 1000, 8, , , ;
+		주식 연중 최저가, STCK_DRYY_LWPR, STCK_DRYY_LWPR, numstring, 10, 158, 1000, 10, , attr, ;
+		연중 최저가 대비 현재가 비율, DRYY_LWPR_VRSS_PRPR_RATE, DRYY_LWPR_VRSS_PRPR_RATE, numstring, 8.4, 6072, 1000, 8.4, , attr, ;
+		연중 최저가 일자, DRYY_LWPR_DATE, DRYY_LWPR_DATE, string, 8, 353, 1000, 8, , , ;
+		52주일 최고가, W52_HGPR, W52_HGPR, numstring, 10, 32, 1000, 10, , attr, ;
+		52주일 최고가 대비 현재가 대비, W52_HGPR_VRSS_PRPR_CTRT, W52_HGPR_VRSS_PRPR_CTRT, numstring, 8.2, 33, 1000, 8.2, , attr, ;
+		52주일 최고가 일자, W52_HGPR_DATE, W52_HGPR_DATE, string, 8, 34, 1000, 8, , , ;
+		52주일 최저가, W52_LWPR, W52_LWPR, numstring, 10, 35, 1000, 10, , attr, ;
+		52주일 최저가 대비 현재가 대비, W52_LWPR_VRSS_PRPR_CTRT, W52_LWPR_VRSS_PRPR_CTRT, numstring, 8.2, 36, 1000, 8.2, , attr, ;
+		52주일 최저가 일자, W52_LWPR_DATE, W52_LWPR_DATE, string, 8, 37, 1000, 8, , , ;
+		전체 융자 잔고 비율, WHOL_LOAN_RMND_RATE, WHOL_LOAN_RMND_RATE, numstring, 8.4, 2757, 1000, 8.4, , attr, ;
+		공매도가능여부, SSTS_YN, SSTS_YN, string, 1, 6141, 1000, 1, , , ;
+		주식 단축 종목코드, STCK_SHRN_ISCD, STCK_SHRN_ISCD, string, 9, 1, 1000, 9, , , ;
+		액면가 통화명, FCAM_CNNM, FCAM_CNNM, string, 20, 390, 1000, 20, , , ;
+		자본금 통화명, CPFN_CNNM, CPFN_CNNM, string, 20, 391, 1000, 20, , , ;
+		접근도, APPRCH_RATE, APPRCH_RATE, numstring, 11.2, 6806, 1000, 11.2, , , ;
+		외국인 보유 수량, FRGN_HLDN_QTY, FRGN_HLDN_QTY, numstring, 18, 149, 1000, 18, , , ;
+	end
+	END_DATA_MAP
+END_FUNCTION_MAP

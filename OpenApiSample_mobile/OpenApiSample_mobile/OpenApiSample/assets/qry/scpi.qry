@@ -1,0 +1,35 @@
+BEGIN_FUNCTION_MAP
+	T,현재가(투자자),HKST01010900,SCPI;
+	BEGIN_DATA_MAP
+	InBlock1, input, ;
+	begin
+		0, FID_COND_MRKT_DIV_CODE, string, 2, 9100, 9999, , ;
+		1, FID_INPUT_ISCD, string, 12, 9030, 9999, 12, , ;
+	end
+	OutBlock1, output, occurs=30;
+	begin
+		0, STCK_BSOP_DATE, string, 8, 67, 1003, 8, , ;
+		1, STCK_CLPR, numstring, 10, 4, 1003, attr, ;
+		2, PRDY_VRSS, numstring, 10, 5, 1003, attr, ;
+		3, PRDY_VRSS_SIGN, string, 1, 6, 1003, , ;
+		4, PRSN_NTBY_QTY, numstring, 12, 1636, 1035, attr, ;
+		5, FRGN_NTBY_QTY, numstring, 12, 201, 1035, attr, ;
+		6, ORGN_NTBY_QTY, numstring, 18, 202, 1035, attr, ;
+		7, PRSN_NTBY_TR_PBMN, numstring, 18, 1643, 1035, attr, ;
+		8, FRGN_NTBY_TR_PBMN, numstring, 18, 1644, 1035, attr, ;
+		9, ORGN_NTBY_TR_PBMN, numstring, 18, 1645, 1035, attr, ;
+		10, PRSN_SHNU_VOL, numstring, 18, 1601, 1035, attr, ;
+		11, FRGN_SHNU_VOL, numstring, 18, 1605, 1035, attr, ;
+		12, ORGN_SHNU_VOL, numstring, 18, 1609, 1035, attr, ;
+		13, PRSN_SHNU_TR_PBMN, numstring, 18, 1603, 1035, attr, ;
+		14, FRGN_SHNU_TR_PBMN, numstring, 18, 1607, 1035, attr, ;
+		15, ORGN_SHNU_TR_PBMN, numstring, 18, 1611, 1035, attr, ;
+		16, PRSN_SELN_VOL, numstring, 18, 1600, 1035, attr, ;
+		17, FRGN_SELN_VOL, numstring, 18, 1604, 1035, attr, ;
+		18, ORGN_SELN_VOL, numstring, 18, 1608, 1035, attr, ;
+		19, PRSN_SELN_TR_PBMN, numstring, 18, 1602, 1035, attr, ;
+		20, FRGN_SELN_TR_PBMN, numstring, 18, 1606, 1035, attr, ;
+		21, ORGN_SELN_TR_PBMN, numstring, 18, 1610, 1035, attr, ;
+	end
+	END_DATA_MAP
+END_FUNCTION_MAP

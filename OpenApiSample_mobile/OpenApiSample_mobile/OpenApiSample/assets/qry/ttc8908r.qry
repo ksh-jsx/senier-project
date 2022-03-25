@@ -1,0 +1,31 @@
+BEGIN_FUNCTION_MAP
+	.FuncBiz,ASTC계좌현금매수가능조회,TTC8908R,DIGSIGN=0,RECLEN=4,SERVERNO=T,VERSION=00000001,CREATER=Nexcore MD,CREDATE=20100617,MODIFYER=skcc1015,MODDATE=20110119,JOURNALLOG=0;
+	BEGIN_DATA_MAP
+	TTC8908RI1, TTC8908RI1, input;
+	begin
+		종합계좌번호, CANO, CANO, string, 8, 0, 0, 8, , , ;
+		계좌상품코드, ACNT_PRDT_CD, ACNT_PRDT_CD, string, 2, 0, 0, 2, , , ;
+		계좌비밀번호, ACNT_PWD, ACNT_PWD, string, 84, 0, 0, 84, , , ;
+		상품번호, PDNO, PDNO, string, 12, 0, 0, 12, , , ;
+		주문단가, ORD_UNPR, ORD_UNPR, int64, 8, 0, 0, 19, , , ;
+		주문구분, ORD_DVSN, ORD_DVSN, string, 2, 0, 0, 2, , , ;
+		CMA평가금액포함여부, CMA_EVLU_AMT_ICLD_YN, CMA_EVLU_AMT_ICLD_YN, string, 1, 0, 0, 1, , , ;
+		해외포함여부, OVRS_ICLD_YN, OVRS_ICLD_YN, string, 1, 0, 0, 1, , , ;
+	end
+	TTC8908RO2, TTC8908RO2, output;
+	begin
+		주문가능현금, ORD_PSBL_CASH, ORD_PSBL_CASH, int64, 8, 0, 0, 19, , , ;
+		주문가능대용, ORD_PSBL_SBST, ORD_PSBL_SBST, int64, 8, 0, 0, 19, , , ;
+		재사용가능금액, RUSE_PSBL_AMT, RUSE_PSBL_AMT, int64, 8, 0, 0, 19, , , ;
+		펀드환매대금, FUND_RPCH_CHGS, FUND_RPCH_CHGS, int64, 8, 0, 0, 19, , , ;
+		가능수량계산단가, PSBL_QTY_CALC_UNPR, PSBL_QTY_CALC_UNPR, int64, 8, 0, 0, 19, , , ;
+		미수없는매수금액, NRCVB_BUY_AMT, NRCVB_BUY_AMT, int64, 8, 0, 0, 19, , , ;
+		미수없는매수수량, NRCVB_BUY_QTY, NRCVB_BUY_QTY, long, 4, 0, 0, 10, , , ;
+		최대매수금액, MAX_BUY_AMT, MAX_BUY_AMT, int64, 8, 0, 0, 19, , , ;
+		최대매수수량, MAX_BUY_QTY, MAX_BUY_QTY, long, 4, 0, 0, 10, , , ;
+		CMA평가금액, CMA_EVLU_AMT, CMA_EVLU_AMT, int64, 8, 0, 0, 19, , , ;
+		해외재사용금액원화, OVRS_RE_USE_AMT_WCRC, OVRS_RE_USE_AMT_WCRC, int64, 8, 0, 0, 19, , , ;
+		주문가능외화금액원화, ORD_PSBL_FRCR_AMT_WCRC, ORD_PSBL_FRCR_AMT_WCRC, int64, 8, 0, 0, 19, , , ;
+	end
+	END_DATA_MAP
+END_FUNCTION_MAP

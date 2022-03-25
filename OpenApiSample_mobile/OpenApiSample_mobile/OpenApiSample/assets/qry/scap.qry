@@ -1,0 +1,31 @@
+BEGIN_FUNCTION_MAP
+	T,주식현금매수가능조회,TTC8908R,SCAP;
+	BEGIN_DATA_MAP
+	TTC8908RI1, input, ;
+	begin
+		0, CANO,                 string, 8,  0, 0, ,acc ;
+		1, ACNT_PRDT_CD,         string, 2,  0, 0, ,prod;
+		2, ACNT_PWD,             string, 84, 0, 0, ,;
+		3, PDNO,                 string, 12, 0, 0, , ;
+		4, ORD_UNPR,             int64,  8,  0, 0, , ,19;
+		5, ORD_DVSN,             string, 2,  0, 0, , ;
+		6, CMA_EVLU_AMT_ICLD_YN, string, 1,  0, 0, , ;
+		7, OVRS_ICLD_YN,	 string, 1,  0, 0, , ;
+	end
+	TTC8908RO2, output, ;
+	begin
+		0, ORD_PSBL_CASH,      int64, 8, 0, 0, , ,19;
+		1, ORD_PSBL_SBST,      int64, 8, 0, 0, , ,19;
+		2, RUSE_PSBL_AMT,      int64, 8, 0, 0, , ,19;
+		3, FUND_RPCH_CHGS,     int64, 8, 0, 0, , ,19;
+		4, PSBL_QTY_CALC_UNPR, int64, 8, 0, 0, , ,19;
+		5, NRCVB_BUY_AMT,      int64, 8, 0, 0, , ,19;
+		6, NRCVB_BUY_QTY,      long,  4, 0, 0, , ,10;
+		7, MAX_BUY_AMT,        int64, 8, 0, 0, , ,19;
+		8, MAX_BUY_QTY,        long,  4, 0, 0, , ,10;
+		9, CMA_EVLU_AMT,       int64, 8, 0, 0, , ,19;
+		10, OVRS_RE_USE_AMT_WCRC,       int64, 8, 0, 0, , ,19;
+		11, ORD_PSBL_FRCR_AMT_WCRC,       int64, 8, 0, 0, , ,19;
+	end
+	END_DATA_MAP
+END_FUNCTION_MAP

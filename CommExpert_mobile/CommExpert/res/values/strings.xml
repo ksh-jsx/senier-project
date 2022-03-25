@@ -1,0 +1,15 @@
+<resources>
+
+    <string name="app_name">CommExpert</string>
+
+   <string name="app_conn_media_code">FM</string>
+    	
+    <!-- 통신 재접속 실패 메시지 표시 -->
+    <string name="connect_fail_closed">네트워크 상태가 원활하지 않습니다.\n잠시 후 다시 접속하여 주시기 바랍니다.</string>
+    <string name="connect_fail_3gfail">"4G, 3G 네트워크 상태가 원활하지 않습니다.\n잠시 후 다시 접속하여 주시거나 와이파이(WiFi)로 접속하여 주시기 바랍니다.</string>
+    <string name="connect_fail_wififail">접속중인 [__WIFI_AP__] 와이파이(WiFi) 네트워크 상태가 원활하지 않습니다.\n잠시 후 다시 접속하여 주시거나 3G로 접속하여 주시기 바랍니다.</string>
+    <string name="connect_fail_nonetwork">네트워크 접속이 불가능한 상태입니다.\n네트워크 접속 가능 상태인지 확인하신 후 프로그램을 재실행 하시기 바랍니다.</string>
+    <string name="connect_fail_warning">정상접속 시 통신단절 직전의 주문과 이체내역 등을 확인하시기 바랍니다.</string>
+    <string name="connect_fail_callcenter">네트워크 상태가 개선되지 않는 경우에 주문이 필요하신 분은 고객센터(1588-3322)를 통해 주문을 내시기 바랍니다.</string>
+    
+</resources>

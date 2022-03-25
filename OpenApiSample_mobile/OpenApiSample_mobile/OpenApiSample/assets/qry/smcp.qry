@@ -1,0 +1,33 @@
+BEGIN_FUNCTION_MAP
+	T,주식정정취소가능주문조회,TTC8034R,SMCP;
+	BEGIN_DATA_MAP
+	TTC8034RI1, input, ;
+	begin
+		0, CANO,           string, 8,   0, 0, , acc;
+		1, ACNT_PRDT_CD,   string, 2,   0, 0, , prod;
+		2, PWD,            string, 84,  0, 0, , ;
+		3, CTX_AREA_FK100, string, 100, 0, 0, , ;
+		4, CTX_AREA_NK100, string, 100, 0, 0, , ;
+		5, INQR_DVSN_1,    string, 1,   0, 0, , ;
+	end
+	OCCURS_OUT1, output, occurs=50;
+	begin
+		0, ORD_GNO_BRNO,        string, 5,  0, 0, , ;
+		1, ODNO,                string, 10, 0, 0, , ;
+		2, ORGN_ODNO,           string, 10, 0, 0, , ;
+		3, ORD_DVSN_NAME,       string, 60, 0, 0, , ;
+		4, PDNO,                string, 20, 0, 0, , ;
+		5, PRDT_NAME,           string, 60, 0, 0, , ;
+		6, RVSE_CNCL_DVSN_NAME, string, 6,  0, 0, , ;
+		7, ORD_QTY,             long,   4,  0, 0, , ,10;
+		8, ORD_UNPR,            int64,  8,  0, 0, , ,19;
+		9, ORD_TMD,             string, 6,  0, 0, , ;
+		10, TOT_CCLD_QTY,       long,   4,  0, 0, , ,10;
+		11, TOT_CCLD_AMT,       int64,  8,  0, 0, , ,19;
+		12, PSBL_QTY,           long,   4,  0, 0, , ;
+		13, SLL_BUY_DVSN_CD,    string, 2,  0, 0, , ;
+		14, ORD_DVSN_CD,        string, 2,  0, 0, , ;
+		15, MGCO_APTM_ODNO,     string, 12, 0, 0, , ;
+	end
+	END_DATA_MAP
+END_FUNCTION_MAP

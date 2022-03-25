@@ -1,0 +1,84 @@
+BEGIN_FUNCTION_MAP
+	T, 현재가(호가),HKST01010200,SCPH;
+	BEGIN_DATA_MAP
+	InBlock2, input, ;
+	begin
+		0, FID_COND_MRKT_DIV_CODE, string, 2, 9100, 9999, , ;
+		1, FID_INPUT_ISCD, string, 12, 9030, 9999, , ;
+	end
+	OutBlock2, output, ;
+	begin
+		0, ASPR_ACPT_HOUR, string, 6, 12, 1001, attr, ;
+		1, ASKP1, numstring, 10, 500, 1001, attr, ;
+		2, ASKP2, numstring, 10, 501, 1001, attr, ;
+		3, ASKP3, numstring, 10, 502, 1001, attr, ;
+		4, ASKP4, numstring, 10, 503, 1001, attr, ;
+		5, ASKP5, numstring, 10, 504, 1001, attr, ;
+		6, ASKP6, numstring, 10, 505, 1001, attr, ;
+		7, ASKP7, numstring, 10, 506, 1001, attr, ;
+		8, ASKP8, numstring, 10, 507, 1001, attr, ;
+		9, ASKP9, numstring, 10, 508, 1001, attr, ;
+		10, ASKP10, numstring, 10, 509, 1001, attr, ;
+		11, BIDP1, numstring, 10, 510, 1001, attr, ;
+		12, BIDP2, numstring, 10, 511, 1001, attr, ;
+		13, BIDP3, numstring, 10, 512, 1001, attr, ;
+		14, BIDP4, numstring, 10, 513, 1001, attr, ;
+		15, BIDP5, numstring, 10, 514, 1001, attr, ;
+		16, BIDP6, numstring, 10, 515, 1001, attr, ;
+		17, BIDP7, numstring, 10, 516, 1001, attr, ;
+		18, BIDP8, numstring, 10, 517, 1001, attr, ;
+		19, BIDP9, numstring, 10, 518, 1001, attr, ;
+		20, BIDP10, numstring, 10, 519, 1001, attr, ;
+		21, ASKP_RSQN1, numstring, 12, 520, 1001, attr, ;
+		22, ASKP_RSQN2, numstring, 12, 521, 1001, attr, ;
+		23, ASKP_RSQN3, numstring, 12, 522, 1001, attr, ;
+		24, ASKP_RSQN4, numstring, 12, 523, 1001, attr, ;
+		25, ASKP_RSQN5, numstring, 12, 524, 1001, attr, ;
+		26, ASKP_RSQN6, numstring, 12, 525, 1001, attr, ;
+		27, ASKP_RSQN7, numstring, 12, 526, 1001, attr, ;
+		28, ASKP_RSQN8, numstring, 12, 527, 1001, attr, ;
+		29, ASKP_RSQN9, numstring, 12, 528, 1001, attr, ;
+		30, ASKP_RSQN10, numstring, 12, 529, 1001, attr, ;
+		31, BIDP_RSQN1, numstring, 12, 530, 1001, attr, ;
+		32, BIDP_RSQN2, numstring, 12, 531, 1001, attr, ;
+		33, BIDP_RSQN3, numstring, 12, 532, 1001, attr, ;
+		34, BIDP_RSQN4, numstring, 12, 533, 1001, attr, ;
+		35, BIDP_RSQN5, numstring, 12, 534, 1001, attr, ;
+		36, BIDP_RSQN6, numstring, 12, 535, 1001, attr, ;
+		37, BIDP_RSQN7, numstring, 12, 536, 1001, attr, ;
+		38, BIDP_RSQN8, numstring, 12, 537, 1001, attr, ;
+		39, BIDP_RSQN9, numstring, 12, 538, 1001, attr, ;
+		40, BIDP_RSQN10, numstring, 12, 539, 1001, attr, ;
+		41, ASKP_RSQN_ICDC1, numstring, 10, 540, 1001, attr, ;
+		42, ASKP_RSQN_ICDC2, numstring, 10, 541, 1001, attr, ;
+		43, ASKP_RSQN_ICDC3, numstring, 10, 542, 1001, attr, ;
+		44, ASKP_RSQN_ICDC4, numstring, 10, 543, 1001, attr, ;
+		45, ASKP_RSQN_ICDC5, numstring, 10, 544, 1001, attr, ;
+		46, ASKP_RSQN_ICDC6, numstring, 10, 545, 1001, attr, ;
+		47, ASKP_RSQN_ICDC7, numstring, 10, 546, 1001, attr, ;
+		48, ASKP_RSQN_ICDC8, numstring, 10, 547, 1001, attr, ;
+		49, ASKP_RSQN_ICDC9, numstring, 10, 548, 1001, attr, ;
+		50, ASKP_RSQN_ICDC10, numstring, 10, 549, 1001, attr, ;
+		51, BIDP_RSQN_ICDC1, numstring, 10, 550, 1001, attr, ;
+		52, BIDP_RSQN_ICDC2, numstring, 10, 551, 1001, attr, ;
+		53, BIDP_RSQN_ICDC3, numstring, 10, 552, 1001, attr, ;
+		54, BIDP_RSQN_ICDC4, numstring, 10, 553, 1001, attr, ;
+		55, BIDP_RSQN_ICDC5, numstring, 10, 554, 1001, attr, ;
+		56, BIDP_RSQN_ICDC6, numstring, 10, 555, 1001, attr, ;
+		57, BIDP_RSQN_ICDC7, numstring, 10, 556, 1001, attr, ;
+		58, BIDP_RSQN_ICDC8, numstring, 10, 557, 1001, attr, ;
+		59, BIDP_RSQN_ICDC9, numstring, 10, 558, 1001, attr, ;
+		60, BIDP_RSQN_ICDC10, numstring, 10, 559, 1001, attr, ;
+		61, TOTAL_ASKP_RSQN, numstring, 12, 560, 1001, attr, ;
+		62, TOTAL_BIDP_RSQN, numstring, 12, 561, 1001, attr, ;
+		63, TOTAL_ASKP_RSQN_ICDC, numstring, 10, 562, 1001, attr, ;
+		64, TOTAL_BIDP_RSQN_ICDC, numstring, 10, 563, 1001, attr, ;
+		65, OVTM_TOTAL_ASKP_ICDC, numstring, 10, 582, 1001, attr, ;
+		66, OVTM_TOTAL_BIDP_ICDC, numstring, 10, 583, 1001, attr, ;
+		67, OVTM_TOTAL_ASKP_RSQN, numstring, 12, 584, 1001, attr, ;
+		68, OVTM_TOTAL_BIDP_RSQN, numstring, 12, 585, 1001, attr, ;
+		69, NTBY_ASPR_RSQN, numstring, 12, 644, 1001, attr, ;
+		70, NEW_MKOP_CLS_CODE, string, 2, 1904, 1001, , ;
+	end
+	END_DATA_MAP
+END_FUNCTION_MAP

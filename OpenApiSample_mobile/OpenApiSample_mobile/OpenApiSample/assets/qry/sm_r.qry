@@ -1,0 +1,80 @@
+BEGIN_FUNCTION_MAP
+	R,주식종목회원사,H0STMBC0,SM_R;
+	BEGIN_DATA_MAP
+	input, input, ;
+	begin
+		0, MKSC_SHRN_ISCD, string, 9, 9, ;
+	end
+	output, output, ;
+	begin
+		0, MKSC_SHRN_ISCD, string, 9, 9, ;
+		1, SELN2_MBCR_NAME1, string, 16, 16, attr;
+		2, SELN2_MBCR_NAME2, string, 16, 16, attr;
+		3, SELN2_MBCR_NAME3, string, 16, 16, attr;
+		4, SELN2_MBCR_NAME4, string, 16, 16, attr;
+		5, SELN2_MBCR_NAME5, string, 16, 16, attr;
+		6, BYOV_MBCR_NAME1, string, 16, 16, attr;
+		7, BYOV_MBCR_NAME2, string, 16, 16, attr;
+		8, BYOV_MBCR_NAME3, string, 16, 16, attr;
+		9, BYOV_MBCR_NAME4, string, 16, 16, attr;
+		10, BYOV_MBCR_NAME5, string, 16, 16, attr;
+		11, TOTAL_SELN_QTY1, int64, 8, 8, ;
+		12, TOTAL_SELN_QTY2, int64, 8, 8, ;
+		13, TOTAL_SELN_QTY3, int64, 8, 8, ;
+		14, TOTAL_SELN_QTY4, int64, 8, 8, ;
+		15, TOTAL_SELN_QTY5, int64, 8, 8, ;
+		16, TOTAL_SHNU_QTY1, int64, 8, 8, ;
+		17, TOTAL_SHNU_QTY2, int64, 8, 8, ;
+		18, TOTAL_SHNU_QTY3, int64, 8, 8, ;
+		19, TOTAL_SHNU_QTY4, int64, 8, 8, ;
+		20, TOTAL_SHNU_QTY5, int64, 8, 8, ;
+		21, SELN_MBCR_GLOB_YN_1, string, 1, 1, ;
+		22, SELN_MBCR_GLOB_YN_2, string, 1, 1, ;
+		23, SELN_MBCR_GLOB_YN_3, string, 1, 1, ;
+		24, SELN_MBCR_GLOB_YN_4, string, 1, 1, ;
+		25, SELN_MBCR_GLOB_YN_5, string, 1, 1, ;
+		26, SHNU_MBCR_GLOB_YN_1, string, 1, 1, ;
+		27, SHNU_MBCR_GLOB_YN_2, string, 1, 1, ;
+		28, SHNU_MBCR_GLOB_YN_3, string, 1, 1, ;
+		29, SHNU_MBCR_GLOB_YN_4, string, 1, 1, ;
+		30, SHNU_MBCR_GLOB_YN_5, string, 1, 1, ;
+		31, SELN_MBCR_NO1, string, 5, 5, ;
+		32, SELN_MBCR_NO2, string, 5, 5, ;
+		33, SELN_MBCR_NO3, string, 5, 5, ;
+		34, SELN_MBCR_NO4, string, 5, 5, ;
+		35, SELN_MBCR_NO5, string, 5, 5, ;
+		36, SHNU_MBCR_NO1, string, 5, 5, ;
+		37, SHNU_MBCR_NO2, string, 5, 5, ;
+		38, SHNU_MBCR_NO3, string, 5, 5, ;
+		39, SHNU_MBCR_NO4, string, 5, 5, ;
+		40, SHNU_MBCR_NO5, string, 5, 5, ;
+		41, SELN_MBCR_RLIM1, double, 8, 15.2, ;
+		42, SELN_MBCR_RLIM2, double, 8, 15.2, ;
+		43, SELN_MBCR_RLIM3, double, 8, 15.2, ;
+		44, SELN_MBCR_RLIM4, double, 8, 15.2, ;
+		45, SELN_MBCR_RLIM5, double, 8, 15.2, ;
+		46, SHNU_MBCR_RLIM1, double, 8, 15.2, ;
+		47, SHNU_MBCR_RLIM2, double, 8, 15.2, ;
+		48, SHNU_MBCR_RLIM3, double, 8, 15.2, ;
+		49, SHNU_MBCR_RLIM4, double, 8, 15.2, ;
+		50, SHNU_MBCR_RLIM5, double, 8, 15.2, ;
+		51, SELN_QTY_ICDC1, long, 4, 4, ;
+		52, SELN_QTY_ICDC2, long, 4, 4, ;
+		53, SELN_QTY_ICDC3, long, 4, 4, ;
+		54, SELN_QTY_ICDC4, long, 4, 4, ;
+		55, SELN_QTY_ICDC5, long, 4, 4, ;
+		56, SHNU_QTY_ICDC1, long, 4, 4, ;
+		57, SHNU_QTY_ICDC2, long, 4, 4, ;
+		58, SHNU_QTY_ICDC3, long, 4, 4, ;
+		59, SHNU_QTY_ICDC4, long, 4, 4, ;
+		60, SHNU_QTY_ICDC5, long, 4, 4, ;
+		61, GLOB_TOTAL_SELN_QTY, int64, 8, 8, attr;
+		62, GLOB_TOTAL_SHNU_QTY, int64, 8, 8, attr;
+		63, GLOB_TOTAL_SELN_QTY_ICDC, long, 4, 4, ;
+		64, GLOB_TOTAL_SHNU_QTY_ICDC, long, 4, 4, ;
+		65, GLOB_NTBY_QTY, int64, 8, 8, attr;
+		66, GLOB_SELN_RLIM, double, 8, 15.2, ;
+		67, GLOB_SHNU_RLIM, double, 8, 15.2, ;
+	end
+	END_DATA_MAP
+END_FUNCTION_MAP

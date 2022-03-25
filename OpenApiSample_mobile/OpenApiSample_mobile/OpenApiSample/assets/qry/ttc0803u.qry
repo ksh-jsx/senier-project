@@ -1,0 +1,25 @@
+BEGIN_FUNCTION_MAP
+	.FuncBiz,ASTC정정취소주문,TTC0803U,DIGSIGN=0,RECLEN=4,SERVERNO=T,VERSION=00000001,CREATER=skcc1015,CREDATE=20101006,MODIFYER=skcc1015,MODDATE=20101011,JOURNALLOG=0;
+	BEGIN_DATA_MAP
+	TTC0803UI1, TTC0803UI1, input;
+	begin
+		종합계좌번호, CANO, CANO, string, 8, 0, 0, 8, , , ;
+		계좌상품코드, ACNT_PRDT_CD, ACNT_PRDT_CD, string, 2, 0, 0, 2, , , ;
+		계좌비밀번호, ACNT_PWD, ACNT_PWD, string, 84, 0, 0, 84, , , ;
+		한국거래소전송주문조직번호, KRX_FWDG_ORD_ORGNO, KRX_FWDG_ORD_ORGNO, string, 5, 0, 0, 5, , , ;
+		원주문번호, ORGN_ODNO, ORGN_ODNO, string, 10, 0, 0, 10, , , ;
+		주문구분, ORD_DVSN, ORD_DVSN, string, 2, 0, 0, 2, , , ;
+		정정취소구분코드, RVSE_CNCL_DVSN_CD, RVSE_CNCL_DVSN_CD, string, 2, 0, 0, 2, , , ;
+		주문수량, ORD_QTY, ORD_QTY, long, 4, 0, 0, 10, , , ;
+		주문단가, ORD_UNPR, ORD_UNPR, int64, 8, 0, 0, 19, , , ;
+		잔량전부주문여부, QTY_ALL_ORD_YN, QTY_ALL_ORD_YN, string, 1, 0, 0, 1, , , ;
+		연락전화번호, CTAC_TLNO, CTAC_TLNO, string, 20, 0, 0, 20, , , ;
+	end
+	TTC0803UO2, TTC0803UO2, output;
+	begin
+		한국거래소전송주문조직번호, KRX_FWDG_ORD_ORGNO, KRX_FWDG_ORD_ORGNO, string, 5, 0, 0, 5, , , ;
+		주문번호, ODNO, ODNO, string, 10, 0, 0, 10, , , ;
+		주문시각, ORD_TMD, ORD_TMD, string, 6, 0, 0, 6, , , ;
+	end
+	END_DATA_MAP
+END_FUNCTION_MAP

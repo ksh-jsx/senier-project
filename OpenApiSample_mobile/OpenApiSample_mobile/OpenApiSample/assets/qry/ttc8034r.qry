@@ -1,0 +1,33 @@
+BEGIN_FUNCTION_MAP
+	.FuncBiz,ASTC주식정정취소가능주문내역조,TTC8034R,ATTR,DIGSIGN=0,RECLEN=4,SERVERNO=T,VERSION=00000001,CREATER=Nexcore MD,CREDATE=20100617,MODIFYER=skcc1013,MODDATE=20110317,JOURNALLOG=0;
+	BEGIN_DATA_MAP
+	TTC8034RI1, TTC8034RI1, input, attr;
+	begin
+		종합계좌번호, CANO, CANO, string, 8, 0, 0, 8, , attr, ;
+		계좌상품코드, ACNT_PRDT_CD, ACNT_PRDT_CD, string, 2, 0, 0, 2, , attr, ;
+		비밀번호, PWD, PWD, string, 84, 0, 0, 84, , attr, ;
+		연속조회검색조건100, CTX_AREA_FK100, CTX_AREA_FK100, string, 100, 0, 0, 100, , attr, ;
+		연속조회키100, CTX_AREA_NK100, CTX_AREA_NK100, string, 100, 0, 0, 100, , attr, ;
+		조회구분1, INQR_DVSN_1, INQR_DVSN_1, string, 1, 0, 0, 1, , attr, ;
+	end
+	OCCURS_OUT1, OCCURS_OUT1, output, occurs=50, attr;
+	begin
+		주문채번지점번호, ORD_GNO_BRNO, ORD_GNO_BRNO, string, 5, 0, 0, 5, , attr, ;
+		주문번호, ODNO, ODNO, string, 10, 0, 0, 10, , attr, ;
+		원주문번호, ORGN_ODNO, ORGN_ODNO, string, 10, 0, 0, 10, , attr, ;
+		주문구분명, ORD_DVSN_NAME, ORD_DVSN_NAME, string, 60, 0, 0, 60, , attr, ;
+		상품번호, PDNO, PDNO, string, 12, 0, 0, 12, , attr, ;
+		상품명, PRDT_NAME, PRDT_NAME, string, 60, 0, 0, 60, , attr, ;
+		정정취소구분명, RVSE_CNCL_DVSN_NAME, RVSE_CNCL_DVSN_NAME, string, 60, 0, 0, 60, , attr, ;
+		주문수량, ORD_QTY, ORD_QTY, long, 4, 0, 0, 10, , attr, ;
+		주문단가, ORD_UNPR, ORD_UNPR, int64, 8, 0, 0, 19, , attr, ;
+		주문시각, ORD_TMD, ORD_TMD, string, 6, 0, 0, 6, , attr, ;
+		총체결수량, TOT_CCLD_QTY, TOT_CCLD_QTY, long, 4, 0, 0, 10, , attr, ;
+		총체결금액, TOT_CCLD_AMT, TOT_CCLD_AMT, int64, 8, 0, 0, 19, , attr, ;
+		가능수량, PSBL_QTY, PSBL_QTY, long, 4, 0, 0, 10, , attr, ;
+		매도매수구분코드, SLL_BUY_DVSN_CD, SLL_BUY_DVSN_CD, string, 2, 0, 0, 2, , attr, ;
+		주문구분코드, ORD_DVSN_CD, ORD_DVSN_CD, string, 2, 0, 0, 2, , attr, ;
+		운용사지정주문번호, MGCO_APTM_ODNO, MGCO_APTM_ODNO, string, 12, 0, 0, 12, , attr, ;
+	end
+	END_DATA_MAP
+END_FUNCTION_MAP

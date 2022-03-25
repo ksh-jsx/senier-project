@@ -1,0 +1,35 @@
+BEGIN_FUNCTION_MAP
+	.SFID,현재가(투자자),HKST01010900,DIGSIGN=0,RECLEN=4,SERVERNO=F,DESCRIPTION=J	000660,VERSION=00000001,CREATER=ITGEN,CREDATE=20100126,MODIFYER=정선희,MODDATE=20100325,JOURNALLOG=0;
+	BEGIN_DATA_MAP
+	InBlock1, InBlock1, input, toutblk=OutBlock1, desc=toutblk=OutBlock1;
+	begin
+		FID 조건 시장 분류 코드, FID_COND_MRKT_DIV_CODE, FID_COND_MRKT_DIV_CODE, string, 2, 9100, 9999, 2, , , ;
+		FID 입력 종목코드, FID_INPUT_ISCD, FID_INPUT_ISCD, string, 12, 9030, 9999, 12, , , ;
+	end
+	OutBlock1, OutBlock1, output, occurs=30;
+	begin
+		주식 영업 일자, STCK_BSOP_DATE, STCK_BSOP_DATE, string, 8, 67, 1003, 8, , , ;
+		주식 종가, STCK_CLPR, STCK_CLPR, numstring, 10, 4, 1003, 10, , attr, ;
+		전일 대비, PRDY_VRSS, PRDY_VRSS, numstring, 10, 5, 1003, 10, , attr, ;
+		전일 대비 부호, PRDY_VRSS_SIGN, PRDY_VRSS_SIGN, string, 1, 6, 1003, 1, , , ;
+		개인 순매수 수량, PRSN_NTBY_QTY, PRSN_NTBY_QTY, numstring, 12, 1636, 1035, 12, , attr, ;
+		외국인 순매수 수량, FRGN_NTBY_QTY, FRGN_NTBY_QTY, numstring, 12, 201, 1035, 12, , attr, ;
+		기관계 순매수 수량, ORGN_NTBY_QTY, ORGN_NTBY_QTY, numstring, 18, 202, 1035, 18, , attr, ;
+		개인 순매수 거래 대금, PRSN_NTBY_TR_PBMN, PRSN_NTBY_TR_PBMN, numstring, 18, 1643, 1035, 18, , attr, ;
+		외국인 순매수 거래 대금, FRGN_NTBY_TR_PBMN, FRGN_NTBY_TR_PBMN, numstring, 18, 1644, 1035, 18, , attr, ;
+		기관계 순매수 거래 대금, ORGN_NTBY_TR_PBMN, ORGN_NTBY_TR_PBMN, numstring, 18, 1645, 1035, 18, , attr, ;
+		개인 매수2 거래량, PRSN_SHNU_VOL, PRSN_SHNU_VOL, numstring, 18, 1601, 1035, 18, , attr, ;
+		외국인 매수2 거래량, FRGN_SHNU_VOL, FRGN_SHNU_VOL, numstring, 18, 1605, 1035, 18, , attr, ;
+		기관계 매수2 거래량, ORGN_SHNU_VOL, ORGN_SHNU_VOL, numstring, 18, 1609, 1035, 18, , attr, ;
+		개인 매수2 거래 대금, PRSN_SHNU_TR_PBMN, PRSN_SHNU_TR_PBMN, numstring, 18, 1603, 1035, 18, , attr, ;
+		외국인 매수2 거래 대금, FRGN_SHNU_TR_PBMN, FRGN_SHNU_TR_PBMN, numstring, 18, 1607, 1035, 18, , attr, ;
+		기관계 매수2 거래 대금, ORGN_SHNU_TR_PBMN, ORGN_SHNU_TR_PBMN, numstring, 18, 1611, 1035, 18, , attr, ;
+		개인 매도 거래량, PRSN_SELN_VOL, PRSN_SELN_VOL, numstring, 18, 1600, 1035, 18, , attr, ;
+		외국인 매도 거래량, FRGN_SELN_VOL, FRGN_SELN_VOL, numstring, 18, 1604, 1035, 18, , attr, ;
+		기관계 매도 거래량, ORGN_SELN_VOL, ORGN_SELN_VOL, numstring, 18, 1608, 1035, 18, , attr, ;
+		개인 매도 거래 대금, PRSN_SELN_TR_PBMN, PRSN_SELN_TR_PBMN, numstring, 18, 1602, 1035, 18, , attr, ;
+		외국인 매도 거래 대금, FRGN_SELN_TR_PBMN, FRGN_SELN_TR_PBMN, numstring, 18, 1606, 1035, 18, , attr, ;
+		기관계 매도 거래 대금, ORGN_SELN_TR_PBMN, ORGN_SELN_TR_PBMN, numstring, 18, 1610, 1035, 18, , attr, ;
+	end
+	END_DATA_MAP
+END_FUNCTION_MAP

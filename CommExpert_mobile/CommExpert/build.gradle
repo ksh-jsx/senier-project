@@ -1,0 +1,46 @@
+apply plugin: 'com.android.library'
+
+dependencies {
+    api files('libs/midoulibrary.jar')
+    api files('libs/CubeOneKSI.jar')
+    api files('libs/KeySharpDevice_1.0.5.jar')
+    api files('libs/SDB_JAVA_SHA_API_1000.jar')
+    api files('libs/SignKorea-Android.jar')
+    api files('libs/mTranskeyCrypto.jar')
+    api files('libs/iTGUtilLib-release.aar')
+    api files('libs/mVigsEngine-release.aar')
+    api files('libs/smartcorelib.jar')
+}
+
+android {
+    compileSdkVersion 29
+
+    defaultConfig {
+        minSdkVersion 9
+        targetSdkVersion 29
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = ['src']
+            resources.srcDirs = ['src']
+            aidl.srcDirs = ['src']
+            renderscript.srcDirs = ['src']
+            res.srcDirs = ['res']
+            assets.srcDirs = ['assets']
+        }
+
+        // Move the tests to tests/java, tests/res, etc...
+        //instrumentTest.setRoot('tests')
+
+        // Move the build types to build-types/<type>
+        // For instance, build-types/debug/java, build-types/debug/AndroidManifest.xml, ...
+        // This moves them out of them default location under src/<type>/... which would
+        // conflict with src/ being used by the main source set.
+        // Adding new build types or product flavors should be accompanied
+        // by a similar customization.
+        debug.setRoot('build-types/debug')
+        release.setRoot('build-types/release')
+    }
+}

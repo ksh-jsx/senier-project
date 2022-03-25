@@ -1,0 +1,87 @@
+BEGIN_FUNCTION_MAP
+	T,현재가(시세),HKST01010100,SCP;
+	BEGIN_DATA_MAP
+	InBlock1, input, ;
+	begin
+		0, FID_COND_MRKT_DIV_CODE, string, 2, 9100, 9999, , ;
+		1, FID_INPUT_ISCD, string, 12, 9030, 9999, , ;
+	end
+	OutBlock1, output, ;
+	begin
+		0, ISCD_STAT_CLS_CODE, string, 3, 6016,	1000, , ;
+		1, MARG_RATE, numstring, 8.4, 144, 1000, attr, ;
+		2, RPRS_MRKT_KOR_NAME, string, 40, 824, 1000, , ;
+		3, NEW_HGPR_LWPR_CLS_CODE, string, 10, 6521, 1000, , ;
+		4, BSTP_KOR_ISNM, string, 40, 822, 1000, , ;
+		5, TEMP_STOP_YN, string, 1, 6167, 1000, , ;
+		6, OPRC_RANG_CONT_YN, string, 1, 6168, 1000, , ;
+		7, CLPR_RANG_CONT_YN, string, 1, 6169, 1000, , ;
+		8, CRDT_ABLE_YN, string, 1, 6378, 1000,	, ;
+		9, GRMN_RATE_CLS_CODE, string, 3, 6134, 1000, , ;
+		10,	ELW_PBLC_YN, string, 1, 6135, 1000, , ;
+		11,	STCK_PRPR, numstring, 10, 4, 1000, attr, ;
+		12,	PRDY_VRSS, numstring, 10, 5, 1000, attr, ;
+		13,	PRDY_VRSS_SIGN, string, 1, 6, 1000, , ;
+		14,	PRDY_CTRT, numstring, 8.2, 7, 1000, attr, ;
+		15,	ACML_TR_PBMN, numstring, 18, 16, 1000, attr, ;
+		16,	ACML_VOL, numstring, 18, 14, 1000, attr, ;
+		17,	PRDY_VRSS_VOL_RATE, numstring, 8.4, 15, 1000, attr, ;
+		18,	STCK_OPRC, numstring, 10, 17, 1000, attr, ;
+		19,	STCK_HGPR, numstring, 10, 18, 1000, attr, ;
+		20,	STCK_LWPR, numstring, 10, 19, 1000, attr, ;
+		21,	STCK_MXPR, numstring, 10, 26, 1000, attr, ;
+		22,	STCK_LLAM, numstring, 10, 27, 1000, attr, ;
+		23,	STCK_SDPR, numstring, 10, 24, 1000, attr, ;
+		24,	WGHN_AVRG_STCK_PRC, numstring, 19.2, 38, 1000, attr, ;
+		25,	HTS_FRGN_EHRT, numstring, 8.2, 41, 1000, attr, ;
+		26,	FRGN_NTBY_QTY, numstring, 12, 201, 1000, attr, ;
+		27,	PGTR_NTBY_QTY, numstring, 18, 2450, 1000, attr, ;
+		28,	PVT_SCND_DMRS_PRC, numstring, 10, 48, 1000, attr, ;
+		29,	PVT_FRST_DMRS_PRC, numstring, 10, 49, 1000, attr, ;
+		30,	PVT_PONT_VAL, numstring, 10, 50, 1000, attr, ;
+		31,	PVT_FRST_DMSP_PRC, numstring, 10, 51, 1000, attr, ;
+		32,	PVT_SCND_DMSP_PRC, numstring, 10, 52, 1000, attr, ;
+		33,	DMRS_VAL, numstring, 10, 296, 1000, attr, ;
+		34,	DMSP_VAL, numstring, 10, 295, 1000, attr, ;
+		35,	CPFN, numstring, 22, 29, 1000, attr, ;
+		36,	RSTC_WDTH_PRC, numstring, 10, 6165, 1000, attr, ;
+		37,	STCK_FCAM, numstring, 11, 39, 1000, attr, ;
+		38,	STCK_SSPR, numstring, 10, 25, 1000, attr, ;
+		39,	ASPR_UNIT, numstring, 10, 6166, 1000, attr, ;
+		40,	HTS_DEAL_QTY_UNIT_VAL, numstring, 10, 11, 1000, attr, ;
+		41,	LSTN_STCN, numstring, 18, 30, 1000, attr, ;
+		42, HTS_AVLS, numstring, 18, 28, 1000, attr, ;
+		43,	PER, numstring, 8.2, 42, 1000, attr, ;
+		44,	PBR, numstring, 8.2, 43, 1000, attr, ;
+		45,	STAC_MONTH, string, 2, 44, 1000, , ;
+		46,	VOL_TNRT, numstring, 8.2, 187, 1000, attr, ;
+		47,	EPS, numstring, 11.2, 210, 1000, attr, ;
+		48,	BPS, numstring, 11.2, 212, 1000, attr, ;
+		49,	D250_HGPR, numstring, 10, 6067, 1000, attr, ;
+		50,	D250_HGPR_DATE, string, 8, 6069, 1000, , ;
+		51,	D250_HGPR_VRSS_PRPR_RATE, numstring, 8.4, 6073, 1000, attr, ;
+		52,	D250_LWPR, numstring, 10, 6068, 1000, attr, ;
+		53,	D250_LWPR_DATE, string, 8, 6070, 1000, , ;
+		54,	D250_LWPR_VRSS_PRPR_RATE, numstring, 8.4, 6074, 1000, attr, ;
+		55,	STCK_DRYY_HGPR, numstring, 10, 157, 1000, attr, ;
+		56,	DRYY_HGPR_VRSS_PRPR_RATE, numstring, 8.4, 6071, 1000, attr, ;
+		57,	DRYY_HGPR_DATE, string, 8, 352, 1000, , ;
+		58,	STCK_DRYY_LWPR, numstring, 10, 158, 1000, attr, ;
+		59,	DRYY_LWPR_VRSS_PRPR_RATE, numstring, 8.4, 6072, 1000, attr, ;
+		60,	DRYY_LWPR_DATE, string, 8, 353, 1000, , ;
+		61,	W52_HGPR, numstring, 10, 32, 1000, attr, ;
+		62,	W52_HGPR_VRSS_PRPR_CTRT, numstring, 8.2, 33, 1000, attr, ;
+		63,	W52_HGPR_DATE, string, 8, 34, 1000, , ;
+		64,	W52_LWPR, numstring, 10, 35, 1000, attr, ;
+		65,	W52_LWPR_VRSS_PRPR_CTRT, numstring, 8.2, 36, 1000, attr, ;
+		66,	W52_LWPR_DATE, string, 8, 37, 1000, , ;
+		67,	WHOL_LOAN_RMND_RATE, numstring, 8.4, 2757, 1000, attr, ;
+		68,	SSTS_YN, string, 1, 6141, 1000, , ;
+		69,	STCK_SHRN_ISCD, string, 9, 1, 1000, , ;
+		70,	FCAM_CNNM, string, 20, 390, 1000, , ;
+		71,	CPFN_CNNM, string, 20, 391, 1000, , ;
+		72,	APPRCH_RATE, numstring, 11.2, 6806, 1000, , ;
+		73,	FRGN_HLDN_QTY, numstring, 18, 149, 1000, , ;
+	end
+	END_DATA_MAP
+END_FUNCTION_MAP
