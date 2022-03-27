@@ -1,0 +1,25 @@
+BEGIN_FUNCTION_MAP
+	.SFID,현재가(호가),HKST01010201,COMPRESS,DIGSIGN=0,RECLEN=4,SERVERNO=F,DESCRIPTION=J	000660,VERSION=00000001,CREATER=ITGEN,CREDATE=20100123,MODIFYER=Administra,MODDATE=20100811,JOURNALLOG=0;
+	BEGIN_DATA_MAP
+	InBlock1, InBlock1, input, toutblk=OutBlock1, desc=toutblk=OutBlock1;
+	begin
+		FID 조건 시장 분류 코드, FID_COND_MRKT_DIV_CODE, FID_COND_MRKT_DIV_CODE, string, 2, 9100, 9999, 2, , , ;
+		FID 입력 종목코드, FID_INPUT_ISCD, FID_INPUT_ISCD, string, 12, 9030, 9999, 12, , , ;
+	end
+	OutBlock1, OutBlock1, output;
+	begin
+		예상 장운영 구분 코드, ANTC_MKOP_CLS_CODE, ANTC_MKOP_CLS_CODE, string, 3, 6800, 1000, 3, , , ;
+		주식 현재가, STCK_PRPR, STCK_PRPR, numstring, 10, 4, 1000, 10, , attr, ;
+		주식 시가2, STCK_OPRC, STCK_OPRC, numstring, 10, 17, 1000, 10, , attr, ;
+		주식 최고가, STCK_HGPR, STCK_HGPR, numstring, 10, 18, 1000, 10, , attr, ;
+		주식 최저가, STCK_LWPR, STCK_LWPR, numstring, 10, 19, 1000, 10, , attr, ;
+		주식 기준가, STCK_SDPR, STCK_SDPR, numstring, 10, 24, 1000, 10, , attr, ;
+		예상 체결가, ANTC_CNPR, ANTC_CNPR, numstring, 10, 197, 1000, 10, , attr, ;
+		예상 체결 대비 부호, ANTC_CNTG_VRSS_SIGN, ANTC_CNTG_VRSS_SIGN, string, 1, 225, 1000, 1, , , ;
+		예상 체결 대비, ANTC_CNTG_VRSS, ANTC_CNTG_VRSS, numstring, 10, 224, 1000, 10, , attr, ;
+		예상 체결 전일 대비율, ANTC_CNTG_PRDY_CTRT, ANTC_CNTG_PRDY_CTRT, numstring, 8.2, 226, 1000, 8.2, , attr, ;
+		예상 거래량, ANTC_VOL, ANTC_VOL, numstring, 18, 194, 1000, 18, , , ;
+		주식 단축 종목코드, STCK_SHRN_ISCD, STCK_SHRN_ISCD, string, 9, 1, 1000, 9, , , ;
+	end
+	END_DATA_MAP
+END_FUNCTION_MAP

@@ -1,0 +1,20 @@
+BEGIN_FUNCTION_MAP
+	.SFID,현재가(체결),HKST01010300,DIGSIGN=0,RECLEN=4,SERVERNO=F,DESCRIPTION=J	000660,VERSION=00000001,CREATER=ITGEN,CREDATE=20100123,MODIFYER=김홍국,MODDATE=20100621,JOURNALLOG=0;
+	BEGIN_DATA_MAP
+	InBlock3, InBlock3, input, toutblk=OutBlock3, desc=toutblk=OutBlock3;
+	begin
+		FID 조건 시장 분류 코드, FID_COND_MRKT_DIV_CODE, FID_COND_MRKT_DIV_CODE, string, 2, 9100, 9999, 2, , , ;
+		FID 입력 종목코드, FID_INPUT_ISCD, FID_INPUT_ISCD, string, 12, 9030, 9999, 12, , , ;
+	end
+	OutBlock3, OutBlock3, output, occurs=30;
+	begin
+		주식 체결 시간, STCK_CNTG_HOUR, STCK_CNTG_HOUR, string, 6, 12, 1002, 6, , , ;
+		주식 현재가, STCK_PRPR, STCK_PRPR, numstring, 10, 4, 1002, 10, , attr, ;
+		전일 대비, PRDY_VRSS, PRDY_VRSS, numstring, 10, 5, 1002, 10, , attr, ;
+		전일 대비 부호, PRDY_VRSS_SIGN, PRDY_VRSS_SIGN, string, 1, 6, 1002, 1, , , ;
+		체결 거래량, CNTG_VOL, CNTG_VOL, numstring, 18, 68, 1002, 18, , attr, ;
+		당일 체결강도, TDAY_RLTV, TDAY_RLTV, numstring, 11.2, 237, 1002, 11.2, , attr, ;
+		전일 대비율, PRDY_CTRT, PRDY_CTRT, numstring, 8.2, 7, 1002, 8.2, , attr, ;
+	end
+	END_DATA_MAP
+END_FUNCTION_MAP

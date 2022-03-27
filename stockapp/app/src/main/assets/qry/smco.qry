@@ -1,0 +1,25 @@
+BEGIN_FUNCTION_MAP
+	T,정정취소주문,TTC0803U,SMCO,ORDER;
+	BEGIN_DATA_MAP
+	TTC0803UI1, input, ;
+	begin
+		0,  CANO,               string, 8,  0, 0, , acc;
+		1,  ACNT_PRDT_CD,       string, 2,  0, 0, , prod;
+		2,  ACNT_PWD,           string, 84, 0, 0, , ;
+		3,  KRX_FWDG_ORD_ORGNO, string, 5,  0, 0, , ;
+		4,  ORGN_ODNO,          string, 10, 0, 0, , ;
+		5,  ORD_DVSN,           string, 2,  0, 0, , ;
+		6,  RVSE_CNCL_DVSN_CD,  string, 2,  0, 0, , ;
+		7,  ORD_QTY,            long,   4,  0, 0, , , 10;
+		8,  ORD_UNPR,           int64,  8,  0, 0, , , 19;
+		9,  QTY_ALL_ORD_YN,     string, 1,  0, 0, , ;
+		10, CTAC_TLNO,          string, 20, 0, 0, , ;
+	end
+	TTC0803UO2, output, ;
+	begin
+		0, KRX_FWDG_ORD_ORGNO, string, 5, 0, 0, , ;
+		1, ODNO, string, 10, 0, 0, , ;
+		2, ORD_TMD, string, 6, 0, 0, , ;
+	end
+	END_DATA_MAP
+END_FUNCTION_MAP

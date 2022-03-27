@@ -1,0 +1,71 @@
+BEGIN_FUNCTION_MAP
+	.Feed,주식종목호가,H0STASP0,DIGSIGN=0,SERVERNO=H,DESCRIPTION=./REAL_RES/H0STASP0.res,VERSION=00000001,CREATER=ITGEN,CREDATE=20100111,MODIFYER=네오Nistra,MODDATE=20101122,JOURNALLOG=0;
+	BEGIN_DATA_MAP
+	input, input, input;
+	begin
+		유가증권 단축 종목코드, MKSC_SHRN_ISCD, MKSC_SHRN_ISCD, string, 9, 0, 0, 9, 전사용어사전, , ;
+	end
+	output, output, output;
+	begin
+		유가증권 단축 종목코드, MKSC_SHRN_ISCD, MKSC_SHRN_ISCD, string, 9, 0, 0, 9, 전사용어사전, , ;
+		영업 시간, BSOP_HOUR, BSOP_HOUR, string, 6, 0, 0, 6, 전사용어사전, , ;
+		시간 구분 코드, HOUR_CLS_CODE, HOUR_CLS_CODE, string, 1, 0, 0, 1, B:장전예상, 3:장전예상종료, 1:장시작, 0:장중, A:장후 예상중, 2:장종료, 4:시간외종료, 5:단일가개시, 6:단일가종료, 8:시간외개시,9:장마감, D:시간외예상, , ;
+		매도호가1, ASKP1, ASKP1, long, 4, 0, 0, 4, , attr, ;
+		매도호가2, ASKP2, ASKP2, long, 4, 0, 0, 4, , attr, ;
+		매도호가3, ASKP3, ASKP3, long, 4, 0, 0, 4, , attr, ;
+		매도호가4, ASKP4, ASKP4, long, 4, 0, 0, 4, , attr, ;
+		매도호가5, ASKP5, ASKP5, long, 4, 0, 0, 4, , attr, ;
+		매도호가6, ASKP6, ASKP6, long, 4, 0, 0, 4, , attr, ;
+		매도호가7, ASKP7, ASKP7, long, 4, 0, 0, 4, , attr, ;
+		매도호가8, ASKP8, ASKP8, long, 4, 0, 0, 4, , attr, ;
+		매도호가9, ASKP9, ASKP9, long, 4, 0, 0, 4, , attr, ;
+		매도호가10, ASKP10, ASKP10, long, 4, 0, 0, 4, , attr, ;
+		매수호가1, BIDP1, BIDP1, long, 4, 0, 0, 4, , attr, ;
+		매수호가2, BIDP2, BIDP2, long, 4, 0, 0, 4, , attr, ;
+		매수호가3, BIDP3, BIDP3, long, 4, 0, 0, 4, , attr, ;
+		매수호가4, BIDP4, BIDP4, long, 4, 0, 0, 4, , attr, ;
+		매수호가5, BIDP5, BIDP5, long, 4, 0, 0, 4, , attr, ;
+		매수호가6, BIDP6, BIDP6, long, 4, 0, 0, 4, , attr, ;
+		매수호가7, BIDP7, BIDP7, long, 4, 0, 0, 4, , attr, ;
+		매수호가8, BIDP8, BIDP8, long, 4, 0, 0, 4, , attr, ;
+		매수호가9, BIDP9, BIDP9, long, 4, 0, 0, 4, , attr, ;
+		매수호가10, BIDP10, BIDP10, long, 4, 0, 0, 4, , attr, ;
+		매도호가 잔량1, ASKP_RSQN1, ASKP_RSQN1, int64, 8, 0, 0, 8, 전사용어사전, , ;
+		매도호가 잔량2, ASKP_RSQN2, ASKP_RSQN2, int64, 8, 0, 0, 8, 전사용어사전, , ;
+		매도호가 잔량3, ASKP_RSQN3, ASKP_RSQN3, int64, 8, 0, 0, 8, 전사용어사전, , ;
+		매도호가 잔량4, ASKP_RSQN4, ASKP_RSQN4, int64, 8, 0, 0, 8, 전사용어사전, , ;
+		매도호가 잔량5, ASKP_RSQN5, ASKP_RSQN5, int64, 8, 0, 0, 8, 전사용어사전, , ;
+		매도호가 잔량6, ASKP_RSQN6, ASKP_RSQN6, int64, 8, 0, 0, 8, 전사용어사전, , ;
+		매도호가 잔량7, ASKP_RSQN7, ASKP_RSQN7, int64, 8, 0, 0, 8, 전사용어사전, , ;
+		매도호가 잔량8, ASKP_RSQN8, ASKP_RSQN8, int64, 8, 0, 0, 8, 전사용어사전, , ;
+		매도호가 잔량9, ASKP_RSQN9, ASKP_RSQN9, int64, 8, 0, 0, 8, 전사용어사전, , ;
+		매도호가 잔량10, ASKP_RSQN10, ASKP_RSQN10, int64, 8, 0, 0, 8, 전사용어사전, , ;
+		매수호가 잔량1, BIDP_RSQN1, BIDP_RSQN1, int64, 8, 0, 0, 8, 전사용어사전, , ;
+		매수호가 잔량2, BIDP_RSQN2, BIDP_RSQN2, int64, 8, 0, 0, 8, 전사용어사전, , ;
+		매수호가 잔량3, BIDP_RSQN3, BIDP_RSQN3, int64, 8, 0, 0, 8, 전사용어사전, , ;
+		매수호가 잔량4, BIDP_RSQN4, BIDP_RSQN4, int64, 8, 0, 0, 8, 전사용어사전, , ;
+		매수호가 잔량5, BIDP_RSQN5, BIDP_RSQN5, int64, 8, 0, 0, 8, 전사용어사전, , ;
+		매수호가 잔량6, BIDP_RSQN6, BIDP_RSQN6, int64, 8, 0, 0, 8, 전사용어사전, , ;
+		매수호가 잔량7, BIDP_RSQN7, BIDP_RSQN7, int64, 8, 0, 0, 8, 전사용어사전, , ;
+		매수호가 잔량8, BIDP_RSQN8, BIDP_RSQN8, int64, 8, 0, 0, 8, 전사용어사전, , ;
+		매수호가 잔량9, BIDP_RSQN9, BIDP_RSQN9, int64, 8, 0, 0, 8, 전사용어사전, , ;
+		매수호가 잔량10, BIDP_RSQN10, BIDP_RSQN10, int64, 8, 0, 0, 8, 전사용어사전, , ;
+		총 매도호가 잔량, TOTAL_ASKP_RSQN, TOTAL_ASKP_RSQN, int64, 8, 0, 0, 8, 전사용어사전, , ;
+		총 매수호가 잔량, TOTAL_BIDP_RSQN, TOTAL_BIDP_RSQN, int64, 8, 0, 0, 8, 전사용어사전, , ;
+		시간외 총 매도호가 잔량, OVTM_TOTAL_ASKP_RSQN, OVTM_TOTAL_ASKP_RSQN, int64, 8, 0, 0, 8, 전사용어사전, , ;
+		시간외 총 매수호가 잔량, OVTM_TOTAL_BIDP_RSQN, OVTM_TOTAL_BIDP_RSQN, int64, 8, 0, 0, 8, 전사용어사전, , ;
+		예상 체결가, ANTC_CNPR, ANTC_CNPR, long, 4, 0, 0, 4, , attr, ;
+		예상 체결량, ANTC_CNQN, ANTC_CNQN, int64, 8, 0, 0, 8, , , ;
+		예상 거래량, ANTC_VOL, ANTC_VOL, int64, 8, 0, 0, 8, 전사용어사전, , ;
+		예상 체결 대비, ANTC_CNTG_VRSS, ANTC_CNTG_VRSS, long, 4, 0, 0, 4, , attr, ;
+		예상 체결 대비 부호, ANTC_CNTG_VRSS_SIGN, ANTC_CNTG_VRSS_SIGN, string, 1, 0, 0, 1, 전사용어사전, , ;
+		예상 체결 전일 대비율, ANTC_CNTG_PRDY_CTRT, ANTC_CNTG_PRDY_CTRT, double, 8, 0, 0, 15.2, , attr, ;
+		누적 거래량, ACML_VOL, ACML_VOL, int64, 8, 0, 0, 8, 전사용어사전, , ;
+		총 매도호가 잔량 증감, TOTAL_ASKP_RSQN_ICDC, TOTAL_ASKP_RSQN_ICDC, long, 4, 0, 0, 4, 전사용어사전, attr, ;
+		총 매수호가 잔량 증감, TOTAL_BIDP_RSQN_ICDC, TOTAL_BIDP_RSQN_ICDC, long, 4, 0, 0, 4, 전사용어사전, attr, ;
+		시간외 총 매도호가 증감, OVTM_TOTAL_ASKP_ICDC, OVTM_TOTAL_ASKP_ICDC, long, 4, 0, 0, 4, 전사용어사전, attr, ;
+		시간외 총 매수호가 증감, OVTM_TOTAL_BIDP_ICDC, OVTM_TOTAL_BIDP_ICDC, long, 4, 0, 0, 4, 전사용어사전, attr, ;
+		주식 매매 구분 코드, STCK_DEAL_CLS_CODE, STCK_DEAL_CLS_CODE, string, 2, 0, 0, 2, 전사용어사전, , ;
+	end
+	END_DATA_MAP
+END_FUNCTION_MAP

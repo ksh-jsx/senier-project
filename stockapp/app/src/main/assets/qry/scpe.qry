@@ -1,0 +1,25 @@
+BEGIN_FUNCTION_MAP
+	T,현재가(예상체결),HKST01010201,SCPE;
+	BEGIN_DATA_MAP
+	InBlock1, input, ;
+	begin
+		0, FID_COND_MRKT_DIV_CODE, string, 2, 9100, 9999, , ;
+		1, FID_INPUT_ISCD, string, 12, 9030, 9999, , ;
+	end
+	OutBlock1, output, ;
+	begin
+		0, ANTC_MKOP_CLS_CODE, string, 3, 6800, 1000, , ;
+		1, STCK_PRPR, numstring, 10, 4, 1000, attr, ;
+		2, STCK_OPRC, numstring, 10, 17, 1000, attr, ;
+		3, STCK_HGPR, numstring, 10, 18, 1000, attr, ;
+		4, STCK_LWPR, numstring, 10, 19, 1000, attr, ;
+		5, STCK_SDPR, numstring, 10, 24, 1000, attr, ;
+		6, ANTC_CNPR, numstring, 10, 197, 1000, attr, ;
+		7, ANTC_CNTG_VRSS_SIGN, string, 1, 225, 1000, , ;
+		8, ANTC_CNTG_VRSS, numstring, 10, 224, 1000, attr, ;
+		9, ANTC_CNTG_PRDY_CTRT, numstring, 8.2, 226, 1000, attr, ;
+		10, ANTC_VOL, numstring, 18, 194, 1000, , ;
+		11, STCK_SHRN_ISCD, string, 9, 1, 1000, , ;
+	end
+	END_DATA_MAP
+END_FUNCTION_MAP

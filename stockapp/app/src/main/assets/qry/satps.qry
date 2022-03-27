@@ -1,0 +1,78 @@
+BEGIN_FUNCTION_MAP
+	T,¡÷Ωƒ ∞Ë¡¬ ¥Á¿œ ¿‹∞Ì «ˆ»≤,TTC8434R,SATPS;
+	BEGIN_DATA_MAP
+	TTC8434RI1, input, ;
+	begin
+		0, CANO,              string, 8,  0, 0, ,acc;
+		1, ACNT_PRDT_CD,      string, 2,  0, 0, ,prod;
+		2, ACNT_PWD,          string, 84, 0, 0, , ;
+		3, AFHR_FLPR_YN,      string, 1, 0, 0, , ;
+		4, OFL_YN,            string, 1, 0, 0, , ;
+		5, INQR_DVSN,         string, 2, 0, 0, , ;
+		6, UNPR_DVSN,         string, 2, 0, 0, , ;
+		7, FUND_STTL_ICLD_YN, string, 2, 0, 0, , ;
+		8, FNCG_AMT_AUTO_RDPT_YN, string, 1, 0, 0, , ;
+		9, PRCS_DVSN,         string, 2, 0, 0, , ;
+		10, CTX_AREA_FK100,   string, 100, 0, 0, , ;
+		11, CTX_AREA_NK100,   string, 100, 0, 0, , ;
+	end
+	OCCURS_OUT1, output, occurs=50;
+	begin
+		0, PDNO,           string, 12, 0, 0, , ;
+		1, PRDT_NAME,      string, 60, 0, 0, , ;
+		2, TRAD_DVSN_NAME, string, 60, 0, 0, , ;
+		3, BFDY_BUY_QTY,    long,   4, 0, 0, , ,10;
+		4, BFDY_SLL_QTY,   long,   4, 0, 0, , ,10;
+		5, THDT_BUYQTY,    long,   4, 0, 0, , ,10;
+		6, THDT_SLL_QTY,   long,   4, 0, 0, , ,10;
+		7, HLDG_QTY,       long,   4, 0, 0, , ,19;
+		8, ORD_PSBL_QTY,   long,   4, 0, 0, , ,10;
+		9, PCHS_AVG_PRIC,  double, 8, 0, 0, , ,18.4;
+		10, PCHS_AMT,       int64,  8, 0, 0, , ,19;
+		11, PRPR,           int64,  8, 0, 0, , ,19;
+		12, EVLU_AMT,      int64,  8, 0, 0, , ,19;
+		13, EVLU_PFLS_AMT, int64,  8, 0, 0, , ,19;
+		14, EVLU_PFLS_RT,  double, 8, 0, 0, , ,7.2;
+		15, EVLU_ERNG_RT,  double, 8, 0, 0, , ,23.8;
+		16, LOAN_DT,       string, 8, 0, 0, , ;
+		17, LOAN_AMT,      int64,  8, 0, 0, , ,19;
+		18, STLN_SLNG_CHGS,int64,  8, 0, 0, , ,19;
+		19, EXPD_DT,      int64,  8, 0, 0, , ,23.8;
+		20, FLTT_RT,      int64,  8, 0, 0, , ,19;
+		21, BFDY_CPRS_ICDC,      int64,  8, 0, 0, , ,19;
+		22, ITEM_MGNA_RT_NAME,string,  20, 0, 0, , ,20;
+		23, GRTA_RT_NAME,      string,  20, 0, 0, , ,20;
+		24, SBST_PRIC,      int64,  8, 0, 0, , ,19;
+		25, STCK_LOAN_UNPR,      double,  8, 0, 0, , ,18.4;
+	end
+	OCCURS_OUT2, output, occurs=1;
+	begin
+		0, DNCA_TOT_AMT,        int64, 8, 0, 0, , ,19;
+		1, NXDY_EXCC_AMT,       int64, 8, 0, 0, , ,19;
+		2, PRVS_RCDL_EXCC_AMT,  int64, 8, 0, 0, , ,19;
+		3, CMA_EVLU_AMT,        int64, 8, 0, 0, , ,19;
+		4, BFDY_BUY_AMT,        int64, 8, 0, 0, , ,19;
+		5, THDT_BUY_AMT,        int64, 8, 0, 0, , ,19;
+		6, NXDY_AUTO_RDPT_AMT,  int64, 8, 0, 0, , ,19;
+		7, BFDY_SLL_AMT,        int64, 8, 0, 0, , ,19;
+		8, THDT_SLL_AMT,        int64, 8, 0, 0, , ,19;
+		9, D2_AUTO_RDPT_AMT,    int64, 8, 0, 0, , ,19;
+		10, BFDY_TLEX_AMT,      int64, 8, 0, 0, , ,19;
+		11, THDT_TLEX_AMT,      int64, 8, 0, 0, , ,19;
+		12, TOT_LOAN_AMT,       int64, 8, 0, 0, , ,19;
+		13, SCTS_EVLU_AMT,      int64, 8, 0, 0, , ,19;
+		14, TOT_EVLU_AMT,       int64, 8, 0, 0, , ,19;
+		15, NASS_AMT,           int64, 8, 0, 0, , ,19;
+		16, FNCG_GLD_AUTO_RDPT_YN, string, 1, 0, 0, ,;
+		17, PCHS_AMT_SMTL_AMT,  int64, 8, 0, 0, , ,19;
+		18, EVLU_AMT_SMTL_AMT,  int64, 8, 0, 0, , ,19;
+		19, EVLU_PFLS_SMTL_AMT, int64, 8, 0, 0, , ,19;
+		20, TOT_STLN_SLNG_CHGS, int64, 8, 0, 0, , ,19;
+		21, BFDY_TOT_ASST_EVLU_AMT,  int64, 8, 0, 0, , ,19;
+		22, ASST_ICDC_AMT,  int64, 8, 0, 0, , ,19;
+		23, ASST_ICDC_ERNG_RT, double, 8, 0, 0, , ,23.8;
+
+	end
+	END_DATA_MAP
+END_FUNCTION_MAP
+

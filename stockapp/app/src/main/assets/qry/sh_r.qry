@@ -1,0 +1,71 @@
+BEGIN_FUNCTION_MAP
+	R,주식종목호가,H0STASP0,SH_R;
+	BEGIN_DATA_MAP
+	input, input, ;
+	begin
+		0, MKSC_SHRN_ISCD, string, 9, 9, ;
+	end
+	output, output, ;
+	begin
+		0, MKSC_SHRN_ISCD, string, 9, 9, ;
+		1, BSOP_HOUR, string, 6, 6, ;
+		2, HOUR_CLS_CODE, string, 1, 1, ;
+		3, ASKP1, long, 4, 4, attr;
+		4, ASKP2, long, 4, 4, attr;
+		5, ASKP3, long, 4, 4, attr;
+		6, ASKP4, long, 4, 4, attr;
+		7, ASKP5, long, 4, 4, attr;
+		8, ASKP6, long, 4, 4, attr;
+		9, ASKP7, long, 4, 4, attr;
+		10, ASKP8, long, 4, 4, attr;
+		11, ASKP9, long, 4, 4, attr;
+		12, ASKP10, long, 4, 4, attr;
+		13, BIDP1, long, 4, 4, attr;
+		14, BIDP2, long, 4, 4, attr;
+		15, BIDP3, long, 4, 4, attr;
+		16, BIDP4, long, 4, 4, attr;
+		17, BIDP5, long, 4, 4, attr;
+		18, BIDP6, long, 4, 4, attr;
+		19, BIDP7, long, 4, 4, attr;
+		20, BIDP8, long, 4, 4, attr;
+		21, BIDP9, long, 4, 4, attr;
+		22, BIDP10, long, 4, 4, attr;
+		23, ASKP_RSQN1, int64, 8, 8, ;
+		24, ASKP_RSQN2, int64, 8, 8, ;
+		25, ASKP_RSQN3, int64, 8, 8, ;
+		26, ASKP_RSQN4, int64, 8, 8, ;
+		27, ASKP_RSQN5, int64, 8, 8, ;
+		28, ASKP_RSQN6, int64, 8, 8, ;
+		29, ASKP_RSQN7, int64, 8, 8, ;
+		30, ASKP_RSQN8, int64, 8, 8, ;
+		31, ASKP_RSQN9, int64, 8, 8, ;
+		32, ASKP_RSQN10, int64, 8, 8, ;
+		33, BIDP_RSQN1, int64, 8, 8, ;
+		34, BIDP_RSQN2, int64, 8, 8, ;
+		35, BIDP_RSQN3, int64, 8, 8, ;
+		36, BIDP_RSQN4, int64, 8, 8, ;
+		37, BIDP_RSQN5, int64, 8, 8, ;
+		38, BIDP_RSQN6, int64, 8, 8, ;
+		39, BIDP_RSQN7, int64, 8, 8, ;
+		40, BIDP_RSQN8, int64, 8, 8, ;
+		41, BIDP_RSQN9, int64, 8, 8, ;
+		42, BIDP_RSQN10, int64, 8, 8, ;
+		43, TOTAL_ASKP_RSQN, int64, 8, 8, ;
+		44, TOTAL_BIDP_RSQN, int64, 8, 8, ;
+		45, OVTM_TOTAL_ASKP_RSQN, int64, 8, 8, ;
+		46, OVTM_TOTAL_BIDP_RSQN, int64, 8, 8, ;
+		47, ANTC_CNPR, long, 4, 4, attr;
+		48, ANTC_CNQN, int64, 8, 8, ;
+		49, ANTC_VOL, int64, 8, 8, ;
+		50, ANTC_CNTG_VRSS, long, 4, 4, attr;
+		51, ANTC_CNTG_VRSS_SIGN, string, 1, 1, ;
+		52, ANTC_CNTG_PRDY_CTRT, double, 8, 15.2, attr;
+		53, ACML_VOL, int64, 8, 8, ;
+		54, TOTAL_ASKP_RSQN_ICDC, long, 4, 4, attr;
+		55, TOTAL_BIDP_RSQN_ICDC, long, 4, 4, attr;
+		56, OVTM_TOTAL_ASKP_ICDC, long, 4, 4, attr;
+		57, OVTM_TOTAL_BIDP_ICDC, long, 4, 4, attr;
+		58, STCK_DEAL_CLS_CODE, string, 2, 2, ;
+	end
+	END_DATA_MAP
+END_FUNCTION_MAP

@@ -1,0 +1,20 @@
+BEGIN_FUNCTION_MAP
+	T,현재가(체결),HKST01010300,SCPC;
+	BEGIN_DATA_MAP
+	InBlock3, input, ;
+	begin
+		0, FID_COND_MRKT_DIV_CODE, string, 2, 9100, 9999, , ;
+		1, FID_INPUT_ISCD, string, 12, 9030, 9999, , ;
+	end
+	OutBlock3, output, occurs=30;
+	begin
+		0, STCK_CNTG_HOUR, string, 6, 12, 1002,, ;
+		1, STCK_PRPR, numstring, 10, 4, 1002, attr, ;
+		2, PRDY_VRSS, numstring, 10, 5, 1002, attr, ;
+		3, PRDY_VRSS_SIGN, string, 1, 6, 1002, , ;
+		4, CNTG_VOL, numstring, 18, 68, 1002, attr, ;
+		5, TDAY_RLTV, numstring, 11.2, 237, 1002, attr, ;
+		6, PRDY_CTRT, numstring, 8.2, 7, 1002, attr, ;
+	end
+	END_DATA_MAP
+END_FUNCTION_MAP

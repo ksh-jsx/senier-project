@@ -1,0 +1,42 @@
+BEGIN_FUNCTION_MAP
+	R,업종지수체결,H0UPCNT0,JUC_R;
+	BEGIN_DATA_MAP
+	input, input, ;
+	begin
+		0, BSTP_CLS_CODE, string, 4, 4, ;
+	end
+	output, output, ;
+	begin
+		0, BSTP_CLS_CODE, string, 4, 4, ;
+		1, BSOP_HOUR, string, 6, 6, ;
+		2, PRPR_NMIX, double, 8, 15.2, attr;
+		3, PRDY_VRSS_SIGN, string, 1, 1, ;
+		4, BSTP_NMIX_PRDY_VRSS, double, 8, 15.2, attr;
+		5, ACML_VOL, int64, 8, 8, ;
+		6, ACML_TR_PBMN, int64, 8, 8, ;
+		7, PCAS_VOL, int64, 8, 8, ;
+		8, PCAS_TR_PBMN, int64, 8, 8, ;
+		9, PRDY_CTRT, double, 8, 15.2, attr;
+		10, OPRC_NMIX, double, 8, 15.2, attr;
+		11, NMIX_HGPR, double, 8, 15.2, attr;
+		12, NMIX_LWPR, double, 8, 15.2, attr;
+		13, OPRC_VRSS_NMIX_PRPR, double, 8, 15.2, attr;
+		14, OPRC_VRSS_NMIX_SIGN, string, 1, 1, ;
+		15, HGPR_VRSS_NMIX_PRPR, double, 8, 15.2, attr;
+		16, HGPR_VRSS_NMIX_SIGN, string, 1, 1, ;
+		17, LWPR_VRSS_NMIX_PRPR, double, 8, 15.2, attr;
+		18, LWPR_VRSS_NMIX_SIGN, string, 1, 1, ;
+		19, PRDY_CLPR_VRSS_OPRC_RATE, double, 8, 15.2, attr;
+		20, PRDY_CLPR_VRSS_HGPR_RATE, double, 8, 15.2, attr;
+		21, PRDY_CLPR_VRSS_LWPR_RATE, double, 8, 15.2, attr;
+		22, UPLM_ISSU_CNT, long, 4, 4, ;
+		23, ASCN_ISSU_CNT, long, 4, 4, ;
+		24, STNR_ISSU_CNT, long, 4, 4, ;
+		25, DOWN_ISSU_CNT, long, 4, 4, ;
+		26, LSLM_ISSU_CNT, long, 4, 4, ;
+		27, QTQT_ASCN_ISSU_CNT, long, 4, 4, ;
+		28, QTQT_DOWN_ISSU_CNT, long, 4, 4, ;
+		29, TICK_VRSS, long, 4, 4, ;
+	end
+	END_DATA_MAP
+END_FUNCTION_MAP

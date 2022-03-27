@@ -1,0 +1,33 @@
+BEGIN_FUNCTION_MAP
+	R,일반주식체결통보,H0STCNI0,SCN_R;
+	BEGIN_DATA_MAP
+	input, input, ;
+	begin
+		0, CUST_ID, string, 8, 8, ;
+	end
+	output, output, ;
+	begin
+		0, CUST_ID, string, 8, 8, ;
+		1, ACNT_NO, string, 10, 10, ;
+		2, ODER_NO, string, 10, 10, ;
+		3, OODER_NO, string, 10, 10, ;
+		4, SELN_BYOV_CLS, string, 2, 2, ;
+		5, RCTF_CLS, string, 1, 1, ;
+		6, ODER_KIND, string, 2, 2, ;
+		7, ODER_COND, string, 1, 1, ;
+		8, STCK_SHRN_ISCD, string, 9, 9, ;
+		9, CNTG_QTY, string, 10, 10, ;
+		10, CNTG_UNPR, string, 9, 9, ;
+		11, STCK_CNTG_HOUR, string, 6, 6, ;
+		12, RFUS_YN, string, 1, 1, ;
+		13, CNTG_YN, string, 1, 1, ;
+		14, ACPT_YN, string, 1, 1, ;
+		15, BRNC_NO, string, 3, 3, ;
+		16, ODER_QTY, string, 9, 9, ;
+		17, ACNT_NAME, string, 12, 12, ;
+		18, CNTG_ISNM, string, 14, 14, ;
+		19, CRDT_CLS, string, 2, 2, ;
+		20, CRDT_LOAN_DATE, string, 8, 8, ;
+	end
+	END_DATA_MAP
+END_FUNCTION_MAP

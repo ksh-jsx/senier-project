@@ -1,0 +1,42 @@
+BEGIN_FUNCTION_MAP
+	.Feed,업종지수체결,H0UPCNT0,DIGSIGN=0,SERVERNO=H,DESCRIPTION=./REAL_RES/H0UPCNT0.res,VERSION=00000001,CREATER=ITGEN,CREDATE=20100129,MODIFYER=네오N,MODDATE=20101223,JOURNALLOG=0;
+	BEGIN_DATA_MAP
+	input, input, input;
+	begin
+		업종 구분 코드, BSTP_CLS_CODE, BSTP_CLS_CODE, string, 4, 0, 0, 4, 전사용어사전, , ;
+	end
+	output, output, output;
+	begin
+		업종 구분 코드, BSTP_CLS_CODE, BSTP_CLS_CODE, string, 4, 0, 0, 4, 전사용어사전, , ;
+		영업 시간, BSOP_HOUR, BSOP_HOUR, string, 6, 0, 0, 6, 전사용어사전, , ;
+		현재가 지수, PRPR_NMIX, PRPR_NMIX, double, 8, 0, 0, 15.2, , attr, ;
+		전일 대비 부호, PRDY_VRSS_SIGN, PRDY_VRSS_SIGN, string, 1, 0, 0, 1, 전사용어사전, , ;
+		업종 지수 전일 대비, BSTP_NMIX_PRDY_VRSS, BSTP_NMIX_PRDY_VRSS, double, 8, 0, 0, 15.2, , attr, ;
+		누적 거래량, ACML_VOL, ACML_VOL, int64, 8, 0, 0, 8, 전사용어사전, , ;
+		누적 거래 대금, ACML_TR_PBMN, ACML_TR_PBMN, int64, 8, 0, 0, 8, 전사용어사전, , ;
+		건별 거래량, PCAS_VOL, PCAS_VOL, int64, 8, 0, 0, 8, 전사용어사전, , ;
+		건별 거래 대금, PCAS_TR_PBMN, PCAS_TR_PBMN, int64, 8, 0, 0, 8, 전사용어사전, , ;
+		전일 대비율, PRDY_CTRT, PRDY_CTRT, double, 8, 0, 0, 15.2, , attr, ;
+		시가 지수, OPRC_NMIX, OPRC_NMIX, double, 8, 0, 0, 15.2, , attr, ;
+		지수 최고가, NMIX_HGPR, NMIX_HGPR, double, 8, 0, 0, 15.2, , attr, ;
+		지수 최저가, NMIX_LWPR, NMIX_LWPR, double, 8, 0, 0, 15.2, , attr, ;
+		시가 대비 지수 현재가, OPRC_VRSS_NMIX_PRPR, OPRC_VRSS_NMIX_PRPR, double, 8, 0, 0, 15.2, , attr, ;
+		시가 대비 지수 부호, OPRC_VRSS_NMIX_SIGN, OPRC_VRSS_NMIX_SIGN, string, 1, 0, 0, 1, 전사용어사전, , ;
+		최고가 대비 지수 현재가, HGPR_VRSS_NMIX_PRPR, HGPR_VRSS_NMIX_PRPR, double, 8, 0, 0, 15.2, , attr, ;
+		최고가 대비 지수 부호, HGPR_VRSS_NMIX_SIGN, HGPR_VRSS_NMIX_SIGN, string, 1, 0, 0, 1, 전사용어사전, , ;
+		최저가 대비 지수 현재가, LWPR_VRSS_NMIX_PRPR, LWPR_VRSS_NMIX_PRPR, double, 8, 0, 0, 15.2, , attr, ;
+		최저가 대비 지수 부호, LWPR_VRSS_NMIX_SIGN, LWPR_VRSS_NMIX_SIGN, string, 1, 0, 0, 1, 전사용어사전, , ;
+		전일 종가 대비 시가2 비율, PRDY_CLPR_VRSS_OPRC_RATE, PRDY_CLPR_VRSS_OPRC_RATE, double, 8, 0, 0, 15.2, , attr, ;
+		전일 종가 대비 최고가 비율, PRDY_CLPR_VRSS_HGPR_RATE, PRDY_CLPR_VRSS_HGPR_RATE, double, 8, 0, 0, 15.2, , attr, ;
+		전일 종가 대비 최저가 비율, PRDY_CLPR_VRSS_LWPR_RATE, PRDY_CLPR_VRSS_LWPR_RATE, double, 8, 0, 0, 15.2, , attr, ;
+		상한 종목 수, UPLM_ISSU_CNT, UPLM_ISSU_CNT, long, 4, 0, 0, 4, 전사용어사전, , ;
+		상승 종목 수, ASCN_ISSU_CNT, ASCN_ISSU_CNT, long, 4, 0, 0, 4, 전사용어사전, , ;
+		보합 종목 수, STNR_ISSU_CNT, STNR_ISSU_CNT, long, 4, 0, 0, 4, 전사용어사전, , ;
+		하락 종목 수, DOWN_ISSU_CNT, DOWN_ISSU_CNT, long, 4, 0, 0, 4, 전사용어사전, , ;
+		하한 종목 수, LSLM_ISSU_CNT, LSLM_ISSU_CNT, long, 4, 0, 0, 4, 전사용어사전, , ;
+		기세 상승 종목수, QTQT_ASCN_ISSU_CNT, QTQT_ASCN_ISSU_CNT, long, 4, 0, 0, 4, 전사용어사전, , ;
+		기세 하락 종목수, QTQT_DOWN_ISSU_CNT, QTQT_DOWN_ISSU_CNT, long, 4, 0, 0, 4, 전사용어사전, , ;
+		TICK대비, TICK_VRSS, TICK_VRSS, long, 4, 0, 0, 4, 전사용어사전, , ;
+	end
+	END_DATA_MAP
+END_FUNCTION_MAP

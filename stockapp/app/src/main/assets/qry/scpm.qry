@@ -1,0 +1,81 @@
+BEGIN_FUNCTION_MAP
+	T,현재가(회원사),HKST01010600,SCPM;
+	BEGIN_DATA_MAP
+	InBlock7, input, ;
+	begin
+		0, FID_COND_MRKT_DIV_CODE, string, 2, 9100, 9999, , ;
+		1, FID_INPUT_ISCD, string, 12, 9030, 9999, 12, , ;
+	end
+	OutBlock7, output, ;
+	begin
+		0, SELN_MBCR_NO1, string, 5, 1150, 1007, , ;
+		1, SELN_MBCR_NO2, string, 5, 1151, 1007, , ;
+		2, SELN_MBCR_NO3, string, 5, 1152, 1007, , ;
+		3, SELN_MBCR_NO4, string, 5, 1153, 1007, , ;
+		4, SELN_MBCR_NO5, string, 5, 1154, 1007, , ;
+		5, SELN_MBCR_NAME1, string, 40, 1207, 1007, , ;
+		6, SELN_MBCR_NAME2, string, 40, 1208, 1007, , ;
+		7, SELN_MBCR_NAME3, string, 40, 1209, 1007, , ;
+		8, SELN_MBCR_NAME4, string, 40, 1210, 1007, , ;
+		9, SELN_MBCR_NAME5, string, 40, 1211, 1007, , ;
+		10, TOTAL_SELN_QTY1, numstring, 18, 1155, 1007, , ;
+		11, TOTAL_SELN_QTY2, numstring, 18, 1156, 1007, , ;
+		12, TOTAL_SELN_QTY3, numstring, 18, 1157, 1007, , ;
+		13, TOTAL_SELN_QTY4, numstring, 18, 1158, 1007, , ;
+		14, TOTAL_SELN_QTY5, numstring, 18, 1159, 1007, , ;
+		15, SELN_MBCR_RLIM1, numstring, 7.2, 1160, 1007, , ;
+		16, SELN_MBCR_RLIM2, numstring, 7.2, 1161, 1007, , ;
+		17, SELN_MBCR_RLIM3, numstring, 7.2, 1162, 1007, , ;
+		18, SELN_MBCR_RLIM4, numstring, 7.2, 1163, 1007, , ;
+		19, SELN_MBCR_RLIM5, numstring, 7.2, 1164, 1007, , ;
+		20, SELN_QTY_ICDC1, numstring, 10, 1170, 1007, , ;
+		21, SELN_QTY_ICDC2, numstring, 10, 1171, 1007, , ;
+		22, SELN_QTY_ICDC3, numstring, 10, 1172, 1007, , ;
+		23, SELN_QTY_ICDC4, numstring, 10, 1173, 1007, , ;
+		24, SELN_QTY_ICDC5, numstring, 10, 1174, 1007, , ;
+		25, SHNU_MBCR_NO1, string, 5, 1175, 1007, , ;
+		26, SHNU_MBCR_NO2, string, 5, 1176, 1007, , ;
+		27, SHNU_MBCR_NO3, string, 5, 1177, 1007, , ;
+		28, SHNU_MBCR_NO4, string, 5, 1178, 1007, , ;
+		29, SHNU_MBCR_NO5, string, 5, 1179, 1007, , ;
+		30, SHNU_MBCR_NAME1, string, 40, 1212, 1007, , ;
+		31, SHNU_MBCR_NAME2, string, 40, 1213, 1007, , ;
+		32, SHNU_MBCR_NAME3, string, 40, 1214, 1007, , ;
+		33, SHNU_MBCR_NAME4, string, 40, 1215, 1007, , ;
+		34, SHNU_MBCR_NAME5, string, 40, 1216, 1007, , ;
+		35, TOTAL_SHNU_QTY1, numstring, 18, 1180, 1007, , ;
+		36, TOTAL_SHNU_QTY2, numstring, 18, 1181, 1007, , ;
+		37, TOTAL_SHNU_QTY3, numstring, 18, 1182, 1007, , ;
+		38, TOTAL_SHNU_QTY4, numstring, 18, 1183, 1007, , ;
+		39, TOTAL_SHNU_QTY5, numstring, 18, 1184, 1007, , ;
+		40, SHNU_MBCR_RLIM1, numstring, 7.2, 1185, 1007, , ;
+		41, SHNU_MBCR_RLIM2, numstring, 7.2, 1186, 1007, , ;
+		42, SHNU_MBCR_RLIM3, numstring, 7.2, 1187, 1007, , ;
+		43, SHNU_MBCR_RLIM4, numstring, 7.2, 1188, 1007, , ;
+		44, SHNU_MBCR_RLIM5, numstring, 7.2, 1189, 1007, , ;
+		45, SHNU_QTY_ICDC1, numstring, 10, 1195, 1007, , ;
+		46, SHNU_QTY_ICDC2, numstring, 10, 1196, 1007, , ;
+		47, SHNU_QTY_ICDC3, numstring, 10, 1197, 1007, , ;
+		48, SHNU_QTY_ICDC4, numstring, 10, 1198, 1007, , ;
+		49, SHNU_QTY_ICDC5, numstring, 10, 1199, 1007, , ;
+		50, GLOB_TOTAL_SELN_QTY, numstring, 18, 1200, 1007, 18, attr, ;
+		51, GLOB_SELN_RLIM, numstring, 7.2, 1201, 1007, , ;
+		52, GLOB_NTBY_QTY, numstring, 12, 1203, 1007, attr, ;
+		53, GLOB_TOTAL_SHNU_QTY, numstring, 18, 1204, 1007, attr, ;
+		54, GLOB_SHNU_RLIM, numstring, 7.2, 1205, 1007, , ;
+		55, SELN_MBCR_GLOB_YN_1, string, 1, 1217, 1007, , ;
+		56, SELN_MBCR_GLOB_YN_2, string, 1, 1218, 1007, , ;
+		57, SELN_MBCR_GLOB_YN_3, string, 1, 1219, 1007, , ;
+		58, SELN_MBCR_GLOB_YN_4, string, 1, 1220, 1007, , ;
+		59, SELN_MBCR_GLOB_YN_5, string, 1, 1221, 1007, , ;
+		60, SHNU_MBCR_GLOB_YN_1, string, 1, 1222, 1007, , ;
+		61, SHNU_MBCR_GLOB_YN_2, string, 1, 1223, 1007, , ;
+		62, SHNU_MBCR_GLOB_YN_3, string, 1, 1224, 1007, , ;
+		63, SHNU_MBCR_GLOB_YN_4, string, 1, 1225, 1007, , ;
+		64, SHNU_MBCR_GLOB_YN_5, string, 1, 1226, 1007, , ;
+		65, GLOB_TOTAL_SELN_QTY_ICDC, numstring, 10, 1202, 1007, , ;
+		66, GLOB_TOTAL_SHNU_QTY_ICDC, numstring, 10, 1206, 1007, , ;
+		67, ACML_VOL, numstring, 18, 14, 1000, , ;
+	end
+	END_DATA_MAP
+END_FUNCTION_MAP

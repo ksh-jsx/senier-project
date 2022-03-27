@@ -1,0 +1,56 @@
+BEGIN_FUNCTION_MAP
+	.Feed,주식종목체결,H0STCNT0,DIGSIGN=0,SERVERNO=H,DESCRIPTION=./REAL_RES/H0STCNT0.res,VERSION=00000004,CREATER=none,CREDATE=20100108,MODIFYER=네오N,MODDATE=20101223,JOURNALLOG=0;
+	BEGIN_DATA_MAP
+	input, input, input, desc=입력;
+	begin
+		유가증권 단축 종목코드, MKSC_SHRN_ISCD, MKSC_SHRN_ISCD, string, 9, 0, 0, 9, 전사용어사전, , ;
+	end
+	output, output, output, desc=출력;
+	begin
+		유가증권 단축 종목코드, MKSC_SHRN_ISCD, MKSC_SHRN_ISCD, string, 9, 0, 0, 9, 전사용어사전, , ;
+		주식 체결 시간, STCK_CNTG_HOUR, STCK_CNTG_HOUR, string, 6, 0, 0, 6, 전사용어사전, , ;
+		주식 현재가, STCK_PRPR, STCK_PRPR, long, 4, 0, 0, 4, , attr, ;
+		전일대비구분, PRDY_VRSS_SIGN, PRDY_VRSS_SIGN, string, 1, 0, 0, 1, 전사용어사전, , ;
+		전일대비, PRDY_VRSS, PRDY_VRSS, long, 4, 0, 0, 4, , attr, ;
+		등락율, PRDY_CTRT, PRDY_CTRT, double, 8, 0, 0, 15.2, , attr, ;
+		가중 평균 주식 가격, WGHN_AVRG_STCK_PRC, WGHN_AVRG_STCK_PRC, double, 8, 0, 0, 15.2, , attr, ;
+		시가, STCK_OPRC, STCK_OPRC, long, 4, 0, 0, 4, , attr, ;
+		고가, STCK_HGPR, STCK_HGPR, long, 4, 0, 0, 4, , attr, ;
+		저가, STCK_LWPR, STCK_LWPR, long, 4, 0, 0, 4, , attr, ;
+		매도호가, ASKP1, ASKP1, long, 4, 0, 0, 4, , attr, ;
+		매수호가, BIDP1, BIDP1, long, 4, 0, 0, 4, , attr, ;
+		거래량, CNTG_VOL, CNTG_VOL, int64, 8, 0, 0, 8, , attr, ;
+		누적거래량, ACML_VOL, ACML_VOL, int64, 8, 0, 0, 8, 전사용어사전, , ;
+		누적 거래 대금, ACML_TR_PBMN, ACML_TR_PBMN, int64, 8, 0, 0, 8, 전사용어사전, , ;
+		매도 체결 건수, SELN_CNTG_CSNU, SELN_CNTG_CSNU, long, 4, 0, 0, 4, 전사용어사전, , ;
+		매수 체결 건수, SHNU_CNTG_CSNU, SHNU_CNTG_CSNU, long, 4, 0, 0, 4, 전사용어사전, , ;
+		순매수 체결 건수, NTBY_CNTG_CSNU, NTBY_CNTG_CSNU, long, 4, 0, 0, 4, , attr, ;
+		체결강도, CTTR, CTTR, double, 8, 0, 0, 15.2, , attr, ;
+		총 매도 수량, SELN_CNTG_SMTN, SELN_CNTG_SMTN, int64, 8, 0, 0, 8, 전사용어사전, , ;
+		총 매수 수량, SHNU_CNTG_SMTN, SHNU_CNTG_SMTN, int64, 8, 0, 0, 8, 전사용어사전, , ;
+		체결구분, CNTG_CLS_CODE, CNTG_CLS_CODE, string, 1, 0, 0, 1, 전사용어사전, , ;
+		매수비율, SHNU_RATE, SHNU_RATE, double, 8, 0, 0, 15.2, , attr, ;
+		전일 거래량 대비 등락율, PRDY_VOL_VRSS_ACML_VOL_RATE, PRDY_VOL_VRSS_ACML_VOL_RATE, double, 8, 0, 0, 15.2, , attr, ;
+		시가 시간, OPRC_HOUR, OPRC_HOUR, string, 6, 0, 0, 6, 전사용어사전, , ;
+		시가대비구분, OPRC_VRSS_PRPR_SIGN, OPRC_VRSS_PRPR_SIGN, string, 1, 0, 0, 1, 전사용어사전, , ;
+		시가대비, OPRC_VRSS_PRPR, OPRC_VRSS_PRPR, long, 4, 0, 0, 4, , attr, ;
+		최고가 시간, HGPR_HOUR, HGPR_HOUR, string, 6, 0, 0, 6, 전사용어사전, , ;
+		고가대비구분, HGPR_VRSS_PRPR_SIGN, HGPR_VRSS_PRPR_SIGN, string, 1, 0, 0, 1, 전사용어사전, , ;
+		고가대비, HGPR_VRSS_PRPR, HGPR_VRSS_PRPR, long, 4, 0, 0, 4, , attr, ;
+		최저가 시간, LWPR_HOUR, LWPR_HOUR, string, 6, 0, 0, 6, 전사용어사전, , ;
+		저가대비구분, LWPR_VRSS_PRPR_SIGN, LWPR_VRSS_PRPR_SIGN, string, 1, 0, 0, 1, 전사용어사전, , ;
+		저가대비, LWPR_VRSS_PRPR, LWPR_VRSS_PRPR, long, 4, 0, 0, 4, , attr, ;
+		영업 일자, BSOP_DATE, BSOP_DATE, string, 8, 0, 0, 8, 전사용어사전, , ;
+		신 장운영 구분 코드, NEW_MKOP_CLS_CODE, NEW_MKOP_CLS_CODE, string, 2, 0, 0, 2, 첫번째비트-'0': 예상 1:장개시전 2:장중 3:장종료후 4:시간외단일가, , ;
+		거래정지 여부, TRHT_YN, TRHT_YN, string, 1, 0, 0, 1, 전사용어사전, , ;
+		매도호가 잔량1, ASKP_RSQN1, ASKP_RSQN1, int64, 8, 0, 0, 8, 전사용어사전, , ;
+		매수호가 잔량1, BIDP_RSQN1, BIDP_RSQN1, int64, 8, 0, 0, 8, 전사용어사전, , ;
+		총 매도호가 잔량, TOTAL_ASKP_RSQN, TOTAL_ASKP_RSQN, int64, 8, 0, 0, 8, 전사용어사전, , ;
+		총 매수호가 잔량, TOTAL_BIDP_RSQN, TOTAL_BIDP_RSQN, int64, 8, 0, 0, 8, 전사용어사전, , ;
+		거래량 회전율, VOL_TNRT, VOL_TNRT, double, 8, 0, 0, 15.2, 전사용어사전, , ;
+		전일 동시간 누적 거래량, PRDY_SMNS_HOUR_ACML_VOL, PRDY_SMNS_HOUR_ACML_VOL, int64, 8, 0, 0, 8, 전사용어사전, , ;
+		전일 동시간 누적 거래량 비율, PRDY_SMNS_HOUR_ACML_VOL_RATE, PRDY_SMNS_HOUR_ACML_VOL_RATE, double, 8, 0, 0, 15.2, 전사용어사전, attr, ;
+		시간 구분 코드, HOUR_CLS_CODE, HOUR_CLS_CODE, string, 1, 0, 0, 1, B장전예상, C:9시이후의 예상가, 0:장중, A:장후예상, D:시간외 단일가  예상, , ;
+	end
+	END_DATA_MAP
+END_FUNCTION_MAP

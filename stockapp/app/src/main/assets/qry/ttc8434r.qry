@@ -1,0 +1,74 @@
+BEGIN_FUNCTION_MAP
+	.FuncBiz,ASTC계좌체결기준잔고현황조회2,TTC8434R,ATTR,DIGSIGN=0,RECLEN=4,SERVERNO=T,VERSION=00000001,CREATER=Nexcore MD,CREDATE=20100617,MODIFYER=i10216,MODDATE=20161205,JOURNALLOG=0;
+	BEGIN_DATA_MAP
+	TTC8434RI1, TTC8434RI1, input, attr;
+	begin
+		종합계좌번호, CANO, CANO, string, 8, 0, 0, 8, , attr, ;
+		계좌상품코드, ACNT_PRDT_CD, ACNT_PRDT_CD, string, 2, 0, 0, 2, , attr, ;
+		계좌비밀번호, ACNT_PWD, ACNT_PWD, string, 84, 0, 0, 84, , attr, ;
+		시간외단일가여부, AFHR_FLPR_YN, AFHR_FLPR_YN, string, 1, 0, 0, 1, , attr, ;
+		오프라인여부, OFL_YN, OFL_YN, string, 1, 0, 0, 1, , attr, ;
+		조회구분, INQR_DVSN, INQR_DVSN, string, 2, 0, 0, 2, , attr, ;
+		단가구분, UNPR_DVSN, UNPR_DVSN, string, 2, 0, 0, 2, , attr, ;
+		펀드결제분포함여부, FUND_STTL_ICLD_YN, FUND_STTL_ICLD_YN, string, 1, 0, 0, 1, , attr, ;
+		융자금액자동상환여부, FNCG_AMT_AUTO_RDPT_YN, FNCG_AMT_AUTO_RDPT_YN, string, 1, 0, 0, 1, , attr, ;
+		처리구분, PRCS_DVSN, PRCS_DVSN, string, 2, 0, 0, 2, , attr, ;
+		연속조회검색조건100, CTX_AREA_FK100, CTX_AREA_FK100, string, 100, 0, 0, 100, , attr, ;
+		연속조회키100, CTX_AREA_NK100, CTX_AREA_NK100, string, 100, 0, 0, 100, , attr, ;
+	end
+	OCCURS_OUT1, OCCURS_OUT1, output, occurs=50, attr;
+	begin
+		상품번호, PDNO, PDNO, string, 12, 0, 0, 12, , attr, ;
+		상품명, PRDT_NAME, PRDT_NAME, string, 60, 0, 0, 60, , attr, ;
+		매매구분명, TRAD_DVSN_NAME, TRAD_DVSN_NAME, string, 60, 0, 0, 60, , attr, ;
+		전일매수수량, BFDY_BUY_QTY, BFDY_BUY_QTY, long, 4, 0, 0, 10, , attr, ;
+		전일매도수량, BFDY_SLL_QTY, BFDY_SLL_QTY, long, 4, 0, 0, 10, , attr, ;
+		금일매수수량, THDT_BUYQTY, THDT_BUYQTY, long, 4, 0, 0, 10, , attr, ;
+		금일매도수량, THDT_SLL_QTY, THDT_SLL_QTY, long, 4, 0, 0, 10, , attr, ;
+		보유수량, HLDG_QTY, HLDG_QTY, long, 4, 0, 0, 19, , attr, ;
+		주문가능수량, ORD_PSBL_QTY, ORD_PSBL_QTY, long, 4, 0, 0, 10, , attr, ;
+		매입평균가격, PCHS_AVG_PRIC, PCHS_AVG_PRIC, double, 8, 0, 0, 18.4, , attr, ;
+		매입금액, PCHS_AMT, PCHS_AMT, int64, 8, 0, 0, 19, , attr, ;
+		현재가, PRPR, PRPR, int64, 8, 0, 0, 19, , attr, ;
+		평가금액, EVLU_AMT, EVLU_AMT, int64, 8, 0, 0, 19, , attr, ;
+		평가손익금액, EVLU_PFLS_AMT, EVLU_PFLS_AMT, int64, 8, 0, 0, 19, , attr, ;
+		평가손익율, EVLU_PFLS_RT, EVLU_PFLS_RT, double, 8, 0, 0, 7.2, , attr, ;
+		평가수익율, EVLU_ERNG_RT, EVLU_ERNG_RT, double, 8, 0, 0, 23.8, , attr, ;
+		대출일자, LOAN_DT, LOAN_DT, string, 8, 0, 0, 8, , attr, ;
+		대출금액, LOAN_AMT, LOAN_AMT, int64, 8, 0, 0, 19, , attr, ;
+		대주매각대금, STLN_SLNG_CHGS, STLN_SLNG_CHGS, int64, 8, 0, 0, 19, , attr, ;
+		만기일자, EXPD_DT, EXPD_DT, string, 8, 0, 0, 8, , attr, ;
+		등락율, FLTT_RT, FLTT_RT, double, 8, 0, 0, 23.8, , attr, ;
+		전일대비증감, BFDY_CPRS_ICDC, BFDY_CPRS_ICDC, int64, 8, 0, 0, 19, , attr, ;
+		종목증거금율명, ITEM_MGNA_RT_NAME, ITEM_MGNA_RT_NAME, string, 20, 0, 0, 20, , attr, ;
+		보증금율명, GRTA_RT_NAME, GRTA_RT_NAME, string, 20, 0, 0, 20, , attr, ;		대용가격, SBST_PRIC, SBST_PRIC, int64, 8, 0, 0, 19, , attr, ;		주식대출단가, STCK_LOAN_UNPR, STCK_LOAN_UNPR, double, 8, 0, 0, 18.4, , attr, ;
+	end
+	OCCURS_OUT2, OCCURS_OUT2, output, occurs=1, attr;
+	begin
+		예수금총금액, DNCA_TOT_AMT, DNCA_TOT_AMT, int64, 8, 0, 0, 19, , attr, ;
+		익일정산금액, NXDY_EXCC_AMT, NXDY_EXCC_AMT, int64, 8, 0, 0, 19, , attr, ;
+		가수도정산금액, PRVS_RCDL_EXCC_AMT, PRVS_RCDL_EXCC_AMT, int64, 8, 0, 0, 19, , attr, ;
+		CMA평가금액, CMA_EVLU_AMT, CMA_EVLU_AMT, int64, 8, 0, 0, 19, , attr, ;
+		전일매수금액, BFDY_BUY_AMT, BFDY_BUY_AMT, int64, 8, 0, 0, 19, , attr, ;
+		금일매수금액, THDT_BUY_AMT, THDT_BUY_AMT, int64, 8, 0, 0, 19, , attr, ;
+		익일자동상환금액, NXDY_AUTO_RDPT_AMT, NXDY_AUTO_RDPT_AMT, int64, 8, 0, 0, 19, , attr, ;
+		전일매도금액, BFDY_SLL_AMT, BFDY_SLL_AMT, int64, 8, 0, 0, 19, , attr, ;
+		금일매도금액, THDT_SLL_AMT, THDT_SLL_AMT, int64, 8, 0, 0, 19, , attr, ;
+		D+2자동상환금액, D2_AUTO_RDPT_AMT, D2_AUTO_RDPT_AMT, int64, 8, 0, 0, 19, , attr, ;
+		전일제비용금액, BFDY_TLEX_AMT, BFDY_TLEX_AMT, int64, 8, 0, 0, 19, , attr, ;
+		금일제비용금액, THDT_TLEX_AMT, THDT_TLEX_AMT, int64, 8, 0, 0, 19, , attr, ;
+		총대출금액, TOT_LOAN_AMT, TOT_LOAN_AMT, int64, 8, 0, 0, 19, , attr, ;
+		유가평가금액, SCTS_EVLU_AMT, SCTS_EVLU_AMT, int64, 8, 0, 0, 19, , attr, ;
+		총평가금액, TOT_EVLU_AMT, TOT_EVLU_AMT, int64, 8, 0, 0, 19, , attr, ;
+		순자산금액, NASS_AMT, NASS_AMT, int64, 8, 0, 0, 19, , attr, ;
+		융자금자동상환여부, FNCG_GLD_AUTO_RDPT_YN, FNCG_GLD_AUTO_RDPT_YN, string, 1, 0, 0, 1, , attr, ;
+		매입금액합계금액, PCHS_AMT_SMTL_AMT, PCHS_AMT_SMTL_AMT, int64, 8, 0, 0, 19, , attr, ;
+		평가금액합계금액, EVLU_AMT_SMTL_AMT, EVLU_AMT_SMTL_AMT, int64, 8, 0, 0, 19, , attr, ;
+		평가손익합계금액, EVLU_PFLS_SMTL_AMT, EVLU_PFLS_SMTL_AMT, int64, 8, 0, 0, 19, , attr, ;
+		총대주매각대금, TOT_STLN_SLNG_CHGS, TOT_STLN_SLNG_CHGS, int64, 8, 0, 0, 19, , attr, ;
+		전일총자산평가금액, BFDY_TOT_ASST_EVLU_AMT, BFDY_TOT_ASST_EVLU_AMT, int64, 8, 0, 0, 19, , attr, ;
+		자산증감액, ASST_ICDC_AMT, ASST_ICDC_AMT, int64, 8, 0, 0, 19, , attr, ;
+		자산증감수익율, ASST_ICDC_ERNG_RT, ASST_ICDC_ERNG_RT, double, 8, 0, 0, 23.8, , attr, ;
+	end
+	END_DATA_MAP
+END_FUNCTION_MAP

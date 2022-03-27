@@ -1,0 +1,81 @@
+BEGIN_FUNCTION_MAP
+	.SFID,현재가(회원사),HKST01010600,DIGSIGN=0,RECLEN=4,SERVERNO=F,DESCRIPTION=J	000660    (수량,증감,비중 어트피뷰트 제거함 -nks),VERSION=00000001,CREATER=ITGEN,CREDATE=20100123,MODIFYER=네오nistra,MODDATE=20100717,JOURNALLOG=0;
+	BEGIN_DATA_MAP
+	InBlock7, InBlock7, input, toutblk=OutBlock7, desc=toutblk=OutBlock7;
+	begin
+		FID 조건 시장 분류 코드, FID_COND_MRKT_DIV_CODE, FID_COND_MRKT_DIV_CODE, string, 2, 9100, 9999, 2, 주식 'J', , ;
+		FID 입력 종목코드, FID_INPUT_ISCD, FID_INPUT_ISCD, string, 12, 9030, 9999, 12, 종목코드, , ;
+	end
+	OutBlock7, OutBlock7, output;
+	begin
+		매도 회원사 번호1, SELN_MBCR_NO1, SELN_MBCR_NO1, string, 5, 1150, 1007, 5, , , ;
+		매도 회원사 번호2, SELN_MBCR_NO2, SELN_MBCR_NO2, string, 5, 1151, 1007, 5, , , ;
+		매도 회원사 번호3, SELN_MBCR_NO3, SELN_MBCR_NO3, string, 5, 1152, 1007, 5, , , ;
+		매도 회원사 번호4, SELN_MBCR_NO4, SELN_MBCR_NO4, string, 5, 1153, 1007, 5, , , ;
+		매도 회원사 번호5, SELN_MBCR_NO5, SELN_MBCR_NO5, string, 5, 1154, 1007, 5, , , ;
+		매도 회원사 명1, SELN_MBCR_NAME1, SELN_MBCR_NAME1, string, 40, 1207, 1007, 40, , , ;
+		매도 회원사 명2, SELN_MBCR_NAME2, SELN_MBCR_NAME2, string, 40, 1208, 1007, 40, , , ;
+		매도 회원사 명3, SELN_MBCR_NAME3, SELN_MBCR_NAME3, string, 40, 1209, 1007, 40, , , ;
+		매도 회원사 명4, SELN_MBCR_NAME4, SELN_MBCR_NAME4, string, 40, 1210, 1007, 40, , , ;
+		매도 회원사 명5, SELN_MBCR_NAME5, SELN_MBCR_NAME5, string, 40, 1211, 1007, 40, , , ;
+		총 매도 수량1, TOTAL_SELN_QTY1, TOTAL_SELN_QTY1, numstring, 18, 1155, 1007, 18, , , ;
+		총 매도 수량2, TOTAL_SELN_QTY2, TOTAL_SELN_QTY2, numstring, 18, 1156, 1007, 18, , , ;
+		총 매도 수량3, TOTAL_SELN_QTY3, TOTAL_SELN_QTY3, numstring, 18, 1157, 1007, 18, , , ;
+		총 매도 수량4, TOTAL_SELN_QTY4, TOTAL_SELN_QTY4, numstring, 18, 1158, 1007, 18, , , ;
+		총 매도 수량5, TOTAL_SELN_QTY5, TOTAL_SELN_QTY5, numstring, 18, 1159, 1007, 18, , , ;
+		매도 회원사 비중1, SELN_MBCR_RLIM1, SELN_MBCR_RLIM1, numstring, 7.2, 1160, 1007, 7.2, , , ;
+		매도 회원사 비중2, SELN_MBCR_RLIM2, SELN_MBCR_RLIM2, numstring, 7.2, 1161, 1007, 7.2, , , ;
+		매도 회원사 비중3, SELN_MBCR_RLIM3, SELN_MBCR_RLIM3, numstring, 7.2, 1162, 1007, 7.2, , , ;
+		매도 회원사 비중4, SELN_MBCR_RLIM4, SELN_MBCR_RLIM4, numstring, 7.2, 1163, 1007, 7.2, , , ;
+		매도 회원사 비중5, SELN_MBCR_RLIM5, SELN_MBCR_RLIM5, numstring, 7.2, 1164, 1007, 7.2, , , ;
+		매도 수량 증감1, SELN_QTY_ICDC1, SELN_QTY_ICDC1, numstring, 10, 1170, 1007, 10, , , ;
+		매도 수량 증감2, SELN_QTY_ICDC2, SELN_QTY_ICDC2, numstring, 10, 1171, 1007, 10, , , ;
+		매도 수량 증감3, SELN_QTY_ICDC3, SELN_QTY_ICDC3, numstring, 10, 1172, 1007, 10, , , ;
+		매도 수량 증감4, SELN_QTY_ICDC4, SELN_QTY_ICDC4, numstring, 10, 1173, 1007, 10, , , ;
+		매도 수량 증감5, SELN_QTY_ICDC5, SELN_QTY_ICDC5, numstring, 10, 1174, 1007, 10, , , ;
+		매수2 회원사 번호1, SHNU_MBCR_NO1, SHNU_MBCR_NO1, string, 5, 1175, 1007, 5, , , ;
+		매수2 회원사 번호2, SHNU_MBCR_NO2, SHNU_MBCR_NO2, string, 5, 1176, 1007, 5, , , ;
+		매수2 회원사 번호3, SHNU_MBCR_NO3, SHNU_MBCR_NO3, string, 5, 1177, 1007, 5, , , ;
+		매수2 회원사 번호4, SHNU_MBCR_NO4, SHNU_MBCR_NO4, string, 5, 1178, 1007, 5, , , ;
+		매수2 회원사 번호5, SHNU_MBCR_NO5, SHNU_MBCR_NO5, string, 5, 1179, 1007, 5, , , ;
+		매수2 회원사 명1, SHNU_MBCR_NAME1, SHNU_MBCR_NAME1, string, 40, 1212, 1007, 40, , , ;
+		매수2 회원사 명2, SHNU_MBCR_NAME2, SHNU_MBCR_NAME2, string, 40, 1213, 1007, 40, , , ;
+		매수2 회원사 명3, SHNU_MBCR_NAME3, SHNU_MBCR_NAME3, string, 40, 1214, 1007, 40, , , ;
+		매수2 회원사 명4, SHNU_MBCR_NAME4, SHNU_MBCR_NAME4, string, 40, 1215, 1007, 40, , , ;
+		매수2 회원사 명5, SHNU_MBCR_NAME5, SHNU_MBCR_NAME5, string, 40, 1216, 1007, 40, , , ;
+		총 매수2 수량1, TOTAL_SHNU_QTY1, TOTAL_SHNU_QTY1, numstring, 18, 1180, 1007, 18, , , ;
+		총 매수2 수량2, TOTAL_SHNU_QTY2, TOTAL_SHNU_QTY2, numstring, 18, 1181, 1007, 18, , , ;
+		총 매수2 수량3, TOTAL_SHNU_QTY3, TOTAL_SHNU_QTY3, numstring, 18, 1182, 1007, 18, , , ;
+		총 매수2 수량4, TOTAL_SHNU_QTY4, TOTAL_SHNU_QTY4, numstring, 18, 1183, 1007, 18, , , ;
+		총 매수2 수량5, TOTAL_SHNU_QTY5, TOTAL_SHNU_QTY5, numstring, 18, 1184, 1007, 18, , , ;
+		매수2 회원사 비중1, SHNU_MBCR_RLIM1, SHNU_MBCR_RLIM1, numstring, 7.2, 1185, 1007, 7.2, , , ;
+		매수2 회원사 비중2, SHNU_MBCR_RLIM2, SHNU_MBCR_RLIM2, numstring, 7.2, 1186, 1007, 7.2, , , ;
+		매수2 회원사 비중3, SHNU_MBCR_RLIM3, SHNU_MBCR_RLIM3, numstring, 7.2, 1187, 1007, 7.2, , , ;
+		매수2 회원사 비중4, SHNU_MBCR_RLIM4, SHNU_MBCR_RLIM4, numstring, 7.2, 1188, 1007, 7.2, , , ;
+		매수2 회원사 비중5, SHNU_MBCR_RLIM5, SHNU_MBCR_RLIM5, numstring, 7.2, 1189, 1007, 7.2, , , ;
+		매수2 수량 증감1, SHNU_QTY_ICDC1, SHNU_QTY_ICDC1, numstring, 10, 1195, 1007, 10, , , ;
+		매수2 수량 증감2, SHNU_QTY_ICDC2, SHNU_QTY_ICDC2, numstring, 10, 1196, 1007, 10, , , ;
+		매수2 수량 증감3, SHNU_QTY_ICDC3, SHNU_QTY_ICDC3, numstring, 10, 1197, 1007, 10, , , ;
+		매수2 수량 증감4, SHNU_QTY_ICDC4, SHNU_QTY_ICDC4, numstring, 10, 1198, 1007, 10, , , ;
+		매수2 수량 증감5, SHNU_QTY_ICDC5, SHNU_QTY_ICDC5, numstring, 10, 1199, 1007, 10, , , ;
+		외국계 총 매도 수량, GLOB_TOTAL_SELN_QTY, GLOB_TOTAL_SELN_QTY, numstring, 18, 1200, 1007, 18, , attr, ;
+		외국계 매도 비중, GLOB_SELN_RLIM, GLOB_SELN_RLIM, numstring, 7.2, 1201, 1007, 7.2, , , ;
+		외국계 순매수 수량, GLOB_NTBY_QTY, GLOB_NTBY_QTY, numstring, 12, 1203, 1007, 12, , attr, ;
+		외국계 총 매수2 수량, GLOB_TOTAL_SHNU_QTY, GLOB_TOTAL_SHNU_QTY, numstring, 18, 1204, 1007, 18, , attr, ;
+		외국계 매수2 비중, GLOB_SHNU_RLIM, GLOB_SHNU_RLIM, numstring, 7.2, 1205, 1007, 7.2, , , ;
+		매도 회원사 외국계 여부1, SELN_MBCR_GLOB_YN_1, SELN_MBCR_GLOB_YN_1, string, 1, 1217, 1007, 1, , , ;
+		매도 회원사 외국계 여부2, SELN_MBCR_GLOB_YN_2, SELN_MBCR_GLOB_YN_2, string, 1, 1218, 1007, 1, , , ;
+		매도 회원사 외국계 여부3, SELN_MBCR_GLOB_YN_3, SELN_MBCR_GLOB_YN_3, string, 1, 1219, 1007, 1, , , ;
+		매도 회원사 외국계 여부4, SELN_MBCR_GLOB_YN_4, SELN_MBCR_GLOB_YN_4, string, 1, 1220, 1007, 1, , , ;
+		매도 회원사 외국계 여부5, SELN_MBCR_GLOB_YN_5, SELN_MBCR_GLOB_YN_5, string, 1, 1221, 1007, 1, , , ;
+		매수2 회원사 외국계 여부1, SHNU_MBCR_GLOB_YN_1, SHNU_MBCR_GLOB_YN_1, string, 1, 1222, 1007, 1, , , ;
+		매수2 회원사 외국계 여부2, SHNU_MBCR_GLOB_YN_2, SHNU_MBCR_GLOB_YN_2, string, 1, 1223, 1007, 1, , , ;
+		매수2 회원사 외국계 여부3, SHNU_MBCR_GLOB_YN_3, SHNU_MBCR_GLOB_YN_3, string, 1, 1224, 1007, 1, , , ;
+		매수2 회원사 외국계 여부4, SHNU_MBCR_GLOB_YN_4, SHNU_MBCR_GLOB_YN_4, string, 1, 1225, 1007, 1, , , ;
+		매수2 회원사 외국계 여부5, SHNU_MBCR_GLOB_YN_5, SHNU_MBCR_GLOB_YN_5, string, 1, 1226, 1007, 1, , , ;
+		외국계 총 매도 수량 증감, GLOB_TOTAL_SELN_QTY_ICDC, GLOB_TOTAL_SELN_QTY_ICDC, numstring, 10, 1202, 1007, 10, , , ;
+		외국계 총 매수2 수량 증감, GLOB_TOTAL_SHNU_QTY_ICDC, GLOB_TOTAL_SHNU_QTY_ICDC, numstring, 10, 1206, 1007, 10, , , ;
+		누적 거래량, ACML_VOL, ACML_VOL, numstring, 18, 14, 1000, 18, , , ;
+	end
+	END_DATA_MAP
+END_FUNCTION_MAP

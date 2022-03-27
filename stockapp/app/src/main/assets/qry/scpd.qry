@@ -1,0 +1,29 @@
+BEGIN_FUNCTION_MAP
+	T,현재가(주식일자별),HKST01010400,SCPD;
+	BEGIN_DATA_MAP
+	InBlock4, input, ;
+	begin
+		0, FID_COND_MRKT_DIV_CODE, string, 2, 9100, 9999, , ;
+		1, FID_INPUT_ISCD, string, 12, 9030, 9999, , ;
+		2, FID_PERIOD_DIV_CODE, string, 32, 9104, 9999, , ;
+		3, FID_ORG_ADJ_PRC, numstring, 10, 9105, 9999, , ;
+	end
+	OutBlock4, output, occurs=30;
+	begin
+		0, STCK_BSOP_DATE, string, 8, 67, 1003, , ;
+		1, STCK_OPRC, numstring, 10, 17, 1003, attr, ;
+		2, STCK_HGPR, numstring, 10, 18, 1003, attr, ;
+		3, STCK_LWPR, numstring, 10, 19, 1003, attr, ;
+		4, STCK_CLPR, numstring, 10, 4, 1003, attr, ;
+		5, ACML_VOL, numstring, 18, 14, 1003, attr, ;
+		6, PRDY_VRSS_VOL_RATE, numstring, 8.4, 15, 1003, attr, ;
+		7, PRDY_VRSS, numstring, 10, 5, 1003, attr, ;
+		8, PRDY_VRSS_SIGN, string, 1, 6, 1003, , ;
+		9, PRDY_CTRT, numstring, 8.2, 7, 1003, attr, ;
+		10, HTS_FRGN_EHRT, numstring, 8.2, 41, 1003, attr, ;
+		11, FRGN_NTBY_QTY, numstring, 12, 201, 1003, attr, ;
+		12, FLNG_CLS_CODE, string, 2, 1905, 1003, , ;
+		13, ACML_PRTT_RATE, numstring, 8.4, 414, 1003, , ;
+	end
+	END_DATA_MAP
+END_FUNCTION_MAP

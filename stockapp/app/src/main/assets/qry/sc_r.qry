@@ -1,0 +1,56 @@
+BEGIN_FUNCTION_MAP
+	R,주식종목체결,H0STCNT0,SC_R;
+	BEGIN_DATA_MAP
+	input, input, ;
+	begin
+		0, MKSC_SHRN_ISCD, string, 9, 9, ;
+	end
+	output, output, ;
+	begin
+		0, MKSC_SHRN_ISCD, string, 9, 9, ;
+		1, STCK_CNTG_HOUR, string, 6, 6, ;
+		2, STCK_PRPR, long, 4, 4, attr;
+		3, PRDY_VRSS_SIGN, string, 1, 1, ;
+		4, PRDY_VRSS, long, 4, 4, attr;
+		5, PRDY_CTRT, double, 8, 15.2, attr;
+		6, WGHN_AVRG_STCK_PRC, double, 8, 15.2, attr;
+		7, STCK_OPRC, long, 4, 4, attr;
+		8, STCK_HGPR, long, 4, 4, attr;
+		9, STCK_LWPR, long, 4, 4, attr;
+		10, ASKP1, long, 4, 4, attr;
+		11, BIDP1, long, 4, 4, attr;
+		12, CNTG_VOL, int64, 8, 8, attr;
+		13, ACML_VOL, int64, 8, 8, ;
+		14, ACML_TR_PBMN, int64, 8, 8, ;
+		15, SELN_CNTG_CSNU, long, 4, 4, ;
+		16, SHNU_CNTG_CSNU, long, 4, 4, ;
+		17, NTBY_CNTG_CSNU, long, 4, 4, ;
+		18, CTTR, double, 8, 15.2, attr;
+		19, SELN_CNTG_SMTN, int64, 8, 8, ;
+		20, SHNU_CNTG_SMTN, int64, 8, 8, ;
+		21, CNTG_CLS_CODE, string, 1, 1, ;
+		22, SHNU_RATE, double, 8, 15.2, attr;
+		23, PRDY_VOL_VRSS_ACML_VOL_RATE, double, 8, 15.2, attr;
+		24, OPRC_HOUR, string, 6, 6, ;
+		25, OPRC_VRSS_PRPR_SIGN, string, 1, 1, ;
+		26, OPRC_VRSS_PRPR, long, 4, 4, attr;
+		27, HGPR_HOUR, string, 6, 6, ;
+		28, HGPR_VRSS_PRPR_SIGN, string, 1, 1, ;
+		29, HGPR_VRSS_PRPR, long, 4, 4, attr;
+		30, LWPR_HOUR, string, 6, 6, ;
+		31, LWPR_VRSS_PRPR_SIGN, string, 1, 1, ;
+		32, LWPR_VRSS_PRPR, long, 4, 4, attr;
+		33, BSOP_DATE, string, 8, 8, ;
+		34, NEW_MKOP_CLS_CODE, string, 2, 2, ;
+		35, TRHT_YN, string, 1, 1, ;
+		36, ASKP_RSQN1, int64, 8, 8, ;
+		37, BIDP_RSQN1, int64, 8, 8, ;
+		38, TOTAL_ASKP_RSQN, int64, 8, 8, ;
+		39, TOTAL_BIDP_RSQN, int64, 8, 8, ;
+		40, VOL_TNRT, double, 8, 15.2, ;
+		41, PRDY_SMNS_HOUR_ACML_VOL, int64, 8, 8, ;
+		42, PRDY_SMNS_HOUR_ACML_VOL_RATE, double, 8, 15.2, attr;
+		43, HOUR_CLS_CODE, string, 1, 1, ;
+	end
+	END_DATA_MAP
+END_FUNCTION_MAP
