@@ -59,7 +59,7 @@ public class SamlpeLoginView extends FrameLayout
 		layoutFrame.setOrientation(LinearLayout.VERTICAL);
 		//아이디
 		TextView viewIDTitle = makeTextView("아이디");
-		m_editUserId = makeEditView("");
+		m_editUserId = makeEditView("shkim787");
 		
 		LinearLayout layoutID = new LinearLayout(getContext());
 		layoutID.setOrientation(LinearLayout.HORIZONTAL);
@@ -72,7 +72,7 @@ public class SamlpeLoginView extends FrameLayout
 		setEditText(m_editUserId, true);
 		//비밀번호
 		TextView viewPWTitle = makeTextView("비밀번호");
-		m_editUserPwd = makeEditView("");
+		m_editUserPwd = makeEditView("xotnrla7%");
 	
 		LinearLayout layoutPW = new LinearLayout(getContext());
 		layoutPW.setOrientation(LinearLayout.HORIZONTAL);
@@ -85,7 +85,7 @@ public class SamlpeLoginView extends FrameLayout
 		setEditText(m_editUserPwd, false);		
 		//공인인증
 		TextView viewCertPWTitle = makeTextView("공인인증");
-		m_editCertPwd = makeEditView("");
+		m_editCertPwd = makeEditView("tjdgus$1123");
 		
 		LinearLayout layoutCertPW = new LinearLayout(getContext());
 		layoutCertPW.setOrientation(LinearLayout.HORIZONTAL);

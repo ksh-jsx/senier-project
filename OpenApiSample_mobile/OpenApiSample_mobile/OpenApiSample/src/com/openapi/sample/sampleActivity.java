@@ -197,7 +197,7 @@ public class sampleActivity extends Activity implements View.OnClickListener ,IE
 			
 		m_viewLogin.setCtrlClickListener(SamlpeLoginView.ID.CTRL_ID_LOGIN, this);
 		m_viewLogin.setCtrlClickListener(SamlpeLoginView.ID.CTRL_ID_CANCEL, this);
-		m_viewLogin.setBackgroundColor( Color.rgb( 192, 192, 192 ) );
+		m_viewLogin.setBackgroundColor( Color.rgb( 0, 192, 192 ) );
 		m_SampleBaseView.addView(m_viewLogin, new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 	}
 
