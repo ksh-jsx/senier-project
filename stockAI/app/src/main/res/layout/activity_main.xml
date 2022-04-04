@@ -6,94 +6,92 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <EditText
-        android:id="@+id/editId"
-        android:text="shkim787"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:ems="10"
-        android:hint="ID"
-        android:inputType="textPersonName"
-        android:layout_marginVertical="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/editPw"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+    <LinearLayout
+        android:id="@+id/loadingWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed"
-        />
+        android:visibility="visible"
+        tools:visibility="gone">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="로딩중...."/>
+    </LinearLayout>
 
-    <EditText
-        android:id="@+id/editPw"
-        android:text="xotnrla7%"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:ems="10"
-        android:hint="패스워드"
-        android:inputType="textPassword"
-        android:layout_marginVertical="20dp"
-
-        app:layout_constraintBottom_toTopOf="@+id/editCaPw"
-        app:layout_constraintTop_toBottomOf="@+id/editId"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteX="100dp" />
-
-    <EditText
-        android:id="@+id/editCaPw"
-        android:text="tjdgus$1123"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:ems="10"
-        android:hint="인증서 패스워드"
-        android:inputType="textPassword"
-        android:layout_marginVertical="20dp"
-
-        app:layout_constraintBottom_toTopOf="@+id/buttonLogin"
-        app:layout_constraintTop_toBottomOf="@+id/editPw"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteX="101dp" />
-
-    <Button
-        android:id="@+id/buttonLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Login"
-        android:layout_marginVertical="20dp"
-
-        app:layout_constraintBottom_toTopOf="@+id/editCode"
-        app:layout_constraintTop_toBottomOf="@+id/editCaPw"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteX="162dp" />
-
-    <EditText
-        android:id="@+id/editCode"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_marginVertical="20dp"
-        android:ems="6"
-        android:hint="종목 코드"
-        android:inputType="number"
-
+    <LinearLayout
+        android:id="@+id/loginWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/buttonSearch"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonLogin"
-        tools:visibility="visible" />
+        tools:visibility="visible">
 
-    <Button
-        android:id="@+id/buttonSearch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Search"
-        android:visibility="gone"
-        android:layout_marginVertical="20dp"
+        <EditText
+            android:id="@+id/editId"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginVertical="20dp"
+            android:ems="10"
+            android:hint="ID"
+            android:inputType="textPersonName"
+            android:text="shkim787"
 
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editCode"
-        tools:visibility="visible" />
+            app:layout_constraintBottom_toTopOf="@+id/editPw"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <EditText
+            android:id="@+id/editPw"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginVertical="20dp"
+            android:ems="10"
+            android:hint="패스워드"
+            android:inputType="textPassword"
+            android:text="xotnrla7%"
+
+            app:layout_constraintBottom_toTopOf="@+id/editCaPw"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editId"
+            tools:layout_editor_absoluteX="100dp" />
+
+        <EditText
+            android:id="@+id/editCaPw"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginVertical="20dp"
+            android:ems="10"
+            android:hint="인증서 패스워드"
+            android:inputType="textPassword"
+            android:text="tjdgus$1123"
+
+            app:layout_constraintBottom_toTopOf="@+id/buttonLogin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editPw"
+            tools:layout_editor_absoluteX="101dp" />
+
+        <Button
+            android:id="@+id/buttonLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="20dp"
+            android:text="로그인"
+            android:textSize="18dp"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editCaPw" />
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
