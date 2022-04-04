@@ -14,17 +14,17 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
         <LinearLayout
-            android:id="@android:id/tabcontent"
+            android:id="@+id/searchWrapper"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
             <EditText
-                android:id="@+id/editCode"
+                android:id="@+id/editStockName"
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
                 android:layout_weight="8"
-                android:hint="종목 코드"
-                android:inputType="number"
+                android:hint="종목 명"
+                android:inputType="text"
                 tools:visibility="visible" />
 
             <Button
@@ -36,30 +36,51 @@
                 android:textSize="18dp"
                 tools:visibility="visible" />
         </LinearLayout>
+
         <LinearLayout
-            android:id="@android:id/tabcontent"
+            android:id="@+id/articleWrapper"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="9"
             android:orientation="vertical">
 
+            <ListView
+                android:id="@+id/stockList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
             <LinearLayout
                 android:id="@+id/priceBox"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="7"
-                android:background="@drawable/radius_red">
+                android:orientation="vertical"
+                android:background="@drawable/radius_red"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+
+                <TextView
+                    android:id="@+id/nameView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="10dp"
+                    android:text="주식명"
+                    android:layout_weight="1"
+                    android:textSize="40dp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
                 <TextView
                     android:id="@+id/priceView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginHorizontal="20dp"
                     android:gravity="center"
-                    android:text="temp"
-                    android:textSize="50dp"
+                    android:text="주가"
+                    android:layout_weight="10"
+                    android:textSize="30dp"
                     android:textColor="@color/white"
-                    android:textStyle="bold"
-                    />
+                    android:textStyle="bold" />
 
             </LinearLayout>
             <LinearLayout

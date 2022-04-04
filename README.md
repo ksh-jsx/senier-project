@@ -1,7 +1,16 @@
 # senier-project
 
+###com.stycs17.stockai
++ MainACtivity
+  + 한투Api 서버 접속
+  + 로그인 관련
++ CurrentStockPriceActivity
+  + 주가
+
+
+##complete
++ 로그인
++ 주가 검색
 ##to do list
-+ 한투 계좌 만들기
-+ 고객정보/ID > ID 재등록으로 아이디 비번 등록
-+ PC에서 공인인증서 발급/등록
-+ 한투앱으로 인증서 복사/등록
++ 자동 로그인(아이디 비번 기억하기)
++ 
