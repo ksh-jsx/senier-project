@@ -1,5 +1,6 @@
 package com.stucs17.stockai
 
+import kotlin.math.*
 import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.text.Editable
@@ -13,6 +14,7 @@ import com.commexpert.CommExpertMng
 import com.commexpert.ExpertTranProc
 import com.truefriend.corelib.commexpert.intrf.ITranDataListener
 import com.truefriend.corelib.shared.ItemMaster.ItemCode
+import java.text.DecimalFormat
 
 
 class CurrentStockPriceAcitivity : AppCompatActivity(), ITranDataListener {
@@ -25,8 +27,10 @@ class CurrentStockPriceAcitivity : AppCompatActivity(), ITranDataListener {
     private lateinit var priceBox : LinearLayout
     private lateinit var nameView : TextView
     private lateinit var priceView : TextView
+    private lateinit var priceView2 : TextView
 
-
+    private val arrItemKospiCode = CommExpertMng.getInstance().GetKospiCodeList() // 코스피 주식 목록
+    private val arrItemKosdaqCode = CommExpertMng.getInstance().GetKosdaqCodeList() // 코스닥 주식 목록
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,8 +44,8 @@ class CurrentStockPriceAcitivity : AppCompatActivity(), ITranDataListener {
         editStockName = findViewById(R.id.editStockName)
         stockList =findViewById(R.id.stockList)
         priceBox = findViewById(R.id.priceBox)
-        nameView = findViewById(R.id.nameView)
-        priceView = findViewById(R.id.priceView)
+        priceView = findViewById(R.id.priceView) // 현재가
+        priceView2 = findViewById(R.id.priceView2) // 변동치
 
         editTextWathcer()
 
@@ -79,7 +83,6 @@ class CurrentStockPriceAcitivity : AppCompatActivity(), ITranDataListener {
     }
 
     private fun editTextWathcer(){ //editStockName onchangeEventListener
-        val arrItemKospiCode = CommExpertMng.getInstance().GetKospiCodeList()
 
         editStockName.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {}
@@ -87,7 +90,7 @@ class CurrentStockPriceAcitivity : AppCompatActivity(), ITranDataListener {
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 val textValue :String = editStockName.text.toString()
 
-                val resultList = arrItemKospiCode.filter{ it.name.startsWith(textValue) }
+                val resultList = (arrItemKospiCode+arrItemKosdaqCode).sorted().filter{ it.name.startsWith(textValue) }
                 if (resultList.isNotEmpty())
                     makeStockList(resultList)
             }
@@ -100,12 +103,23 @@ class CurrentStockPriceAcitivity : AppCompatActivity(), ITranDataListener {
             val dayChange = expertTranProc.GetSingleData(0, 12).toInt() // 12 : 전일 대비
             val stockName = expertTranProc.GetSingleData(0, 4) // 4 : 업종 한글 종목명
 
-            if(dayChange>0)
-                priceBox.setBackgroundResource(R.drawable.radius_red)
-            else
-                priceBox.setBackgroundResource(R.drawable.radius_blue)
+            val variancePercent = (abs(dayChange.toDouble())/(currentPrice+dayChange*(-1)).toDouble())*100
+            var setDecimal = Math.round(variancePercent*100)/100f
 
-            priceView.setText("$currentPrice 원")
+            val dec = DecimalFormat("#,###")
+
+            if(dayChange>0) {
+                priceBox.setBackgroundResource(R.drawable.radius_red)
+                setDecimal = setDecimal
+            }
+            else {
+                priceBox.setBackgroundResource(R.drawable.radius_blue)
+                setDecimal*=(-1)
+            }
+
+            dec.format(currentPrice)
+            priceView.setText(dec.format(currentPrice)+"원")
+            priceView2.setText(dec.format(dayChange)+"원  "+"$setDecimal%")
             //Toast.makeText(this, "현재가 : $currentPrice, 전일 대비 : $dayChange", Toast.LENGTH_SHORT).show()
         }
     }
@@ -121,13 +135,11 @@ class CurrentStockPriceAcitivity : AppCompatActivity(), ITranDataListener {
     }
 
     private fun requestCurrentPrice(stockName: String){ //주가 검색
-        val arrItemKospiCode = CommExpertMng.getInstance().GetKospiCodeList() // 코스피 주식 목록
 
-        val resultList = arrItemKospiCode.filter{ it.name.startsWith(stockName) } //입력한 텍스트와 주식 목록 비교->필터링
+        val resultList = (arrItemKospiCode+arrItemKosdaqCode).sorted().filter{ it.name.startsWith(stockName) } //입력한 텍스트와 주식 목록 비교->필터링
 
 
         if (resultList.isNotEmpty()) {
-            nameView.setText(resultList[0].name)
             editStockName.setText(resultList[0].name)
 
             expertTranProc.ClearInblockData()
