@@ -192,11 +192,11 @@ class MainActivity : AppCompatActivity(), IExpertInitListener, IExpertLoginListe
     override fun onLoginFinished() {
         Log.d(TAG,"onLoginFinished")
         Log.d(TAG, CommExpertMng.getInstance().GetLoginUserID())
-        gotoCurrentStockPriceAcitivity()
+        gotoHome()
     }
 
-    fun gotoCurrentStockPriceAcitivity() {
-        val intent = Intent(this@MainActivity, CurrentStockPriceAcitivity::class.java)
+    fun gotoHome() {
+        val intent = Intent(this@MainActivity, HomeActivity::class.java)
         startActivity(intent)
         finish()
     }

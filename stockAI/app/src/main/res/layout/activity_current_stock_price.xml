@@ -7,7 +7,8 @@
     android:layout_height="match_parent"
     android:layout_marginVertical="10dp"
     android:layout_marginHorizontal="10dp"
-    tools:context=".CurrentStockPriceAcitivity">
+    tools:context=".CurrentStockPriceActivity"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,8 +23,11 @@
                 android:id="@+id/editStockName"
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
+                android:fontFamily="@font/bmjua"
+                android:textSize="30dp"
                 android:layout_weight="8"
                 android:hint="종목 명"
+                android:text="삼성전자"
                 android:inputType="text"
                 tools:visibility="visible" />
 
@@ -32,9 +36,11 @@
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
+                android:fontFamily="@font/bmjua"
                 android:text="검색"
-                android:textSize="18dp"
-                tools:visibility="visible" />
+                android:textSize="25dp"
+                tools:visibility="visible"
+                android:textStyle="bold"/>
         </LinearLayout>
 
         <LinearLayout
@@ -43,7 +49,7 @@
             android:layout_height="0dp"
             android:layout_weight="9"
             android:orientation="vertical">
-            <ListView
+        <ListView
                 android:id="@+id/stockList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -52,11 +58,12 @@
                 android:id="@+id/priceBox"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="3"
+                android:layout_weight="2"
                 android:orientation="vertical"
                 android:background="@drawable/radius_red"
                 android:visibility="gone"
-                tools:visibility="visible">
+                tools:visibility="visible"
+                >
                 <TextView
                     android:id="@+id/priceView"
                     android:layout_width="match_parent"
@@ -64,56 +71,83 @@
                     android:layout_marginHorizontal="20dp"
                     android:layout_marginTop="10dp"
                     android:text="현재 주가"
-                    android:layout_weight="4"
-                    android:textSize="40dp"
+                    android:fontFamily="@font/bmjua"
+                    android:layout_weight="1.5"
+                    android:textSize="45dp"
                     android:textColor="@color/white"
-                    android:textStyle="bold" />
+                    android:gravity="center_vertical"/>
                 <TextView
                     android:id="@+id/priceView2"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_marginHorizontal="20dp"
-                    android:gravity="left"
+                    android:gravity="center_vertical"
                     android:text="변동치"
-                    android:layout_weight="3"
-                    android:textSize="30dp"
+                    android:fontFamily="@font/bmjua"
+                    android:layout_weight="1"
+                    android:textSize="35dp"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/centerBox"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="7.5"
+                android:orientation="vertical"
+                android:gravity="bottom"
+                android:visibility="gone"
+                tools:visibility="visible">
+                <TextView
+                    android:id="@+id/expectPercentView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:fontFamily="@font/bmjua"
+                    android:textSize="25dp"
+                    android:text="xx% 확률로 xx 예상되는 종목입니다!"/>
+                <Button
+                    android:id="@+id/buttonForAi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    app:backgroundTint="@color/second"
+                    android:text="자동투자 \n종목으로 넣기"
+                    android:fontFamily="@font/bmjua"
                     android:textColor="@color/white"
-                    android:textStyle="bold" />
+                    android:textSize="35dp"    />
 
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/BSbuttonBox"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="6">
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1">
+                android:layout_weight="1.5"
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <Button
                     android:id="@+id/buttonForBuy"
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
                     android:layout_marginHorizontal="10dp"
-                    android:layout_weight="2"
+                    android:layout_weight="1"
                     app:backgroundTint="@color/red"
                     android:text="매수"
-                    android:textColor="@color/second"
-                    android:textSize="25dp"
-                    android:textStyle="bold"/>
+                    android:fontFamily="@font/bmjua"
+                    android:textColor="@color/white"
+                    android:textSize="40dp" />
 
                 <Button
                     android:id="@+id/buttonForSell"
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
                     android:layout_marginHorizontal="10dp"
-                    android:layout_weight="2"
+                    android:layout_weight="1"
                     app:backgroundTint="@color/blue"
                     android:text="매도"
-                    android:textColor="@color/second"
-                    android:textSize="25dp"
-                    android:textStyle="bold"/>
+                    android:fontFamily="@font/bmjua"
+                    android:textColor="@color/white"
+                    android:textSize="40dp" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

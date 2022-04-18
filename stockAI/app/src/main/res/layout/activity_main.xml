@@ -34,14 +34,15 @@
 
         <EditText
             android:id="@+id/editId"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
+            android:layout_width="280dp"
+            android:layout_height="60dp"
             android:layout_marginVertical="20dp"
             android:ems="10"
             android:hint="ID"
             android:inputType="textPersonName"
-            android:text="shkim787"
 
+            android:text="shkim787"
+            android:textSize="28dp"
             app:layout_constraintBottom_toTopOf="@+id/editPw"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -50,14 +51,14 @@
 
         <EditText
             android:id="@+id/editPw"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
+            android:layout_width="280dp"
+            android:layout_height="60dp"
             android:layout_marginVertical="20dp"
             android:ems="10"
             android:hint="패스워드"
             android:inputType="textPassword"
             android:text="xotnrla7%"
-
+            android:textSize="28dp"
             app:layout_constraintBottom_toTopOf="@+id/editCaPw"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -66,14 +67,14 @@
 
         <EditText
             android:id="@+id/editCaPw"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
+            android:layout_width="280dp"
+            android:layout_height="60dp"
             android:layout_marginVertical="20dp"
             android:ems="10"
             android:hint="인증서 패스워드"
             android:inputType="textPassword"
             android:text="tjdgus$1123"
-
+            android:textSize="28dp"
             app:layout_constraintBottom_toTopOf="@+id/buttonLogin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -82,12 +83,12 @@
 
         <Button
             android:id="@+id/buttonLogin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="202dp"
+            android:layout_height="84dp"
             android:layout_marginVertical="20dp"
+            android:fontFamily="@font/bmjua"
             android:text="로그인"
-            android:textSize="18dp"
-
+            android:textSize="35dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
