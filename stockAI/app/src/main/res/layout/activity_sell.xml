@@ -6,4 +6,23 @@
     android:layout_height="match_parent"
     tools:context=".SellActivity">
 
+    <TextView
+        android:id="@+id/test_tv"
+        android:layout_width="111dp"
+        android:layout_height="177dp"
+        android:text="test1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/bt_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/test_tv" />
 </androidx.constraintlayout.widget.ConstraintLayout>
