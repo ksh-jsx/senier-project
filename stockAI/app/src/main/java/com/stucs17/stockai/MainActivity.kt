@@ -1,17 +1,16 @@
 package com.stucs17.stockai
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import com.bumptech.glide.Glide
 import com.commexpert.CommExpertMng
 import com.truefriend.corelib.commexpert.intrf.IExpertInitListener
 import com.truefriend.corelib.commexpert.intrf.IExpertLoginListener
@@ -22,6 +21,7 @@ class MainActivity : AppCompatActivity(), IExpertInitListener, IExpertLoginListe
 
     private lateinit var loginWrapper : LinearLayout
     private lateinit var loadingWrapper : LinearLayout
+    private lateinit var loading_icon : ImageView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,6 +38,11 @@ class MainActivity : AppCompatActivity(), IExpertInitListener, IExpertLoginListe
 
         loginWrapper = findViewById(R.id.loginWrapper)
         loadingWrapper = findViewById(R.id.loadingWrapper)
+        loading_icon = findViewById(R.id.loading_icon)
+        Glide.with(this).load(R.raw.loading_icon).into(loading_icon);
+
+        var test = GlobalBackground()
+        test.logTest()
     }
 
     private fun startApp() {
@@ -116,6 +121,7 @@ class MainActivity : AppCompatActivity(), IExpertInitListener, IExpertLoginListe
 
         loginWrapper.visibility = View.VISIBLE
         loadingWrapper.visibility = View.GONE
+        login()
     }
 
     override fun onRequiredRefresh() {

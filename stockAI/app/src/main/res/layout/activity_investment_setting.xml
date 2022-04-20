@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".InvestmentSettingActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="10dp"
+            android:layout_marginBottom="40dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:gravity="center"
+                android:fontFamily="@font/nanumsquare_eb"
+                android:textSize="35dp"
+                android:text="자동투자 설정: "
+                android:textColor="@color/second" />
+            <Button
+                android:id="@+id/button_for_autoTrade"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/nanumsquare_eb"
+                android:textSize="35dp"
+                android:text="켜기" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:padding="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:fontFamily="@font/nanumsquare_eb"
+                    android:gravity="center"
+                    android:text="투자강도 설정: "
+                    android:textColor="@color/second"
+                    android:textSize="35dp"
+                    android:layout_marginBottom="10dp"/>
+                <TextView
+                    android:id="@+id/textView_for_risk"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    android:fontFamily="@font/nanumsquare_eb"
+                    android:textColor="@color/main"
+                    android:textSize="35dp"
+                    android:text="중간" />
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nanumsquare_eb"
+                android:text="강도가 낮을수록 돈을 잃은 위험도가 낮지만 기대 수익또한 낮습니다. "
+                android:textColor="@color/gray2"
+                android:textSize="20dp"
+                android:layout_marginBottom="10dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:textColor="@color/main"
+                    android:fontFamily="@font/nanumsquare_eb"
+                    android:textSize="25dp"
+                    android:text="매우\n낮음"
+                    android:textAlignment="center"
+                    android:layout_gravity="center"/>
+
+                <SeekBar
+                    android:id="@+id/seekBar_for_risk"
+                    android:layout_width="0dp"
+                    android:layout_height="70dp"
+                    android:layout_weight="6"
+                    android:max="4"
+                    android:min="0"
+                    android:progress="2"
+                    android:progressDrawable="@drawable/seekbar"
+                    android:thumb="@drawable/seekbar_thumb" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:textColor="@color/main"
+                    android:fontFamily="@font/nanumsquare_eb"
+                    android:textSize="25dp"
+                    android:text="매우\n높음"
+                    android:textAlignment="center"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:gravity="center"
+                    android:fontFamily="@font/nanumsquare_eb"
+                    android:textSize="35dp"
+                    android:text="투자 종목 설정: "
+                    android:textColor="@color/second" />
+                <Button
+                    android:id="@+id/button_for_select_tradeStock"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/nanumsquare_eb"
+                    android:textSize="35dp"
+                    android:text="자동" />
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:fontFamily="@font/nanumsquare_eb"
+                android:textSize="35dp"
+                android:text="투자 대상 종목"
+                android:textColor="@color/second"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginHorizontal="15dp"
+            android:background="@color/second">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="KODEX 인버스"
+                android:textSize="20dp"
+                android:layout_marginVertical="1dp"
+                android:background="@color/white"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="KODEX 200선물인버스2X"
+                android:textSize="20dp"
+                android:layout_marginBottom="1dp"
+                android:background="@color/white"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TIGER 차이나전기차SOLACTIVE"
+                android:textSize="20dp"
+                android:layout_marginBottom="1dp"
+                android:background="@color/white"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="KODEX 단기채권PLUS"
+                android:textSize="20dp"
+                android:layout_marginBottom="1dp"
+                android:background="@color/white"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="KODEX 레버리지"
+                android:textSize="20dp"
+                android:layout_marginBottom="1dp"
+                android:background="@color/white"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="KODEX 코스닥150레버리지"
+                android:textSize="20dp"
+                android:layout_marginBottom="1dp"
+                android:background="@color/white"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

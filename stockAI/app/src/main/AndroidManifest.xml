@@ -21,7 +21,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.StockAI"
         android:usesCleartextTraffic="true">
-        <activity android:name=".SellActivity"></activity>
+
+        <activity android:name=".InvestmentSettingActivity"></activity>
+        <activity android:name=".SellActivity" />
         <activity android:name=".BuyActivity" />
         <activity android:name=".HomeActivity" />
         <activity

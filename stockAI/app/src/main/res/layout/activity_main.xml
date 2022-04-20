@@ -15,11 +15,17 @@
         app:layout_constraintTop_toTopOf="parent"
         android:visibility="visible"
         tools:visibility="gone">
-        <TextView
+        <ImageView
+            android:id="@+id/loading_icon"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="로딩중...."/>
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30dp"
+            android:text="자동 로그인중..."/>
     </LinearLayout>
 
     <LinearLayout
@@ -31,6 +37,13 @@
         app:layout_constraintTop_toTopOf="parent"
         android:visibility="gone"
         tools:visibility="visible">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="174dp"
+            android:layout_height="175dp"
+            android:layout_marginBottom="25dp"
+            app:srcCompat="@drawable/logo" />
 
         <EditText
             android:id="@+id/editId"
@@ -93,6 +106,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editCaPw" />
+
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

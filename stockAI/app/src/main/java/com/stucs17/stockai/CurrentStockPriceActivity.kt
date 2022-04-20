@@ -1,6 +1,5 @@
 package com.stucs17.stockai
 
-import kotlin.math.*
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.graphics.Color
@@ -17,6 +16,7 @@ import com.commexpert.ExpertTranProc
 import com.truefriend.corelib.commexpert.intrf.ITranDataListener
 import com.truefriend.corelib.shared.ItemMaster.ItemCode
 import java.text.DecimalFormat
+import kotlin.math.*
 
 
 class CurrentStockPriceActivity : AppCompatActivity(), ITranDataListener {
@@ -108,7 +108,7 @@ class CurrentStockPriceActivity : AppCompatActivity(), ITranDataListener {
             list.add(sn[i].name)
         }
 
-        val adpater = ArrayAdapter(this, android.R.layout.simple_list_item_1, list)
+        val adpater = ArrayAdapter<String>(this, R.layout.stock_list, list)
         stockList.adapter = adpater
 
         stockList.onItemClickListener = OnItemClickListener { adapterView, view, position, l ->

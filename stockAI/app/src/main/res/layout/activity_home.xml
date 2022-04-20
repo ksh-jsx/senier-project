@@ -4,27 +4,424 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeActivity"
-    android:layout_marginVertical="10dp"
-    android:layout_marginHorizontal="10dp">
+    tools:context=".HomeActivity">
 
     <LinearLayout
         android:id="@+id/wrapper"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <LinearLayout
-            android:id="@+id/ArticleBox"
+
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:orientation="horizontal"
-            android:layout_weight="9">
-        </LinearLayout>
+            android:layout_weight="9"
+            android:layout_marginVertical="10dp">
+
+            <LinearLayout
+                android:id="@+id/ArticleBox"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/totalAssetBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginVertical="10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textView1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/nanumsquare_eb"
+                            android:gravity="right"
+                            android:text="총자산: "
+                            android:textColor="@color/black"
+                            android:textSize="40dp" />
+
+                        <TextView
+                            android:id="@+id/total_assets"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/nanumsquare_eb"
+                            android:gravity="right"
+                            android:text="7,329,000"
+                            android:textColor="@color/main"
+                            android:textSize="40dp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/total_profit_or_loss"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nanumsquare_eb"
+                        android:gravity="center"
+                        android:text="+183,000원 ( 2.5% )"
+                        android:layout_marginVertical="10dp"
+                        android:textColor="@color/red"
+                        android:textSize="30dp" />
+
+                    <TextView
+                        android:id="@+id/assets"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nanumsquare_eb"
+                        android:gravity="right"
+                        android:text="주문가능: 20,000"
+                        android:textColor="@color/second"
+                        android:textSize="30dp" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/view"
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp"
+                    android:layout_marginVertical="10dp"
+                    android:background="@color/gray2" />
+
+                <LinearLayout
+                    android:id="@+id/StocksBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="5dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nanumsquare_eb"
+                        android:gravity="right"
+                        android:text="보유주식"
+
+                        android:textColor="@color/black"
+                        android:textSize="40dp" />
+
+                    <View
+                        android:id="@+id/view2"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginVertical="5dp"
+                        android:background="@color/black" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/stock_name"
+                                android:layout_width="1dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/nanumsquare_eb"
+                                android:gravity="left"
+                                android:text="삼성 전자"
+                                android:textColor="@color/black"
+                                android:textSize="35dp" />
+
+                            <TextView
+                                android:id="@+id/stock_profit_or_loss"
+                                android:layout_width="1dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.5"
+                                android:fontFamily="@font/nanumsquare_eb"
+                                android:gravity="right"
+                                android:text="406,000 ( 10% )"
+                                android:textColor="@color/red"
+                                android:textSize="25dp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/stock_quantity"
+                                android:layout_width="1dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/nanumsquare_eb"
+                                android:gravity="left"
+                                android:text="70주"
+                                android:textColor="@color/gray"
+                                android:textSize="30dp" />
+
+                            <TextView
+                                android:id="@+id/stock_price"
+                                android:layout_width="1dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="3"
+                                android:fontFamily="@font/nanumsquare_eb"
+                                android:gravity="right"
+                                android:text="4,669,000"
+                                android:textColor="@color/second"
+                                android:textSize="30dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginVertical="5dp"
+                        android:background="@color/gray2" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/stock_name2"
+                                android:layout_width="1dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/nanumsquare_eb"
+                                android:gravity="left"
+                                android:text="HMM"
+                                android:textColor="@color/black"
+                                android:textSize="35dp" />
+
+                            <TextView
+                                android:id="@+id/stock_profit_or_loss2"
+                                android:layout_width="1dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.5"
+                                android:fontFamily="@font/nanumsquare_eb"
+                                android:gravity="right"
+                                android:text="223,000 ( -8% )"
+                                android:textColor="@color/blue"
+                                android:textSize="25dp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/stock_quantity2"
+                                android:layout_width="1dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/nanumsquare_eb"
+                                android:gravity="left"
+                                android:text="70주"
+                                android:textColor="@color/gray"
+                                android:textSize="30dp" />
+
+                            <TextView
+                                android:id="@+id/stock_price2"
+                                android:layout_width="1dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="3"
+                                android:fontFamily="@font/nanumsquare_eb"
+                                android:gravity="right"
+                                android:text="2,640,000"
+                                android:textColor="@color/second"
+                                android:textSize="30dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp"
+                    android:layout_marginVertical="10dp"
+                    android:background="@color/gray2" />
+
+                <LinearLayout
+                    android:id="@+id/StocksBox2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="5dp"
+                    android:orientation="vertical">
+
+                    <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nanumsquare_eb"
+                        android:gravity="right"
+                        android:text="자동투자"
+
+                        android:textColor="@color/black"
+                        android:textSize="40dp" />
+
+                    <View
+                        android:id="@+id/view3"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginVertical="5dp"
+                        android:background="@color/black" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/stock_name3"
+                                android:layout_width="1dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/nanumsquare_eb"
+                                android:gravity="left"
+                                android:text="KODEX 인버스"
+                                android:textColor="@color/black"
+                                android:textSize="35dp" />
+
+                            <TextView
+                                android:id="@+id/stock_profit_or_loss3"
+                                android:layout_width="1dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.5"
+                                android:fontFamily="@font/nanumsquare_eb"
+                                android:gravity="right"
+                                android:text="2,000 ( 2% )"
+                                android:textColor="@color/red"
+                                android:textSize="30dp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/stock_quantity3"
+                                android:layout_width="1dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/nanumsquare_eb"
+                                android:gravity="left"
+                                android:text="25주"
+                                android:textColor="@color/gray"
+                                android:textSize="30dp" />
+
+                            <TextView
+                                android:id="@+id/stock_price3"
+                                android:layout_width="1dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="3"
+                                android:fontFamily="@font/nanumsquare_eb"
+                                android:gravity="right"
+                                android:text="100,000"
+                                android:textColor="@color/second"
+                                android:textSize="30dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginVertical="5dp"
+                        android:background="@color/gray2" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/stock_name4"
+                                android:layout_width="1dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/nanumsquare_eb"
+                                android:gravity="left"
+                                android:text="TIGER 원유선물"
+                                android:textColor="@color/black"
+                                android:textSize="35dp" />
+
+                            <TextView
+                                android:id="@+id/stock_profit_or_loss4"
+                                android:layout_width="1dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.5"
+                                android:fontFamily="@font/nanumsquare_eb"
+                                android:gravity="right"
+                                android:text="450 ( -0.8% )"
+                                android:textColor="@color/blue"
+                                android:textSize="30dp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/stock_quantity4"
+                                android:layout_width="1dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/nanumsquare_eb"
+                                android:gravity="left"
+                                android:text="10주"
+                                android:textColor="@color/gray"
+                                android:textSize="30dp" />
+
+                            <TextView
+                                android:id="@+id/stock_price4"
+                                android:layout_width="1dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="3"
+                                android:fontFamily="@font/nanumsquare_eb"
+                                android:gravity="right"
+                                android:text="50,000"
+                                android:textColor="@color/second"
+                                android:textSize="30dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+
+
 
         <LinearLayout
             android:id="@+id/BSbuttonBox"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="10dp"
             android:orientation="horizontal"
             android:layout_weight="1">
 
@@ -34,15 +431,15 @@
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="5dp"
                 android:layout_weight="1"
-                android:fontFamily="@font/bmjua"
+                android:fontFamily="@font/nanumsquare_eb"
                 app:backgroundTint="@color/main"
                 android:text="주식 \n매수/매도"
                 android:textColor="@color/white"
                 android:textSize="25dp" />
 
             <Button
-                android:id="@+id/Btn_goto_"
-                android:fontFamily="@font/bmjua"
+                android:id="@+id/Btn_goto_ISActivity"
+                android:fontFamily="@font/nanumsquare_eb"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="5dp"

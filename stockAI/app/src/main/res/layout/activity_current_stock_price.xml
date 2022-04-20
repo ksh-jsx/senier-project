@@ -23,9 +23,9 @@
                 android:id="@+id/editStockName"
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:fontFamily="@font/bmjua"
+                android:fontFamily="@font/nanumsquare_eb"
                 android:textSize="30dp"
-                android:layout_weight="8"
+                android:layout_weight="7"
                 android:hint="종목 명"
                 android:text="삼성전자"
                 android:inputType="text"
@@ -35,10 +35,10 @@
                 android:id="@+id/buttonSearch"
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:fontFamily="@font/bmjua"
+                android:layout_weight="3"
+                android:fontFamily="@font/nanumsquare_eb"
                 android:text="검색"
-                android:textSize="25dp"
+                android:textSize="30dp"
                 tools:visibility="visible"
                 android:textStyle="bold"/>
         </LinearLayout>
@@ -49,10 +49,11 @@
             android:layout_height="0dp"
             android:layout_weight="9"
             android:orientation="vertical">
-        <ListView
+            <ListView
                 android:id="@+id/stockList"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:textSize="25dp" />
 
             <LinearLayout
                 android:id="@+id/priceBox"
@@ -71,7 +72,7 @@
                     android:layout_marginHorizontal="20dp"
                     android:layout_marginTop="10dp"
                     android:text="현재 주가"
-                    android:fontFamily="@font/bmjua"
+                    android:fontFamily="@font/nanumsquare_eb"
                     android:layout_weight="1.5"
                     android:textSize="45dp"
                     android:textColor="@color/white"
@@ -83,7 +84,7 @@
                     android:layout_marginHorizontal="20dp"
                     android:gravity="center_vertical"
                     android:text="변동치"
-                    android:fontFamily="@font/bmjua"
+                    android:fontFamily="@font/nanumsquare_eb"
                     android:layout_weight="1"
                     android:textSize="35dp"
                     android:textColor="@color/white" />
@@ -102,7 +103,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:fontFamily="@font/bmjua"
+                    android:fontFamily="@font/nanumsquare_eb"
                     android:textSize="25dp"
                     android:text="xx% 확률로 xx 예상되는 종목입니다!"/>
                 <Button
@@ -112,7 +113,7 @@
                     android:layout_marginHorizontal="10dp"
                     app:backgroundTint="@color/second"
                     android:text="자동투자 \n종목으로 넣기"
-                    android:fontFamily="@font/bmjua"
+                    android:fontFamily="@font/nanumsquare_eb"
                     android:textColor="@color/white"
                     android:textSize="35dp"    />
 
@@ -133,7 +134,7 @@
                     android:layout_weight="1"
                     app:backgroundTint="@color/red"
                     android:text="매수"
-                    android:fontFamily="@font/bmjua"
+                    android:fontFamily="@font/nanumsquare_eb"
                     android:textColor="@color/white"
                     android:textSize="40dp" />
 
@@ -145,7 +146,7 @@
                     android:layout_weight="1"
                     app:backgroundTint="@color/blue"
                     android:text="매도"
-                    android:fontFamily="@font/bmjua"
+                    android:fontFamily="@font/nanumsquare_eb"
                     android:textColor="@color/white"
                     android:textSize="40dp" />
             </LinearLayout>
