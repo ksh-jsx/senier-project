@@ -103,7 +103,7 @@ public class SampleOrderView extends FrameLayout implements ITranDataListener, I
 		EditText editAcc = makeEditView("");
 		editAcc.setId(CtrlID.CTRL_ID_ACC);
 		//비밀번호
-		TextView textPass = makeTextView("비밀번호");
+		TextView textPass = makeTextView("SetSingleData(0, 0");
 		textPass.setPadding(20, 0, 0, 0);
 		EditText editPass = makeEditView("");
 		editPass.setId(CtrlID.CTRL_ID_PASS);

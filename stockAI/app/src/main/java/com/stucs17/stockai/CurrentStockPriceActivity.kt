@@ -147,7 +147,6 @@ class CurrentStockPriceActivity : AppCompatActivity(), ITranDataListener {
                 Log.d(TAG, i.toString()+":"+info)
             }
 
-
             val variancePercent = (abs(dayChange.toDouble())/(currentPrice+dayChange*(-1)).toDouble())*100
             var setDecimal = Math.round(variancePercent*100)/100f
 
