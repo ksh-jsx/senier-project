@@ -100,8 +100,6 @@ class CurrentStockPriceActivity : AppCompatActivity(), ITranDataListener {
 
     }
 
-
-
     private fun makeStockList(sn: List<ItemCode>){ //검색한 주식 목록 생성
         val list: MutableList<String> = ArrayList()
         for(i in sn.indices) {
@@ -154,7 +152,6 @@ class CurrentStockPriceActivity : AppCompatActivity(), ITranDataListener {
 
             if(dayChange>0) {
                 priceBox.setBackgroundResource(R.drawable.radius_red)
-                setDecimal = setDecimal
                 plus = "+"
             }
             else {

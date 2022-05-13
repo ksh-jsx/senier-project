@@ -17,7 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.commexpert.CommExpertMng;
 import com.commexpert.ExpertRealProc;
-import com.commexpert.ExpertTranProc;
+	import com.commexpert.ExpertTranProc;
 import com.truefriend.corelib.commexpert.intrf.IRealDataListener;
 import com.truefriend.corelib.commexpert.intrf.ITranDataListener;
 import com.truefriend.corelib.util.ConfigUtil;

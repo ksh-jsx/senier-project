@@ -3,6 +3,7 @@ package com.stucs17.stockai
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.commexpert.ExpertRealProc
 import com.commexpert.ExpertTranProc
@@ -39,6 +40,13 @@ class BuyActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
             runBuy()
         }
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        m_OrderTranProc!!.ClearInstance()
+        m_OrderTranProc = null
     }
 
     fun runBuy() {
@@ -89,6 +97,10 @@ class BuyActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
         strErrorType: String?, strMessage: String?
     ) {
 
+            // TODO Auto-generated method stub
+            Log.e("onTranMessageReceived", String.format("MsgCode:%s ErrorType:%s %s",  strMsgCode ,  strErrorType  , strMessage));
+
+
     }
 
     override fun onTranTimeout(nRqId: Int) {
@@ -97,7 +109,15 @@ class BuyActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
     }
 
     override fun onRealDataReceived(strServiceId: String) {
-
+        if (strServiceId === "scn_r" || strServiceId === "scn_m") {
+            val strOrderNumber = m_OrderRealProc!!.GetRealData(0, 2) //주문번호
+            val strOrderGubun = m_OrderRealProc!!.GetRealData(0, 4) //매도매수구분
+            val strCode = m_OrderRealProc!!.GetRealData(0, 8) //종목코드
+            Log.d(
+                "==주식 체결통보==",
+                String.format("주문번호:%s 매도매수구분:%s 종목코드:%s", strOrderNumber, strOrderGubun, strCode)
+            )
+        }
     }
 
 }
