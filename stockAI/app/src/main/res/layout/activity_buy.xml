@@ -6,6 +6,35 @@
     android:layout_height="match_parent"
     tools:context=".BuyActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/stock_name"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/nanumsquare_eb"
+            android:gravity="left"
+            android:text="주문 단가: "
+            android:textColor="@color/black"
+            android:textSize="35dp" />
+
+        <EditText
+            android:id="@+id/tv_order_price"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:fontFamily="@font/nanumsquare_eb"
+            android:gravity="right"
+
+            android:textColor="@color/main"
+            android:textSize="25dp" />
+    </LinearLayout>
+
     <Button
         android:id="@+id/buttonBuy"
         android:layout_width="wrap_content"

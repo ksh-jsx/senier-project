@@ -3,6 +3,7 @@ package com.stucs17.stockai
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.commexpert.ExpertRealProc
@@ -21,8 +22,10 @@ class BuyActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
     var m_nOrderRqId = -1 //주문 TR ID
     var m_nOrderListRqId = -1 //주문내역 TR ID
 
-
     private lateinit var buttonBuy : Button
+    private lateinit var tv_order_price : EditText
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +37,7 @@ class BuyActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
         m_OrderTranProc!!.SetShowTrLog(true)
 
         buttonBuy = findViewById(R.id.buttonBuy)
+        tv_order_price = findViewById(R.id.tv_order_price)
 
         buttonBuy.setOnClickListener {
 
@@ -65,9 +69,8 @@ class BuyActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
         strEncPass = m_OrderTranProc!!.GetEncryptPassword(strPass)
         m_OrderTranProc!!.SetSingleData(0, 2, strEncPass)
 
-        //if (eStockCode == null) return
-        //m_strCode = eStockCode.getText().toString()
-        //m_OrderTranProc!!.SetSingleData(0, 3, m_strCode) //상품코드
+
+
         m_OrderTranProc!!.SetSingleData(0, 3, "096040") //상품코드
         m_OrderTranProc!!.SetSingleData(0, 4, "00") //주문구분  00:지정가
 
@@ -75,9 +78,9 @@ class BuyActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
         m_OrderTranProc!!.SetSingleData(0, 5, "1")
 
         //주문단가
-        //strOrderPrice = ePrice.getText().toString()
-        //m_OrderTranProc!!.SetSingleData(0, 6, strOrderPrice)
-        m_OrderTranProc!!.SetSingleData(0, 6, "")
+        if (tv_order_price == null) return
+        m_strCode = tv_order_price.getText().toString()
+        m_OrderTranProc!!.SetSingleData(0, 6, m_strCode)
         m_OrderTranProc!!.SetSingleData(0, 7, " ") //연락전화번호
 
         //축약서명
