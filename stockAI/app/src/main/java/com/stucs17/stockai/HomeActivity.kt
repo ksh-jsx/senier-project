@@ -3,19 +3,15 @@ package com.stucs17.stockai
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.commexpert.ExpertRealProc
 import com.commexpert.ExpertTranProc
-import com.truefriend.corelib.commexpert.intrf.IRealDataListener
+import com.stucs17.stockai.adapter.MyStockAdapter
+import com.stucs17.stockai.data.MyStockData
 import com.truefriend.corelib.commexpert.intrf.ITranDataListener
-import java.lang.Math.abs
 import java.text.DecimalFormat
 
 class HomeActivity : AppCompatActivity(), ITranDataListener {
@@ -33,6 +29,7 @@ class HomeActivity : AppCompatActivity(), ITranDataListener {
 
     lateinit var myStockAdapter: MyStockAdapter
     val datas = mutableListOf<MyStockData>()
+    private val gb = GlobalBackground()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,13 +93,12 @@ class HomeActivity : AppCompatActivity(), ITranDataListener {
 
     override fun onTranDataReceived(sTranID: String, nRqId: Int) {
         if (m_nJangoRqId == nRqId) {
-            val dec = DecimalFormat("#,###")
-            //예수금 총금액
-            val strTotal1 = m_JangoTranProc!!.GetMultiData(1, 0, 0)
+
             //총평가금액
-            val strTotal2 = m_JangoTranProc!!.GetMultiData(1, 14, 0)
-            //D-2 정산금액
-            val strD2price = m_JangoTranProc!!.GetMultiData(1, 9, 0)
+            val strTotal1 = m_JangoTranProc!!.GetMultiData(1, 14, 0)
+            //손익
+            val strTotal2 = m_JangoTranProc!!.GetMultiData(1, 19, 0)
+
 
             val profit = (strTotal2.toInt()-strTotal1.toInt())
 
@@ -137,9 +133,9 @@ class HomeActivity : AppCompatActivity(), ITranDataListener {
                 //System.out.println("3: " + strQty + ", 4: " + strAverPrice)
             }
 
-            tv_total_assets.text = dec.format(strTotal2.toInt())+"원"
-            tv_total_profit_or_loss.text = dec.format(profit)+"원"
-            tv_rest_assets.text = "주문 가능: "+dec.format(strTotal1.toInt()-buyPriceSum)+"원"
+            tv_total_assets.text = gb.dec(strTotal1.toInt())+"원"
+            tv_total_profit_or_loss.text = gb.dec(strTotal2.toInt())+"원"
+            tv_rest_assets.text = "주문 가능: "+gb.dec((strTotal1.toInt()-strTotal2.toInt())-buyPriceSum)+"원"
 
             if(profit > 0)
                 tv_total_profit_or_loss.setTextColor((ContextCompat.getColor(applicationContext!!, R.color.red)))
@@ -152,7 +148,8 @@ class HomeActivity : AppCompatActivity(), ITranDataListener {
 
                 for (x in 0 until arraySize) {
 
-                    add(MyStockData(
+                    add(
+                        MyStockData(
                         id=array[x]!!.id,
                         stockName=array[x]!!.stockName,
                         stockProfit=array[x]!!.stockProfit,

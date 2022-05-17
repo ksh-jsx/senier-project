@@ -2,9 +2,7 @@ package com.stucs17.stockai
 
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.commexpert.ExpertRealProc
 import com.commexpert.ExpertTranProc
@@ -22,10 +20,26 @@ class BuyActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
     var m_nOrderRqId = -1 //주문 TR ID
     var m_nOrderListRqId = -1 //주문내역 TR ID
 
+    private lateinit var tv_stock_name : TextView
+    private lateinit var tv_stock_price : TextView
+    private lateinit var btn_plus1 : Button
+    private lateinit var btn_minus1 : Button
+    private lateinit var btn_plus2 : Button
+    private lateinit var btn_minus2 : Button
     private lateinit var buttonBuy : Button
+    private lateinit var buttonCancel : Button
     private lateinit var tv_order_price : EditText
+    private lateinit var tv_order_qty : EditText
+    private lateinit var radio_group : RadioGroup
 
+    private var currentPrice = 0
+    private var currentQty = 0
+    private var currentName = ""
+    private var currentCode = ""
+    private var marketName = ""
+    private var orderType = "00"
 
+    private val gb = GlobalBackground()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,14 +50,66 @@ class BuyActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
         m_OrderTranProc!!.InitInstance(this)
         m_OrderTranProc!!.SetShowTrLog(true)
 
+        tv_stock_name = findViewById(R.id.tv_stock_name)
+        tv_stock_price = findViewById(R.id.tv_stock_price)
+        btn_plus1 = findViewById(R.id.btn_plus1)
+        btn_minus1 = findViewById(R.id.btn_minus1)
+        btn_plus2 = findViewById(R.id.btn_plus2)
+        btn_minus2 = findViewById(R.id.btn_minus2)
         buttonBuy = findViewById(R.id.buttonBuy)
+        buttonCancel = findViewById(R.id.buttonCancel)
         tv_order_price = findViewById(R.id.tv_order_price)
+        tv_order_qty = findViewById(R.id.tv_order_qty)
+        radio_group = findViewById(R.id.radio_group)
 
-        buttonBuy.setOnClickListener {
 
-            runBuy()
+        if(intent.hasExtra("Price")) {
+            currentPrice = intent.getIntExtra("Price",0)
+            currentName = intent.getStringExtra("Name")
+            marketName = intent.getStringExtra("Market")
+            currentCode = intent.getStringExtra("Code")
         }
 
+        currentQty = tv_order_qty.text.toString().toInt()
+        tv_stock_name.text = currentName
+        tv_stock_price.text = "현재가격: "+gb.dec(currentPrice)+" 원"
+
+        radio_group.setOnCheckedChangeListener{ group, checkedId ->
+            when(checkedId){
+                R.id.radio_btn1 -> orderType =  "00"
+
+                R.id.radio_btn2 -> orderType =  "01"
+            }
+        }
+
+        tv_order_price.setText(gb.dec(currentPrice))
+
+        btn_plus1.setOnClickListener {
+            val temp = gb.plus(currentQty,1)
+            currentQty = temp
+            tv_order_qty.setText(temp.toString())
+        }
+        btn_minus1.setOnClickListener {
+            val temp = gb.minus(currentQty,1)
+            currentQty = temp
+            tv_order_qty.setText(temp.toString())
+        }
+        btn_plus2.setOnClickListener {
+            val temp = gb.plus(currentPrice,getUnit(currentPrice))
+            currentPrice = temp
+            tv_order_price.setText(gb.dec(temp))
+        }
+        btn_minus2.setOnClickListener {
+            val temp = gb.minus(currentPrice,getUnit(currentPrice))
+            currentPrice = temp
+            tv_order_price.setText(gb.dec(temp))
+        }
+        buttonBuy.setOnClickListener {
+            runBuy()
+        }
+        buttonCancel.setOnClickListener {
+            finish()
+        }
     }
 
     override fun onDestroy() {
@@ -53,11 +119,25 @@ class BuyActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
         m_OrderTranProc = null
     }
 
+    fun getUnit(price:Int):Int {
+
+        return if(price<1000) 1
+        else if(price<5000) 5
+        else if(price<10000) 10
+        else if(price<50000) 50
+        else if(price<100000) 100
+        else if(price<500000){
+            if(marketName === "KOSPI200") 500
+            else 100
+        } else{
+            if(marketName === "KOSPI200") 1000
+            else 100
+        }
+    }
+
     fun runBuy() {
-        var strPass = "9877"
+        val strPass = "9877"
         var strEncPass = ""
-        var m_strCode = ""
-        var strOrderPrice = ""
 
         m_OrderTranProc!!.ClearInblockData()
 
@@ -71,16 +151,14 @@ class BuyActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
 
 
 
-        m_OrderTranProc!!.SetSingleData(0, 3, "096040") //상품코드
-        m_OrderTranProc!!.SetSingleData(0, 4, "00") //주문구분  00:지정가
+        m_OrderTranProc!!.SetSingleData(0, 3, currentCode) //상품코드
+        m_OrderTranProc!!.SetSingleData(0, 4, orderType) //주문구분  00:지정가 01:시장가
 
         //주문수량
-        m_OrderTranProc!!.SetSingleData(0, 5, "1")
+        m_OrderTranProc!!.SetSingleData(0, 5, currentQty.toString())
 
         //주문단가
-        if (tv_order_price == null) return
-        m_strCode = tv_order_price.getText().toString()
-        m_OrderTranProc!!.SetSingleData(0, 6, m_strCode)
+        m_OrderTranProc!!.SetSingleData(0, 6, currentPrice.toString())
         m_OrderTranProc!!.SetSingleData(0, 7, " ") //연락전화번호
 
         //축약서명
