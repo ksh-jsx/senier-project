@@ -1,22 +1,24 @@
 package com.stucs17.stockai
 
 import android.annotation.SuppressLint
-import android.content.Intent
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.commexpert.ExpertTranProc
 import com.stucs17.stockai.adapter.MyStockAdapter
 import com.stucs17.stockai.data.MyStockData
 import com.truefriend.corelib.commexpert.intrf.ITranDataListener
-import java.text.DecimalFormat
 
-class HomeActivity : AppCompatActivity(), ITranDataListener {
 
+class Tab1 : Fragment(), ITranDataListener {
     var m_JangoTranProc: ExpertTranProc? = null //잔고 조회
 
     var m_nJangoRqId = -1 //잔고 TR ID
@@ -24,41 +26,39 @@ class HomeActivity : AppCompatActivity(), ITranDataListener {
     private lateinit var tv_total_assets : TextView
     private lateinit var tv_rest_assets : TextView
     private lateinit var tv_total_profit_or_loss : TextView
-    private lateinit var btn_goto_CSActivity : Button
-    private lateinit var btn_goto_ISActivity : Button
     private lateinit var rv_myStock : RecyclerView
 
     lateinit var myStockAdapter: MyStockAdapter
     val datas = mutableListOf<MyStockData>()
     private val gb = GlobalBackground()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
+    lateinit var tabActivity: TabActivity
 
-        m_JangoTranProc = ExpertTranProc(this@HomeActivity)
-        m_JangoTranProc!!.InitInstance(this@HomeActivity)
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        tabActivity = context as TabActivity
+    }
+
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View?
+    {
+        val v: View = inflater.inflate(R.layout.fragment_tab1, container, false)
+
+        m_JangoTranProc = ExpertTranProc(tabActivity)
+        m_JangoTranProc!!.InitInstance(this)
         m_JangoTranProc!!.SetShowTrLog(false)
 
-        tv_total_assets = findViewById(R.id.tv_total_assets)
-        tv_rest_assets = findViewById(R.id.tv_rest_assets)
-        tv_total_profit_or_loss = findViewById(R.id.tv_total_profit_or_loss)
-        btn_goto_CSActivity = findViewById(R.id.btn_goto_CSActivity)
-        btn_goto_ISActivity = findViewById(R.id.btn_goto_ISActivity)
-        rv_myStock = findViewById(R.id.rv_myStock)
+        tv_total_assets = v.findViewById(R.id.tv_total_assets)
+        tv_rest_assets = v.findViewById(R.id.tv_rest_assets)
+        tv_total_profit_or_loss = v.findViewById(R.id.tv_total_profit_or_loss)
 
-        btn_goto_CSActivity.setOnClickListener {
-            val intent = Intent(this@HomeActivity, CurrentStockPriceActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
-        btn_goto_ISActivity.setOnClickListener {
-            val intent = Intent(this@HomeActivity, InvestmentSettingActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
-
+        rv_myStock = v.findViewById(R.id.rv_myStock)
         getJango()
+        return v
     }
 
     override fun onDestroy() {
@@ -67,6 +67,7 @@ class HomeActivity : AppCompatActivity(), ITranDataListener {
         m_JangoTranProc!!.ClearInstance()
         m_JangoTranProc = null
     }
+
 
     fun getJango(){
         var strPass = "9877"
@@ -110,7 +111,7 @@ class HomeActivity : AppCompatActivity(), ITranDataListener {
             var arraySize = 0
             var buyPriceSum = 0
 
-            myStockAdapter = MyStockAdapter(this)
+            myStockAdapter = MyStockAdapter(tabActivity)
             rv_myStock.adapter = myStockAdapter
 
             for (i in 0 until nCount) {
@@ -140,11 +141,11 @@ class HomeActivity : AppCompatActivity(), ITranDataListener {
             tv_rest_assets.text = "주문 가능: "+gb.dec((strTotal1.toInt()-strTotal2.toInt())-buyPriceSum)+"원"
 
             if(profit > 0)
-                tv_total_profit_or_loss.setTextColor((ContextCompat.getColor(applicationContext!!, R.color.red)))
+                tv_total_profit_or_loss.setTextColor((ContextCompat.getColor(tabActivity.applicationContext!!, R.color.red)))
             else if(profit === 0)
-                tv_total_profit_or_loss.setTextColor((ContextCompat.getColor(applicationContext!!, R.color.gray)))
+                tv_total_profit_or_loss.setTextColor((ContextCompat.getColor(tabActivity.applicationContext!!, R.color.gray)))
             else
-                tv_total_profit_or_loss.setTextColor((ContextCompat.getColor(applicationContext!!, R.color.blue)))
+                tv_total_profit_or_loss.setTextColor((ContextCompat.getColor(tabActivity.applicationContext!!, R.color.blue)))
 
             datas.apply {
 
@@ -152,12 +153,12 @@ class HomeActivity : AppCompatActivity(), ITranDataListener {
 
                     add(
                         MyStockData(
-                        id=array[x]!!.id,
-                        stockName=array[x]!!.stockName,
-                        stockProfit=array[x]!!.stockProfit,
-                        stockProfitPer=array[x]!!.stockProfitPer,
-                        stockQty=array[x]!!.stockQty,
-                        stockPrice=array[x]!!.stockPrice)
+                            id=array[x]!!.id,
+                            stockName=array[x]!!.stockName,
+                            stockProfit=array[x]!!.stockProfit,
+                            stockProfitPer=array[x]!!.stockProfitPer,
+                            stockQty=array[x]!!.stockQty,
+                            stockPrice=array[x]!!.stockPrice)
                     )
                 }
 

@@ -202,7 +202,7 @@ class MainActivity : AppCompatActivity(), IExpertInitListener, IExpertLoginListe
     }
 
     fun gotoHome() {
-        val intent = Intent(this@MainActivity, HomeActivity::class.java)
+        val intent = Intent(this@MainActivity, TabActivity::class.java)
         startActivity(intent)
         finish()
     }
