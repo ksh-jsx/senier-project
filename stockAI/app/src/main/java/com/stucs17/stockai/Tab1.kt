@@ -120,10 +120,10 @@ class Tab1 : Fragment(), ITranDataListener {
                 val strName = m_JangoTranProc!!.GetMultiData(0, 1, i)
                 //잔고
                 val strQty = m_JangoTranProc!!.GetMultiData(0, 7, i)
-                var strbuyPrice = m_JangoTranProc!!.GetMultiData(0, 10, i) // 매입금액
-                var strPrice = m_JangoTranProc!!.GetMultiData(0, 12, i) // 평가금액
-                var strProfit = m_JangoTranProc!!.GetMultiData(0, 13, i) // 손익
-                var strProfitPer = m_JangoTranProc!!.GetMultiData(0, 14, i) // 손익률
+                val strbuyPrice = m_JangoTranProc!!.GetMultiData(0, 10, i) // 매입금액
+                val strPrice = m_JangoTranProc!!.GetMultiData(0, 12, i) // 평가금액
+                val strProfit = m_JangoTranProc!!.GetMultiData(0, 13, i) // 손익
+                val strProfitPer = m_JangoTranProc!!.GetMultiData(0, 14, i) // 손익률
 
                 if(strCode.length > 3){
                     val data = MyStockData(i+1,strName,strProfit,strProfitPer,strQty,strPrice)
@@ -142,10 +142,12 @@ class Tab1 : Fragment(), ITranDataListener {
 
             if(profit > 0)
                 tv_total_profit_or_loss.setTextColor((ContextCompat.getColor(tabActivity.applicationContext!!, R.color.red)))
-            else if(profit === 0)
+            else if(profit == 0)
                 tv_total_profit_or_loss.setTextColor((ContextCompat.getColor(tabActivity.applicationContext!!, R.color.gray)))
             else
                 tv_total_profit_or_loss.setTextColor((ContextCompat.getColor(tabActivity.applicationContext!!, R.color.blue)))
+
+            datas.clear()
 
             datas.apply {
 

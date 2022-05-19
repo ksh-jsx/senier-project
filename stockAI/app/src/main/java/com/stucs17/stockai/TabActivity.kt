@@ -10,15 +10,14 @@ class TabActivity : AppCompatActivity() {
 
     private lateinit var context: Context
 
-    override fun onCreate(savedInstanceState: Bundle?)
-    {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tab)
 
         val adapter = PageAdapter(supportFragmentManager)
         adapter.addFragment(Tab1(), "홈")
-        adapter.addFragment(Tab2(), "매수/메도")
-        adapter.addFragment(Tab1(), "자동 투자")
+        adapter.addFragment(Tab2(), "매수/매도")
+        adapter.addFragment(Tab2(), "자동 투자")
 
         viewpager.adapter = adapter
         tab_layout.setupWithViewPager(viewpager)

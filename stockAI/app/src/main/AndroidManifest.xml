@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.stucs17.stockai">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -22,14 +23,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.StockAI"
-        android:usesCleartextTraffic="true">
-        <activity android:name=".TabActivity"></activity>
+        android:usesCleartextTraffic="true"
+        tools:targetApi="m">
+
         <activity android:name=".InvestmentSettingActivity" />
         <activity android:name=".SellActivity" />
         <activity android:name=".BuyActivity" />
-        <activity android:name=".HomeActivity" />
+
         <activity
-            android:name=".CurrentStockPriceActivity"
+            android:name=".TabActivity"
             android:windowSoftInputMode="adjustNothing" />
 
         <uses-library

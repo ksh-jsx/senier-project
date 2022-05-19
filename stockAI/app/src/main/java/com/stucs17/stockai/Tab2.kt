@@ -120,6 +120,7 @@ class Tab2 : Fragment(), ITranDataListener {
 
         buttonSearch.setOnClickListener {
             requestCurrentPrice(editStockName.text.toString())
+            stockList.visibility = View.GONE
             priceBox.visibility = View.VISIBLE
             BSbuttonBox.visibility = View.VISIBLE
             centerBox.visibility = View.VISIBLE
