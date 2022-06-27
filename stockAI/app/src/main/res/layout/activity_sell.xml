@@ -4,25 +4,244 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginVertical="10dp"
+    android:layout_marginHorizontal="10dp"
     tools:context=".SellActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/test_tv"
-        android:layout_width="111dp"
-        android:layout_height="177dp"
-        android:text="test1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-    <Button
-        android:id="@+id/bt_start"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/test_tv" />
+            <TextView
+                android:id="@+id/tv_stock_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/nanumsquare_eb"
+                android:gravity="center"
+                android:text="주식명"
+                android:textColor="@color/black"
+                android:textSize="50sp" />
+            <TextView
+                android:id="@+id/tv_stock_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/nanumsquare_eb"
+                android:gravity="center"
+                android:text="현재가 "
+                android:textColor="@color/black"
+                android:textSize="30sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/nanumsquare_eb"
+                android:gravity="center"
+                android:text="주문 방법: "
+                android:textColor="@color/black"
+                android:textSize="35sp" />
+
+            <RadioGroup
+                android:id="@+id/radio_group"
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/radio_btn1"
+                    android:layout_width="match_parent"
+                    android:layout_height="0sp"
+                    android:layout_weight="1"
+                    android:text="  지정가"
+                    android:fontFamily="@font/nanumsquare_eb"
+                    android:textSize="30sp"
+                    android:checked="true"/>
+                <RadioButton
+                    android:id="@+id/radio_btn2"
+                    android:layout_width="match_parent"
+                    android:layout_height="0sp"
+                    android:layout_weight="1"
+                    android:text="  시장가"
+                    android:fontFamily="@font/nanumsquare_eb"
+                    android:textSize="30sp"/>
+            </RadioGroup>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/nanumsquare_eb"
+                android:gravity="center"
+                android:text="매도 수량: "
+                android:textColor="@color/black"
+                android:textSize="35sp" />
+
+            <LinearLayout
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/btn_minus1"
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
+                    android:text="-" />
+
+                <EditText
+                    android:id="@+id/tv_order_qty"
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@font/nanumsquare_eb"
+                    android:gravity="center"
+                    android:text="0"
+                    android:textColor="@color/main"
+                    android:textSize="25sp" />
+
+                <Button
+                    android:id="@+id/btn_plus1"
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
+                    android:text="+" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:fontFamily="@font/nanumsquare_eb"
+                android:gravity="center"
+                android:text="매도 가능: "
+                android:textColor="@color/gray"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/tv_sell_available_qty"
+                android:layout_width="100sp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/nanumsquare_eb"
+                android:gravity="center"
+                android:text="00주"
+                android:textColor="@color/gray"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/nanumsquare_eb"
+                android:gravity="center"
+                android:text="매도 단가: "
+                android:textColor="@color/black"
+                android:textSize="35sp" />
+
+            <LinearLayout
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/btn_minus2"
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
+                    android:text="-" />
+
+                <EditText
+                    android:id="@+id/tv_order_price"
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@font/nanumsquare_eb"
+                    android:gravity="center"
+                    android:textColor="@color/main"
+                    android:textSize="25dp" />
+
+                <Button
+                    android:id="@+id/btn_plus2"
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
+                    android:text="+" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="bottom"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/buttonBuy"
+                android:layout_width="0sp"
+                android:layout_height="100sp"
+                android:layout_marginHorizontal="10sp"
+                android:layout_weight="1"
+                app:backgroundTint="@color/red"
+                android:text="매수"
+                android:fontFamily="@font/nanumsquare_eb"
+                android:textColor="@color/white"
+                android:textSize="40dp" />
+
+            <Button
+                android:id="@+id/buttonCancel"
+                android:layout_width="0sp"
+                android:layout_height="100sp"
+                android:layout_marginHorizontal="10sp"
+                android:layout_weight="1"
+                app:backgroundTint="@color/gray"
+                android:text="취소"
+                android:fontFamily="@font/nanumsquare_eb"
+                android:textColor="@color/white"
+                android:textSize="40dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

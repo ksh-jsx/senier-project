@@ -100,6 +100,10 @@ class Tab2 : Fragment(), ITranDataListener {
 
         buttonForSell.setOnClickListener {
             val intent = Intent(tabActivity, SellActivity::class.java)
+            intent.putExtra("Name",editStockName.text.toString())
+            intent.putExtra("Price",currentPrice)
+            intent.putExtra("Code",stockCode)
+            intent.putExtra("Market",stockMarket)
             startActivity(intent)
             //finish()
         }

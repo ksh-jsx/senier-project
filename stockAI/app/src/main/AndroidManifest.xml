@@ -25,11 +25,10 @@
         android:theme="@style/Theme.StockAI"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-
+        <activity android:name=".tmp"></activity>
         <activity android:name=".InvestmentSettingActivity" />
         <activity android:name=".SellActivity" />
         <activity android:name=".BuyActivity" />
-
         <activity
             android:name=".TabActivity"
             android:windowSoftInputMode="adjustNothing" />

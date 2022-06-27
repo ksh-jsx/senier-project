@@ -69,16 +69,15 @@ class Tab1 : Fragment(), ITranDataListener {
     }
 
 
-    fun getJango(){
-        var strPass = "9877"
-        var strEncPass = ""
+    fun getJango(){ //sellact에서 중복사용중... 공용으로 빼기
+        val strPass = "9877"
+        val strEncPass = m_JangoTranProc!!.GetEncryptPassword(strPass)
         m_JangoTranProc!!.ClearInblockData()
         //if (tStatus == null) return
         m_JangoTranProc!!.SetSingleData(0, 0, "68067116")
         //상품코드
         m_JangoTranProc!!.SetSingleData(0, 1, "01")
 
-        strEncPass = m_JangoTranProc!!.GetEncryptPassword(strPass)
         m_JangoTranProc!!.SetSingleData(0, 2, strEncPass)
         m_JangoTranProc!!.SetSingleData(0, 3, "N") //시간외 단일가여부
         m_JangoTranProc!!.SetSingleData(0, 4, "N") //오프라인 여부
