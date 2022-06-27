@@ -1,9 +1,12 @@
 package com.stucs17.stockai
 
 import android.Manifest
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -12,17 +15,26 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.bumptech.glide.Glide
 import com.commexpert.CommExpertMng
+import com.stucs17.stockai.sql.DBHelper
 import com.truefriend.corelib.commexpert.intrf.IExpertInitListener
 import com.truefriend.corelib.commexpert.intrf.IExpertLoginListener
 
 class MainActivity : AppCompatActivity(), IExpertInitListener, IExpertLoginListener {
     private val TAG : String = "HantooSample" // 로깅용 태그
     private var isConnected : Boolean = false
-
+    private var isLoggedin : Boolean = true
     private lateinit var loginWrapper : LinearLayout
     private lateinit var loadingWrapper : LinearLayout
     private lateinit var loading_icon : ImageView
 
+    private var idStr : String = ""
+    private var pwStr : String = ""
+    private var caPwStr : String = ""
+    private var numPwStr : String = ""
+
+    //sql 관련
+    lateinit var dbHelper: DBHelper
+    lateinit var database: SQLiteDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +45,10 @@ class MainActivity : AppCompatActivity(), IExpertInitListener, IExpertLoginListe
 
         val button = findViewById<Button>(R.id.buttonLogin)
         button.setOnClickListener{
+            idStr = findViewById<EditText>(R.id.editId).text.toString()
+            pwStr = findViewById<EditText>(R.id.editPw).text.toString()
+            caPwStr = findViewById<EditText>(R.id.editCaPw).text.toString()
+            numPwStr = findViewById<EditText>(R.id.editNumPw).text.toString()
             login()
         }
 
@@ -43,6 +59,9 @@ class MainActivity : AppCompatActivity(), IExpertInitListener, IExpertLoginListe
 
         var test = GlobalBackground()
         test.logTest()
+
+        dbHelper = DBHelper(this, "mydb.db", null, 1)
+        database = dbHelper.writableDatabase
     }
 
     private fun startApp() {
@@ -66,9 +85,27 @@ class MainActivity : AppCompatActivity(), IExpertInitListener, IExpertLoginListe
             return
         }
 
-        val idStr = findViewById<EditText>(R.id.editId).text.toString()
-        val pwStr = findViewById<EditText>(R.id.editPw).text.toString()
-        val caPwStr = findViewById<EditText>(R.id.editCaPw).text.toString()
+
+        val query = "SELECT * FROM user;"
+        val c = database.rawQuery(query,null)
+        if(c.moveToNext()){
+            System.out.println("id : "+c.getString(c.getColumnIndex("id")));
+            System.out.println("pwd : "+c.getString(c.getColumnIndex("pwd")));
+            System.out.println("3 : "+c.getString(c.getColumnIndex("certPwd")));
+            System.out.println("4 : "+c.getString(c.getColumnIndex("numPwd")));
+
+            idStr = c.getString(c.getColumnIndex("id"))
+            pwStr = c.getString(c.getColumnIndex("pwd"))
+            caPwStr = c.getString(c.getColumnIndex("certPwd"))
+            numPwStr = c.getString(c.getColumnIndex("numPwd"))
+
+            findViewById<EditText>(R.id.editId).setText(idStr)
+            findViewById<EditText>(R.id.editPw).setText(pwStr)
+            findViewById<EditText>(R.id.editCaPw).setText(caPwStr)
+            findViewById<EditText>(R.id.editNumPw).setText(numPwStr)
+
+            isLoggedin = false
+        }
 
         if (idStr.isEmpty()) {
             Toast.makeText(baseContext, "아이디를 확인하세요.", Toast.LENGTH_SHORT).show()
@@ -78,6 +115,10 @@ class MainActivity : AppCompatActivity(), IExpertInitListener, IExpertLoginListe
             return
         } else if (caPwStr.isEmpty()) {
             Toast.makeText(baseContext, "공인인증 비밀번호를 확인하세요.", Toast.LENGTH_SHORT).show()
+            return
+
+        } else if (numPwStr.isEmpty()) {
+            Toast.makeText(baseContext, "간편 비밀번호를 확인하세요.", Toast.LENGTH_SHORT).show()
             return
         }
         else {
@@ -184,6 +225,8 @@ class MainActivity : AppCompatActivity(), IExpertInitListener, IExpertLoginListe
      * IExpertLoginListener
      */
     override fun onLoginResult(isSuccess: Boolean, strErrorMsg: String?) {
+        if(!isSuccess)
+            Toast.makeText(this, strErrorMsg, Toast.LENGTH_LONG).show()
         Log.d(TAG, "Result : $isSuccess, Message : $strErrorMsg" )
     }
 
@@ -198,6 +241,23 @@ class MainActivity : AppCompatActivity(), IExpertInitListener, IExpertLoginListe
     override fun onLoginFinished() {
         Log.d(TAG,"onLoginFinished")
         Log.d(TAG, CommExpertMng.getInstance().GetLoginUserID())
+
+        //var arr : Array<String> = arrayOf("shkim787")
+        //database.delete("user","id=?",arr)
+
+        if(isLoggedin) {
+            var contentValues = ContentValues()
+            contentValues.put("id", idStr)
+            contentValues.put("pwd", pwStr)
+            contentValues.put("certPwd", caPwStr)
+            contentValues.put("numPwd", numPwStr)
+
+            database.insert("user", null, contentValues)
+        }
+
+
+
+        Toast.makeText(this, "추가되었습니다.", Toast.LENGTH_SHORT).show()
         gotoHome()
     }
 

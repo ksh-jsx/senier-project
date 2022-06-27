@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.pm.PackageManager
+import android.database.sqlite.SQLiteDatabase
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Base64
@@ -19,6 +20,7 @@ import com.kakao.sdk.newtoneapi.SpeechRecognizeListener
 import com.kakao.sdk.newtoneapi.SpeechRecognizerClient
 import com.kakao.sdk.newtoneapi.SpeechRecognizerManager
 import com.stucs17.stockai.data.MyStockData
+import com.stucs17.stockai.sql.DBHelper
 import com.truefriend.corelib.commexpert.intrf.IRealDataListener
 import com.truefriend.corelib.commexpert.intrf.ITranDataListener
 import java.security.MessageDigest
@@ -56,6 +58,9 @@ class SellActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
     private var orderType = "00"
 
     private val gb = GlobalBackground()
+    //sql 관련
+    lateinit var dbHelper: DBHelper
+    lateinit var database: SQLiteDatabase
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,6 +89,8 @@ class SellActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
         tv_order_qty = findViewById(R.id.tv_order_qty)
         radio_group = findViewById(R.id.radio_group)
 
+        dbHelper = DBHelper(this, "mydb.db", null, 1)
+        database = dbHelper.writableDatabase
 
         if(intent.hasExtra("Price")) {
             currentPrice = intent.getIntExtra("Price",0)
@@ -160,7 +167,13 @@ class SellActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
     }
 
     fun getJango(){
-        val strPass = "9877"
+        var strPass = ""
+        val query = "SELECT * FROM user;"
+        val c = database.rawQuery(query,null)
+        if(c.moveToNext()){
+            strPass = c.getString(c.getColumnIndex("numPwd"))
+        }
+
         m_JangoTranProc!!.ClearInblockData()
         val strEncPass = m_JangoTranProc!!.GetEncryptPassword(strPass)
         //if (tStatus == null) return

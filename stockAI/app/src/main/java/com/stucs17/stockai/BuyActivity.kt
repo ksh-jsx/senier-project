@@ -1,11 +1,13 @@
 package com.stucs17.stockai
 
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.commexpert.ExpertRealProc
 import com.commexpert.ExpertTranProc
+import com.stucs17.stockai.sql.DBHelper
 import com.truefriend.corelib.commexpert.intrf.IRealDataListener
 import com.truefriend.corelib.commexpert.intrf.ITranDataListener
 
@@ -40,6 +42,9 @@ class BuyActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
     private var orderType = "00"
 
     private val gb = GlobalBackground()
+    //sql 관련
+    lateinit var dbHelper: DBHelper
+    lateinit var database: SQLiteDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,6 +67,8 @@ class BuyActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
         tv_order_qty = findViewById(R.id.tv_order_qty)
         radio_group = findViewById(R.id.radio_group)
 
+        dbHelper = DBHelper(this, "mydb.db", null, 1)
+        database = dbHelper.writableDatabase
 
         if(intent.hasExtra("Price")) {
             currentPrice = intent.getIntExtra("Price",0)
@@ -136,7 +143,12 @@ class BuyActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
     }
 
     fun runBuy() {
-        val strPass = "9877"
+        var strPass = ""
+        val query = "SELECT * FROM user;"
+        val c = database.rawQuery(query,null)
+        if(c.moveToNext()){
+            strPass = c.getString(c.getColumnIndex("numPwd"))
+        }
         var strEncPass = ""
 
         m_OrderTranProc!!.ClearInblockData()

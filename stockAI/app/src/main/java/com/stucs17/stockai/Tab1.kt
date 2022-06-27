@@ -2,6 +2,7 @@ package com.stucs17.stockai
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.commexpert.ExpertTranProc
 import com.stucs17.stockai.adapter.MyStockAdapter
 import com.stucs17.stockai.data.MyStockData
+import com.stucs17.stockai.sql.DBHelper
 import com.truefriend.corelib.commexpert.intrf.ITranDataListener
 
 
@@ -33,6 +35,10 @@ class Tab1 : Fragment(), ITranDataListener {
     private val gb = GlobalBackground()
 
     lateinit var tabActivity: TabActivity
+
+    //sql 관련
+    lateinit var dbHelper: DBHelper
+    lateinit var database: SQLiteDatabase
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -57,7 +63,11 @@ class Tab1 : Fragment(), ITranDataListener {
         tv_total_profit_or_loss = v.findViewById(R.id.tv_total_profit_or_loss)
 
         rv_myStock = v.findViewById(R.id.rv_myStock)
+
+        dbHelper = DBHelper(tabActivity, "mydb.db", null, 1)
+        database = dbHelper.writableDatabase
         getJango()
+
         return v
     }
 
@@ -70,7 +80,13 @@ class Tab1 : Fragment(), ITranDataListener {
 
 
     fun getJango(){ //sellact에서 중복사용중... 공용으로 빼기
-        val strPass = "9877"
+        var strPass = ""
+        val query = "SELECT * FROM user;"
+        val c = database.rawQuery(query,null)
+        if(c.moveToNext()){
+            strPass = c.getString(c.getColumnIndex("numPwd"))
+        }
+
         val strEncPass = m_JangoTranProc!!.GetEncryptPassword(strPass)
         m_JangoTranProc!!.ClearInblockData()
         //if (tStatus == null) return
