@@ -223,8 +223,8 @@
                 android:layout_height="100sp"
                 android:layout_marginHorizontal="10sp"
                 android:layout_weight="1"
-                app:backgroundTint="@color/red"
-                android:text="매수"
+                app:backgroundTint="@color/blue"
+                android:text="매도"
                 android:fontFamily="@font/nanumsquare_eb"
                 android:textColor="@color/white"
                 android:textSize="40dp" />

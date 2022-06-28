@@ -1,9 +1,11 @@
 package com.stucs17.stockai
 
+import android.content.DialogInterface
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.util.Log
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.commexpert.ExpertRealProc
 import com.commexpert.ExpertTranProc
@@ -89,6 +91,8 @@ class BuyActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
             }
         }
 
+        val builder = AlertDialog.Builder(this)
+
         tv_order_price.setText(gb.dec(currentPrice))
 
         btn_plus1.setOnClickListener {
@@ -112,7 +116,16 @@ class BuyActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
             tv_order_price.setText(gb.dec(temp))
         }
         buttonBuy.setOnClickListener {
-            runBuy()
+            builder.setTitle("매수")
+            builder.setMessage("${currentName} ${currentQty.toString()}주 매수합니다")
+            builder.setPositiveButton("네") { dialogInterface: DialogInterface, i: Int ->
+                runBuy()
+            }
+            builder.setNegativeButton("취소") { dialogInterface: DialogInterface, i: Int ->
+            }
+            builder.show()
+
+
         }
         buttonCancel.setOnClickListener {
             finish()
@@ -189,9 +202,10 @@ class BuyActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
         nRqId: Int, strMsgCode: String?,
         strErrorType: String?, strMessage: String?
     ) {
-
+        if(strMsgCode == "APBK0013")
+            Toast.makeText(this, strMessage, Toast.LENGTH_LONG).show()
             // TODO Auto-generated method stub
-            Log.e("onTranMessageReceived", String.format("MsgCode:%s ErrorType:%s %s",  strMsgCode ,  strErrorType  , strMessage));
+        Log.e("onTranMessageReceived", String.format("MsgCode:%s ErrorType:%s %s",  strMsgCode ,  strErrorType  , strMessage));
 
 
     }

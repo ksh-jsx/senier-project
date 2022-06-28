@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.Context
+import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.database.sqlite.SQLiteDatabase
 import android.media.MediaPlayer
@@ -11,6 +12,7 @@ import android.os.Bundle
 import android.util.Base64
 import android.util.Log
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -61,8 +63,9 @@ class SellActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
     //sql 관련
     lateinit var dbHelper: DBHelper
     lateinit var database: SQLiteDatabase
+    private var strPass:String = ""
 
-    @SuppressLint("SetTextI18n")
+@SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sell)
@@ -111,6 +114,8 @@ class SellActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
             }
         }
 
+        val builder = AlertDialog.Builder(this)
+
         tv_order_price.setText(gb.dec(currentPrice))
 
         btn_plus1.setOnClickListener {
@@ -134,7 +139,14 @@ class SellActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
             tv_order_price.setText(gb.dec(temp))
         }
         buttonBuy.setOnClickListener {
-            runSell()
+            builder.setTitle("매도")
+            builder.setMessage("${currentName} ${currentQty.toString()}주 매도합니다")
+            builder.setPositiveButton("네") { dialogInterface: DialogInterface, i: Int ->
+                runSell()
+            }
+            builder.setNegativeButton("취소") { dialogInterface: DialogInterface, i: Int ->
+            }
+            builder.show()
         }
         buttonCancel.setOnClickListener {
             finish()
@@ -167,7 +179,7 @@ class SellActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
     }
 
     fun getJango(){
-        var strPass = ""
+
         val query = "SELECT * FROM user;"
         val c = database.rawQuery(query,null)
         if(c.moveToNext()){
@@ -194,7 +206,7 @@ class SellActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
     }
 
     fun runSell() {
-        val strPass = "9877"
+
         var strEncPass = ""
 
         m_OrderTranProc!!.ClearInblockData()
