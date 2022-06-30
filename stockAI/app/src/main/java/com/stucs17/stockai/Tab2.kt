@@ -5,6 +5,8 @@ import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
+import android.os.AsyncTask
 import android.os.Bundle
 import android.text.Editable
 import android.text.Spannable
@@ -22,6 +24,9 @@ import com.commexpert.CommExpertMng
 import com.commexpert.ExpertTranProc
 import com.truefriend.corelib.commexpert.intrf.ITranDataListener
 import com.truefriend.corelib.shared.ItemMaster.ItemCode
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
+import org.jsoup.select.Elements
 import kotlin.math.abs
 
 
@@ -33,9 +38,19 @@ class Tab2 : Fragment(), ITranDataListener {
     private lateinit var editStockName : EditText
     private lateinit var stockList : ListView
     private lateinit var priceBox : LinearLayout
+    private lateinit var infoBox : LinearLayout
     private lateinit var BSbuttonBox : LinearLayout
     private lateinit var centerBox : LinearLayout
-    private lateinit var nameView : TextView
+    private lateinit var tv_kospi1 : TextView
+    private lateinit var tv_kospi2 : TextView
+    private lateinit var tv_kosdaq1 : TextView
+    private lateinit var tv_kosdaq2 : TextView
+    private lateinit var tv_news1 : TextView
+    private lateinit var tv_news2 : TextView
+    private lateinit var tv_news3 : TextView
+    private lateinit var tv_news4 : TextView
+    private lateinit var tv_news5 : TextView
+    private lateinit var tv_news6 : TextView
     private lateinit var priceView : TextView
     private lateinit var priceView2 : TextView
     private lateinit var tv_21 : TextView
@@ -52,6 +67,9 @@ class Tab2 : Fragment(), ITranDataListener {
     private var currentPrice = 0
     private var stockMarket = ""
     private var stockCode = ""
+
+    val weburl = "https://finance.naver.com/"
+    val TAG = "****** Tab2 ******"
 
     private val gb = GlobalBackground()
     lateinit var tabActivity: TabActivity
@@ -77,8 +95,20 @@ class Tab2 : Fragment(), ITranDataListener {
         editStockName = v.findViewById(R.id.editStockName)
         stockList =v.findViewById(R.id.stockList)
         priceBox = v.findViewById(R.id.priceBox)
+        infoBox = v.findViewById(R.id.infoBox)
         BSbuttonBox = v.findViewById(R.id.BSbuttonBox)
         centerBox = v.findViewById(R.id.centerBox)
+
+        tv_kospi1 = v.findViewById(R.id.tv_kospi1)
+        tv_kospi2 = v.findViewById(R.id.tv_kospi2)
+        tv_kosdaq1 = v.findViewById(R.id.tv_kosdaq1)
+        tv_kosdaq2 = v.findViewById(R.id.tv_kosdaq2)
+        tv_news1 = v.findViewById(R.id.tv_news1)
+        tv_news2 = v.findViewById(R.id.tv_news2)
+        tv_news3 = v.findViewById(R.id.tv_news3)
+        tv_news4 = v.findViewById(R.id.tv_news4)
+        tv_news5 = v.findViewById(R.id.tv_news5)
+        tv_news6 = v.findViewById(R.id.tv_news6)
         priceView = v.findViewById(R.id.priceView) // 현재가
         priceView2 = v.findViewById(R.id.priceView2) // 변동치
         tv_21 = v.findViewById(R.id.tv_21) // 상한가
@@ -133,14 +163,97 @@ class Tab2 : Fragment(), ITranDataListener {
         editStockName.setOnClickListener(View.OnClickListener {
             stockList.visibility = View.VISIBLE
             priceBox.visibility = View.GONE
+            infoBox.visibility = View.GONE
             BSbuttonBox.visibility = View.GONE
             centerBox.visibility = View.GONE
         })
 
+        MyAsyncTask().execute(weburl)
 
         return v
     }
 
+    @SuppressLint("StaticFieldLeak")
+    inner class MyAsyncTask: AsyncTask<String, String, String>() { //input, progress update type, result type
+
+        @SuppressLint("ResourceAsColor", "SetTextI18n")
+        override fun doInBackground(vararg params: String?): String {
+
+            val doc: Document = Jsoup.connect("$weburl").get()
+            val kospi: Elements = doc.select("#content > div.article > div.section2 > div.section_stock_market > div.section_stock > div.kospi_area.group_quot.quot_opn > div.heading_area > a > span span")
+            val kosdaq: Elements = doc.select("#content > div.article > div.section2 > div.section_stock_market > div.section_stock > div.kosdaq_area.group_quot > div.heading_area > a > span span")
+            val news: Elements = doc.select("#content > div.article > div.section > div.news_area > div.section_strategy > ul > li")
+            val newsSize = news.size
+            //Log.d(TAG, newsSize.toString())
+            val listKospi = ArrayList<String>()
+            val listKosdaq = ArrayList<String>()
+            val listNewsText = ArrayList<String>()
+            val listNewsHref = ArrayList<String>()
+
+            kospi.forEachIndexed { index, elem ->
+                val kospiText = elem.select("span").text()
+                listKospi.add(kospiText)
+            }
+            kosdaq.forEachIndexed { index, elem ->
+                val kosdaqText = elem.select("span").text()
+                listKosdaq.add(kosdaqText)
+            }
+            news.forEachIndexed { index, elem ->
+                val newsText = elem.select("li > span > a").text()
+                val newsHref = elem.select("li > span > a").attr("href")
+                listNewsText.add(newsText)
+                listNewsHref.add(newsHref)
+            }
+
+
+            tv_kospi1.text = listKospi[0]
+            tv_kospi2.text = "${listKospi[3]}${listKospi[1]}, ${listKospi[2].split("%")[0]}%"
+            tv_kosdaq1.text = listKosdaq[0]
+            tv_kosdaq2.text ="${listKosdaq[3]}${listKosdaq[1]}, ${listKosdaq[2].split("%")[0]}%"
+
+            tv_news1.text = listNewsText[0]
+            tv_news1.setOnClickListener {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://finance.naver.com${listNewsHref[0]}"))
+                startActivity(intent)
+            }
+            tv_news2.text = listNewsText[1]
+            tv_news2.setOnClickListener {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://finance.naver.com${listNewsHref[1]}"))
+                startActivity(intent)
+            }
+            tv_news3.text = listNewsText[2]
+            tv_news3.setOnClickListener {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://finance.naver.com${listNewsHref[2]}"))
+                startActivity(intent)
+            }
+            tv_news4.text = listNewsText[3]
+            tv_news4.setOnClickListener {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://finance.naver.com${listNewsHref[3]}"))
+                startActivity(intent)
+            }
+            tv_news5.text = listNewsText[4]
+            tv_news5.setOnClickListener {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://finance.naver.com${listNewsHref[4]}"))
+                startActivity(intent)
+            }
+            tv_news6.text = listNewsText[5]
+            tv_news6.setOnClickListener {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://finance.naver.com${listNewsHref[5]}"))
+                startActivity(intent)
+            }
+
+            if(listKospi[3] === "-")
+                tv_kospi2.setTextColor(R.color.blue)
+            else
+                tv_kospi2.setTextColor(R.color.red)
+
+            if(listKosdaq[3] === "-")
+                tv_kosdaq2.setTextColor(R.color.blue)
+            else
+                tv_kosdaq2.setTextColor(R.color.red)
+            return ""
+        }
+    }
     private fun makeStockList(sn: List<ItemCode>){ //검색한 주식 목록 생성
         val list: MutableList<String> = ArrayList()
         for(i in sn.indices) {
@@ -156,9 +269,6 @@ class Tab2 : Fragment(), ITranDataListener {
             stockList.visibility = View.GONE
 
         })
-
-
-
 
     }
 

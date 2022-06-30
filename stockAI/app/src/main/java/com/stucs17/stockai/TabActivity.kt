@@ -17,7 +17,7 @@ class TabActivity : AppCompatActivity() {
         val adapter = PageAdapter(supportFragmentManager)
         adapter.addFragment(Tab1(), "홈")
         adapter.addFragment(Tab2(), "매수/매도")
-        adapter.addFragment(Tab2(), "자동 투자")
+        adapter.addFragment(Tab3(), "자동 투자")
 
         viewpager.adapter = adapter
         tab_layout.setupWithViewPager(viewpager)

@@ -5,8 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginVertical="10sp"
-    android:layout_marginHorizontal="10sp"
+
     tools:context=".Tab2">
 
     <LinearLayout
@@ -48,11 +47,200 @@
             android:layout_height="0sp"
             android:layout_weight="9"
             android:orientation="vertical">
-            <ListView
+        <ListView
                 android:id="@+id/stockList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="25sp" />
+
+            <LinearLayout
+                android:id="@+id/infoBox"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0sp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bottom_stroke">
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:src="@drawable/flag"/>
+                    <TextView
+                        android:layout_width="0sp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/nanumsquare_eb"
+                        android:textSize="30sp"
+                        android:text="코스피:"
+                        android:textColor="@color/main"
+                        android:gravity="center_vertical"
+                        tools:ignore="NestedWeights,RtlCompat,SmallSp" />
+                    <LinearLayout
+                        android:layout_width="0sp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/tv_kospi1"
+                            android:layout_width="match_parent"
+                            android:layout_height="0sp"
+                            android:layout_weight="2"
+                            android:fontFamily="@font/nanumsquare_eb"
+                            android:textSize="20sp"
+                            android:text="kospi info"
+                            android:gravity="center_vertical"
+                            android:textAlignment="textEnd"
+                            tools:ignore="RtlCompat,SmallSp" />
+                        <TextView
+                            android:id="@+id/tv_kospi2"
+                            android:layout_width="match_parent"
+                            android:layout_height="0sp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/nanumsquare_eb"
+                            android:textSize="20sp"
+                            android:text="kospi info"
+                            android:gravity="center_vertical"
+                            android:textAlignment="textEnd"
+                            tools:ignore="RtlCompat,SmallSp" />
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0sp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bottom_stroke">
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:src="@drawable/flag"/>
+                    <TextView
+                        android:layout_width="0sp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/nanumsquare_eb"
+                        android:textSize="30sp"
+                        android:text="코스닥:"
+                        android:textColor="@color/main"
+                        android:gravity="center_vertical"
+                        tools:ignore="NestedWeights,RtlCompat,SmallSp" />
+                    <LinearLayout
+                        android:layout_width="0sp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/tv_kosdaq1"
+                            android:layout_width="match_parent"
+                            android:layout_height="0sp"
+                            android:layout_weight="2"
+                            android:fontFamily="@font/nanumsquare_eb"
+                            android:textSize="20sp"
+                            android:text="kosdaq info"
+                            android:gravity="center_vertical"
+                            android:textAlignment="textEnd"
+                            tools:ignore="RtlCompat,SmallSp" />
+                        <TextView
+                            android:id="@+id/tv_kosdaq2"
+                            android:layout_width="match_parent"
+                            android:layout_height="0sp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/nanumsquare_eb"
+                            android:textSize="20sp"
+                            android:text="kosdaq info"
+                            android:gravity="center_vertical"
+                            android:textAlignment="textEnd"
+                            tools:ignore="RtlCompat,SmallSp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0sp"
+                    android:layout_weight="3"
+                    android:orientation="vertical">
+                    <TextView
+
+                        android:layout_width="match_parent"
+                        android:layout_height="0sp"
+                        android:text="주요 뉴스"
+                        android:textColor="@color/second"
+                        android:fontFamily="@font/nanumsquare_eb"
+                        android:textSize="30sp"
+                        android:gravity="center_vertical"
+                        android:layout_weight="1"/>
+                    <TextView
+                       android:id="@+id/tv_news1"
+                       android:layout_width="match_parent"
+                       android:layout_height="0sp"
+                       android:text="1"
+                       android:textColor="@color/main"
+                       android:fontFamily="@font/nanumsquare_eb"
+                       android:textSize="18sp"
+                       android:gravity="center_vertical"
+                       android:background="@drawable/bottom_stroke"
+                       android:layout_weight="1"/>
+                    <TextView
+                       android:id="@+id/tv_news2"
+                       android:layout_width="match_parent"
+                       android:layout_height="0sp"
+                       android:text="2"
+                       android:textColor="@color/main"
+                       android:fontFamily="@font/nanumsquare_eb"
+                       android:textSize="18sp"
+                       android:gravity="center_vertical"
+                       android:background="@drawable/bottom_stroke"
+                       android:layout_weight="1"/>
+                    <TextView
+                       android:id="@+id/tv_news3"
+                       android:layout_width="match_parent"
+                       android:layout_height="0sp"
+                       android:text="3"
+                       android:textColor="@color/main"
+                       android:fontFamily="@font/nanumsquare_eb"
+                       android:textSize="18sp"
+                       android:gravity="center_vertical"
+                       android:background="@drawable/bottom_stroke"
+                       android:layout_weight="1"/>
+                    <TextView
+                       android:id="@+id/tv_news4"
+                       android:layout_width="match_parent"
+                       android:layout_height="0sp"
+                       android:text="4"
+                       android:textColor="@color/main"
+                       android:fontFamily="@font/nanumsquare_eb"
+                       android:textSize="18sp"
+                       android:gravity="center_vertical"
+                       android:background="@drawable/bottom_stroke"
+                       android:layout_weight="1"/>
+                    <TextView
+                       android:id="@+id/tv_news5"
+                       android:layout_width="match_parent"
+                       android:layout_height="0sp"
+                       android:text="5"
+                       android:textColor="@color/main"
+                       android:fontFamily="@font/nanumsquare_eb"
+                       android:textSize="18sp"
+                       android:gravity="center_vertical"
+                       android:background="@drawable/bottom_stroke"
+                       android:layout_weight="1"/>
+                    <TextView
+                       android:id="@+id/tv_news6"
+                       android:layout_width="match_parent"
+                       android:layout_height="0sp"
+                       android:text="6"
+                       android:textColor="@color/main"
+                       android:fontFamily="@font/nanumsquare_eb"
+                       android:textSize="18sp"
+                       android:gravity="center_vertical"
+                       android:background="@drawable/bottom_stroke"
+                       android:layout_weight="1"/>
+                </LinearLayout>
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/priceBox"
@@ -62,8 +250,7 @@
                 android:orientation="vertical"
                 android:background="@drawable/radius_red"
                 android:visibility="gone"
-                tools:visibility="visible"
-                >
+                tools:visibility="visible">
                 <TextView
                     android:id="@+id/priceView"
                     android:layout_width="match_parent"
