@@ -89,10 +89,6 @@ class MainActivity : AppCompatActivity(), IExpertInitListener, IExpertLoginListe
         val query = "SELECT * FROM user;"
         val c = database.rawQuery(query,null)
         if(c.moveToNext()){
-            System.out.println("id : "+c.getString(c.getColumnIndex("id")));
-            System.out.println("pwd : "+c.getString(c.getColumnIndex("pwd")));
-            System.out.println("3 : "+c.getString(c.getColumnIndex("certPwd")));
-            System.out.println("4 : "+c.getString(c.getColumnIndex("numPwd")));
 
             idStr = c.getString(c.getColumnIndex("id"))
             pwStr = c.getString(c.getColumnIndex("pwd"))

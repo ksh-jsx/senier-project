@@ -173,7 +173,6 @@ class Tab2 : Fragment(), ITranDataListener {
         return v
     }
 
-    @SuppressLint("StaticFieldLeak")
     inner class MyAsyncTask: AsyncTask<String, String, String>() { //input, progress update type, result type
 
         @SuppressLint("ResourceAsColor", "SetTextI18n")
@@ -212,35 +211,19 @@ class Tab2 : Fragment(), ITranDataListener {
             tv_kosdaq2.text ="${listKosdaq[3]}${listKosdaq[1]}, ${listKosdaq[2].split("%")[0]}%"
 
             tv_news1.text = listNewsText[0]
-            tv_news1.setOnClickListener {
+            /*tv_news1.setOnClickListener {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://finance.naver.com${listNewsHref[0]}"))
                 startActivity(intent)
-            }
+            }*/
             tv_news2.text = listNewsText[1]
-            tv_news2.setOnClickListener {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://finance.naver.com${listNewsHref[1]}"))
-                startActivity(intent)
-            }
+
             tv_news3.text = listNewsText[2]
-            tv_news3.setOnClickListener {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://finance.naver.com${listNewsHref[2]}"))
-                startActivity(intent)
-            }
+
             tv_news4.text = listNewsText[3]
-            tv_news4.setOnClickListener {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://finance.naver.com${listNewsHref[3]}"))
-                startActivity(intent)
-            }
+
             tv_news5.text = listNewsText[4]
-            tv_news5.setOnClickListener {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://finance.naver.com${listNewsHref[4]}"))
-                startActivity(intent)
-            }
+
             tv_news6.text = listNewsText[5]
-            tv_news6.setOnClickListener {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://finance.naver.com${listNewsHref[5]}"))
-                startActivity(intent)
-            }
 
             if(listKospi[3] === "-")
                 tv_kospi2.setTextColor(R.color.blue)

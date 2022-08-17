@@ -33,7 +33,7 @@ class Tab1 : Fragment(), ITranDataListener {
     lateinit var myStockAdapter: MyStockAdapter
     val datas = mutableListOf<MyStockData>()
     private val gb = GlobalBackground()
-
+    val TAG = "****** Tab1 ******"
     lateinit var tabActivity: TabActivity
 
     //sql 관련
@@ -113,12 +113,12 @@ class Tab1 : Fragment(), ITranDataListener {
         if (m_nJangoRqId == nRqId) {
 
             //총평가금액
-            val strTotal1 = m_JangoTranProc!!.GetMultiData(1, 14, 0)
+            val strTotal1 = m_JangoTranProc!!.GetMultiData(1, 14, 0).toInt()
             //손익
-            val strTotal2 = m_JangoTranProc!!.GetMultiData(1, 19, 0)
+            val strTotal2 = m_JangoTranProc!!.GetMultiData(1, 19, 0).toInt()
 
 
-            val profit = (strTotal2.toInt()-strTotal1.toInt())
+            val profit = (strTotal2-strTotal1)
 
             val nCount = m_JangoTranProc!!.GetValidCount(0)
 
@@ -151,13 +151,13 @@ class Tab1 : Fragment(), ITranDataListener {
                 //System.out.println("3: " + strQty + ", 4: " + strAverPrice)
             }
 
-            tv_total_assets.text = gb.dec(strTotal1.toInt())+"원"
-            tv_total_profit_or_loss.text = gb.dec(strTotal2.toInt())+"원"
-            tv_rest_assets.text = "주문 가능: "+gb.dec((strTotal1.toInt()-strTotal2.toInt())-buyPriceSum)+"원"
+            tv_total_assets.text = gb.dec(strTotal1)+"원"
+            tv_total_profit_or_loss.text = gb.dec(strTotal2)+"원"
+            tv_rest_assets.text = "주문 가능: "+gb.dec((strTotal1-strTotal2)-buyPriceSum)+"원"
 
-            if(profit > 0)
+            if(strTotal2 > 0)
                 tv_total_profit_or_loss.setTextColor((ContextCompat.getColor(tabActivity.applicationContext!!, R.color.red)))
-            else if(profit == 0)
+            else if(strTotal2 == 0)
                 tv_total_profit_or_loss.setTextColor((ContextCompat.getColor(tabActivity.applicationContext!!, R.color.gray)))
             else
                 tv_total_profit_or_loss.setTextColor((ContextCompat.getColor(tabActivity.applicationContext!!, R.color.blue)))
