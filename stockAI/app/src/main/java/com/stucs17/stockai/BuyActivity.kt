@@ -15,7 +15,6 @@ import com.truefriend.corelib.commexpert.intrf.ITranDataListener
 
 class BuyActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
 
-    var m_JangoTranProc: ExpertTranProc? = null //잔고 조회
     var m_OrderTranProc: ExpertTranProc? = null //주문
     var m_OrderListTranProc: ExpertTranProc? = null //주문내역 조회
     var m_OrderRealProc: ExpertRealProc? = null

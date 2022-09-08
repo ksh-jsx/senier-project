@@ -16,7 +16,7 @@
         android:visibility="visible"
         tools:visibility="gone">
         <ImageView
-            android:id="@+id/loading_icon"
+            android:id="@+id/loadingIcon"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"

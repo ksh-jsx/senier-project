@@ -1,19 +1,29 @@
 package com.stucs17.stockai
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.ContentValues
 import android.content.Context
+import android.content.pm.PackageManager
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.commexpert.ExpertTranProc
+import com.kakao.sdk.newtoneapi.SpeechRecognizeListener
+import com.kakao.sdk.newtoneapi.SpeechRecognizerClient
+import com.kakao.sdk.newtoneapi.SpeechRecognizerManager
+import com.stucs17.stockai.Public.Listen
+import com.stucs17.stockai.Public.AccountInfo
 import com.stucs17.stockai.adapter.MyStockAdapter
 import com.stucs17.stockai.data.MyStockData
 import com.stucs17.stockai.sql.DBHelper
@@ -21,7 +31,7 @@ import com.truefriend.corelib.commexpert.intrf.ITranDataListener
 
 
 class Tab1 : Fragment(), ITranDataListener {
-    var m_JangoTranProc: ExpertTranProc? = null //잔고 조회
+    private var m_JangoTranProc: ExpertTranProc? = null //잔고 조회
 
     var m_nJangoRqId = -1 //잔고 TR ID
 
@@ -31,13 +41,17 @@ class Tab1 : Fragment(), ITranDataListener {
     private lateinit var rv_myStock : RecyclerView
 
     lateinit var myStockAdapter: MyStockAdapter
-    val datas = mutableListOf<MyStockData>()
+    private val datas = mutableListOf<MyStockData>()
     private val gb = GlobalBackground()
     val TAG = "****** Tab1 ******"
-    lateinit var tabActivity: TabActivity
+    private lateinit var tabActivity: TabActivity
+    private val info = AccountInfo()
+    private val listen = Listen()
 
+    private val RECORD_REQUEST_CODE = 1000
+    private val STORAGE_REQUEST_CODE = 1000
     //sql 관련
-    lateinit var dbHelper: DBHelper
+    private lateinit var dbHelper: DBHelper
     lateinit var database: SQLiteDatabase
 
     override fun onAttach(context: Context) {
@@ -50,7 +64,7 @@ class Tab1 : Fragment(), ITranDataListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View?
+    ): View
     {
         val v: View = inflater.inflate(R.layout.fragment_tab1, container, false)
 
@@ -66,7 +80,8 @@ class Tab1 : Fragment(), ITranDataListener {
 
         dbHelper = DBHelper(tabActivity, "mydb.db", null, 1)
         database = dbHelper.writableDatabase
-        getJango()
+
+        m_nJangoRqId = info.getjango(database, m_JangoTranProc)
 
         return v
     }
@@ -78,36 +93,6 @@ class Tab1 : Fragment(), ITranDataListener {
         m_JangoTranProc = null
     }
 
-
-    fun getJango(){ //sellact에서 중복사용중... 공용으로 빼기
-        var strPass = ""
-        val query = "SELECT * FROM user;"
-        val c = database.rawQuery(query,null)
-        if(c.moveToNext()){
-            strPass = c.getString(c.getColumnIndex("numPwd"))
-        }
-
-        val strEncPass = m_JangoTranProc!!.GetEncryptPassword(strPass)
-        m_JangoTranProc!!.ClearInblockData()
-        //if (tStatus == null) return
-        m_JangoTranProc!!.SetSingleData(0, 0, "68067116")
-        //상품코드
-        m_JangoTranProc!!.SetSingleData(0, 1, "01")
-
-        m_JangoTranProc!!.SetSingleData(0, 2, strEncPass)
-        m_JangoTranProc!!.SetSingleData(0, 3, "N") //시간외 단일가여부
-        m_JangoTranProc!!.SetSingleData(0, 4, "N") //오프라인 여부
-        m_JangoTranProc!!.SetSingleData(0, 5, "01") //조회구분
-        m_JangoTranProc!!.SetSingleData(0, 6, "01") //단가구분
-        m_JangoTranProc!!.SetSingleData(0, 7, "N") //펀드결제분 포함여부
-        m_JangoTranProc!!.SetSingleData(0, 8, "N") //융자금액자동상환여부
-        m_JangoTranProc!!.SetSingleData(0, 9, "00") //처리구분
-        m_JangoTranProc!!.SetSingleData(0, 10, " ") //연속조회검색조건
-        m_JangoTranProc!!.SetSingleData(0, 11, " ") //연속조회키
-
-        m_nJangoRqId = m_JangoTranProc!!.RequestData("satps")
-    }
-
     @SuppressLint("SetTextI18n")
     override fun onTranDataReceived(sTranID: String, nRqId: Int) {
         if (m_nJangoRqId == nRqId) {
@@ -116,9 +101,6 @@ class Tab1 : Fragment(), ITranDataListener {
             val strTotal1 = m_JangoTranProc!!.GetMultiData(1, 14, 0).toInt()
             //손익
             val strTotal2 = m_JangoTranProc!!.GetMultiData(1, 19, 0).toInt()
-
-
-            val profit = (strTotal2-strTotal1)
 
             val nCount = m_JangoTranProc!!.GetValidCount(0)
 
@@ -186,9 +168,6 @@ class Tab1 : Fragment(), ITranDataListener {
             //tResultText.text = resultText
             //tTotalRaver.text = "레버리지 : " + leverTotal + " 인버스 : " + inverTotal
             //tStockData2.text = "" + (strTotal1.toInt() - strTotal2.toInt())
-
-
-
             //System.out.println("KospiEx 잔고조회 : " + strTotal1 + ", D-2정산금액 : " + strD2price)
         }
     }
@@ -197,11 +176,8 @@ class Tab1 : Fragment(), ITranDataListener {
         nRqId: Int, strMsgCode: String?,
         strErrorType: String?, strMessage: String?
     ) {
-
         // TODO Auto-generated method stub
         Log.e("onTranMessageReceived", String.format("MsgCode:%s ErrorType:%s %s",  strMsgCode ,  strErrorType  , strMessage));
-
-
     }
 
     override fun onTranTimeout(nRqId: Int) {

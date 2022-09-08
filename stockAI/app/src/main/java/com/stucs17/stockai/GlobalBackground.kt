@@ -6,16 +6,10 @@ import java.text.DecimalFormat
 
 class GlobalBackground{
 
-
-    fun logTest() {
-        Log.d(TAG,"wow")
-    }
-
     fun dec(num:Int): String{
         val dec = DecimalFormat("#,###")
         return dec.format((num))
     }
-
     fun plus(price:Int,unitNum:Int): Int{
         return price+unitNum
     }
@@ -24,5 +18,6 @@ class GlobalBackground{
             price-unitNum
         else 0
     }
+
 
 }

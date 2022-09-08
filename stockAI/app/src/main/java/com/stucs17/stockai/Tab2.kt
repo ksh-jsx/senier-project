@@ -5,7 +5,6 @@ import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
 import android.text.Editable
@@ -149,10 +148,24 @@ class Tab2 : Fragment(), ITranDataListener {
 
         //Toast.makeText(this, start, Toast.LENGTH_SHORT).show()
 
-
-        editTextWathcer()
+        editStockName.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {}
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                stockList.visibility = View.VISIBLE
+                priceBox.visibility = View.GONE
+                infoBox.visibility = View.GONE
+                BSbuttonBox.visibility = View.GONE
+                centerBox.visibility = View.GONE
+                val textValue :String = editStockName.text.toString()
+                val resultList = (arrItemKospiCode+arrItemKosdaqCode).sorted().filter{ it.name.startsWith(textValue) }
+                if (resultList.isNotEmpty())
+                    makeStockList(resultList)
+            }
+        })
 
         buttonSearch.setOnClickListener {
+            Log.d(TAG, "" +arrItemKospiCode)
             requestCurrentPrice(editStockName.text.toString())
             stockList.visibility = View.GONE
             priceBox.visibility = View.VISIBLE
@@ -173,6 +186,8 @@ class Tab2 : Fragment(), ITranDataListener {
         return v
     }
 
+
+    @SuppressLint("StaticFieldLeak")
     inner class MyAsyncTask: AsyncTask<String, String, String>() { //input, progress update type, result type
 
         @SuppressLint("ResourceAsColor", "SetTextI18n")
@@ -255,27 +270,12 @@ class Tab2 : Fragment(), ITranDataListener {
 
     }
 
-    private fun editTextWathcer(){ //editStockName onchangeEventListener
-
-        editStockName.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(p0: Editable?) {}
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                val textValue :String = editStockName.text.toString()
-
-                val resultList = (arrItemKospiCode+arrItemKosdaqCode).sorted().filter{ it.name.startsWith(textValue) }
-                if (resultList.isNotEmpty())
-                    makeStockList(resultList)
-            }
-        })
-    }
 
     @SuppressLint("SetTextI18n")
     override fun onTranDataReceived(sTranID: String?, nRqId: Int) {
         if (sTranID?.contains("scp") == true && currentPriceRqId == nRqId) {
             currentPrice = expertTranProc.GetSingleData(0, 11).toInt() // 11 : 주식 현재가
             val dayChange = expertTranProc.GetSingleData(0, 12).toInt() // 12 : 전일 대비
-            val stockName = expertTranProc.GetSingleData(0, 4) // 4 : 업종 한글 종목명
             stockMarket = expertTranProc.GetSingleData(0, 2) // 2 : 대표 시장 한글명
 
             tv_21.text = gb.dec(expertTranProc.GetSingleData(0, 21).toInt()) // 21 : 상한가
@@ -334,9 +334,7 @@ class Tab2 : Fragment(), ITranDataListener {
     }
 
     private fun requestCurrentPrice(stockName: String){ //주가 검색
-
         val resultList = (arrItemKospiCode+arrItemKosdaqCode).sorted().filter{ it.name.startsWith(stockName) } //입력한 텍스트와 주식 목록 비교->필터링
-
         if (resultList.isNotEmpty()) {
             stockCode = resultList[0].code
             editStockName.setText(resultList[0].name)
