@@ -1,10 +1,12 @@
 package com.stucs17.stockai
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.KeyEvent
 import android.widget.Toast
+import com.stucs17.stockai.Public.Listen
 import com.stucs17.stockai.adapter.PageAdapter
 import kotlinx.android.synthetic.main.activity_tab.*
 
@@ -27,12 +29,10 @@ class TabActivity : AppCompatActivity() {
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         return when(keyCode) {
-            KeyEvent.KEYCODE_VOLUME_UP -> {
-                Toast.makeText(this, "Volume Up Pressed", Toast.LENGTH_SHORT).show()
-                true
-            }
+
             KeyEvent.KEYCODE_VOLUME_DOWN -> {
-                Toast.makeText(this, "Volume Down Pressed", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this@TabActivity, Listen::class.java)
+                startActivity(intent)
                 true
             }
             else -> super.onKeyDown(keyCode, event)

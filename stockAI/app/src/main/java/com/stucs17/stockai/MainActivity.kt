@@ -13,12 +13,8 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.commexpert.CommExpertMng
-import com.kakao.sdk.newtoneapi.SpeechRecognizeListener
-import com.kakao.sdk.newtoneapi.SpeechRecognizerClient
-import com.kakao.sdk.newtoneapi.SpeechRecognizerManager
 import com.stucs17.stockai.Public.Auth
 import com.stucs17.stockai.Public.Listen
 import com.stucs17.stockai.sql.DBHelper
