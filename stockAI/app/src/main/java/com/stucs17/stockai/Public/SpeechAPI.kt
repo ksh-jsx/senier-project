@@ -2,6 +2,7 @@ package com.stucs17.stockai.Public
 
 import android.Manifest
 import android.content.ContentValues.TAG
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.AudioManager
 import android.os.Bundle
@@ -16,18 +17,23 @@ import com.kakao.sdk.newtoneapi.*
 import com.stucs17.stockai.R
 
 
-class Listen : AppCompatActivity() {
+class SpeechAPI : AppCompatActivity() {
 
-    private lateinit var test_tv : TextView
-    var ttsClient : TextToSpeechClient? = null
     private val RECORD_REQUEST_CODE = 1000
     private val STORAGE_REQUEST_CODE = 1000
     private val NETWORK_STATE_CODE = 0
+
+    private lateinit var test_tv : TextView
+    var ttsClient : TextToSpeechClient? = null
+
     private lateinit var mAudioManager: AudioManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_listen)
+
         mAudioManager = getSystemService(AUDIO_SERVICE) as AudioManager
+
         test_tv = findViewById(R.id.test_tv)
 
         setupPermissions()
@@ -37,8 +43,6 @@ class Listen : AppCompatActivity() {
         return when(keyCode) {
 
             KeyEvent.KEYCODE_VOLUME_DOWN -> {
-
-                volumeUp()
                 startUsingSpeechSDK()
                 true
             }
@@ -47,9 +51,9 @@ class Listen : AppCompatActivity() {
     }
 
     private fun setupPermissions(){
-        var permission_audio = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
-        var permission_storage = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        var permission_network = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NETWORK_STATE)
+        val permission_audio = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
+        val permission_storage = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        val permission_network = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NETWORK_STATE)
         if(permission_audio != PackageManager.PERMISSION_GRANTED) {
             Log.d(TAG, "Permission to recode denied")
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.RECORD_AUDIO), RECORD_REQUEST_CODE)
@@ -62,6 +66,8 @@ class Listen : AppCompatActivity() {
         }
         else {
             //본문실행
+            SpeechRecognizerManager.getInstance().initializeLibrary(this)
+            TextToSpeechManager.getInstance().initializeLibrary(this)
             startUsingSpeechSDK()
         }
     }
@@ -96,10 +102,8 @@ class Listen : AppCompatActivity() {
     }
 
     private fun startUsingSpeechSDK(){
-        Toast.makeText(this, "Start Speaking", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "말하세요", Toast.LENGTH_SHORT).show()
 
-        //SDK 초기화
-        SpeechRecognizerManager.getInstance().initializeLibrary(this)
 
         test_tv.text = ""
         //클라이언트 생성
@@ -111,6 +115,8 @@ class Listen : AppCompatActivity() {
             //콜백함수들
             override fun onReady() {
                 Log.d(TAG, "모든 하드웨어 및 오디오 서비스가 준비되었습니다.")
+                volumeUp()
+                startUsingSpeechSDK2("네!")
             }
 
             override fun onBeginningOfSpeech() {
@@ -136,9 +142,11 @@ class Listen : AppCompatActivity() {
                 Log.d(TAG, texts?.get(0).toString())
                 //정확도가 높은 첫번째 결과값을 텍스트뷰에 출력
                 runOnUiThread {
-                    //volumeUp()
-                    startUsingSpeechSDK2(texts?.get(0))
-                    test_tv.text = texts?.get(0)
+                    volumeUp()
+                    val txt = texts?.get(0)
+                    //startUsingSpeechSDK2("들은 내용은 $txt")
+                    test_tv.text = txt
+                    nextStep(txt)
                 }
             }
 
@@ -157,8 +165,8 @@ class Listen : AppCompatActivity() {
         client.startRecording(true)
     }
 
-    private fun startUsingSpeechSDK2(txt : String?) {
-        TextToSpeechManager.getInstance().initializeLibrary(this)
+    fun startUsingSpeechSDK2(txt : String?) {
+        var ttsClient : TextToSpeechClient? = null
         //TTS 클라이언트 생성
         ttsClient = TextToSpeechClient.Builder()
             .setSpeechMode(TextToSpeechClient.NEWTONE_TALK_1)     // 음성합성방식
@@ -176,20 +184,40 @@ class Listen : AppCompatActivity() {
                 }
 
                 override fun onError(code: Int, message: String?) {
-                    Log.d(TAG, code.toString())
+                    Log.d(TAG, "err!: $code")
                 }
             }).build()
+        Log.d(TAG, "speak start!: $txt")
+        ttsClient.play(txt)
+    }
 
-        ttsClient?.play(txt)
+    private fun nextStep(txt: String?) {
+        val intent = Intent(this@SpeechAPI, AccountInfo::class.java)
+
+        when (txt) {
+            "수익률" -> {
+                intent.putExtra("type","profit_or_loss")
+                startActivity(intent)
+                finish()
+            }
+            "총 자산" -> {
+                intent.putExtra("type","total_assets")
+                startActivity(intent)
+                finish()
+            }
+            else -> {
+                startUsingSpeechSDK2("들은 내용은 $txt")
+            }
+        }
 
     }
 
     private fun volumeUp(){
         mAudioManager.ringerMode = AudioManager.RINGER_MODE_NORMAL
         mAudioManager.setStreamVolume(
-            AudioManager.STREAM_RING,
-            (mAudioManager.getStreamMaxVolume(AudioManager.STREAM_RING) * 50/100.0).toInt(),
-            AudioManager.FLAG_PLAY_SOUND
+            AudioManager.STREAM_MUSIC,
+            (mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC) * 50/100.0).toInt(),
+           0
         )
     }
 }

@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.commexpert.ExpertTranProc
 import com.stucs17.stockai.Public.AccountInfo
-import com.stucs17.stockai.Public.Listen
 import com.stucs17.stockai.adapter.MyStockAdapter
 import com.stucs17.stockai.data.MyStockData
 import com.stucs17.stockai.sql.DBHelper
@@ -37,10 +36,7 @@ class Tab1 : Fragment(), ITranDataListener {
     val TAG = "****** Tab1 ******"
     private lateinit var tabActivity: TabActivity
     private val info = AccountInfo()
-    private val listen = Listen()
 
-    private val RECORD_REQUEST_CODE = 1000
-    private val STORAGE_REQUEST_CODE = 1000
     //sql 관련
     private lateinit var dbHelper: DBHelper
     lateinit var database: SQLiteDatabase
@@ -72,7 +68,7 @@ class Tab1 : Fragment(), ITranDataListener {
         dbHelper = DBHelper(tabActivity, "mydb.db", null, 1)
         database = dbHelper.writableDatabase
 
-        m_nJangoRqId = info.getjango(database, m_JangoTranProc)
+        m_nJangoRqId = info.getjangoInfo(database,m_JangoTranProc)
 
         return v
     }

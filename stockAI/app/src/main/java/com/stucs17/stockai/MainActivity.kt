@@ -15,8 +15,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.bumptech.glide.Glide
 import com.commexpert.CommExpertMng
+import com.stucs17.stockai.Public.AccountInfo
 import com.stucs17.stockai.Public.Auth
-import com.stucs17.stockai.Public.Listen
+import com.stucs17.stockai.Public.SpeechAPI
 import com.stucs17.stockai.sql.DBHelper
 import com.truefriend.corelib.commexpert.intrf.IExpertInitListener
 import com.truefriend.corelib.commexpert.intrf.IExpertLoginListener
@@ -34,7 +35,7 @@ class MainActivity : AppCompatActivity(), IExpertInitListener, IExpertLoginListe
     private var caPwStr : String = ""
     private var numPwStr : String = ""
     private val auth = Auth()
-    private val listen = Listen()
+    private val listen = SpeechAPI()
 
     //sql 관련
     private lateinit var dbHelper: DBHelper

@@ -5,8 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.KeyEvent
-import android.widget.Toast
-import com.stucs17.stockai.Public.Listen
+import com.stucs17.stockai.Public.SpeechAPI
 import com.stucs17.stockai.adapter.PageAdapter
 import kotlinx.android.synthetic.main.activity_tab.*
 
@@ -31,7 +30,7 @@ class TabActivity : AppCompatActivity() {
         return when(keyCode) {
 
             KeyEvent.KEYCODE_VOLUME_DOWN -> {
-                val intent = Intent(this@TabActivity, Listen::class.java)
+                val intent = Intent(this@TabActivity, SpeechAPI::class.java)
                 startActivity(intent)
                 true
             }
