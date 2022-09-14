@@ -14,7 +14,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.kakao.sdk.newtoneapi.*
+import com.stucs17.stockai.MainActivity
 import com.stucs17.stockai.R
+import com.stucs17.stockai.Tab1
 
 
 class SpeechAPI : AppCompatActivity() {
@@ -192,22 +194,32 @@ class SpeechAPI : AppCompatActivity() {
     }
 
     private fun nextStep(txt: String?) {
-        val intent = Intent(this@SpeechAPI, AccountInfo::class.java)
-
+        var intent = Intent(this@SpeechAPI, Tab1::class.java)
+        var type = ""
+        var isUnderstand = true
         when (txt) {
             "수익률" -> {
-                intent.putExtra("type","profit_or_loss")
-                startActivity(intent)
-                finish()
+                intent = Intent(this@SpeechAPI, Tab1::class.java)
+                type = "profit_or_loss"
             }
             "총 자산" -> {
-                intent.putExtra("type","total_assets")
-                startActivity(intent)
-                finish()
+                intent = Intent(this@SpeechAPI, AccountInfo::class.java)
+                type = "total_assets"
+            }
+            "주문 가능" -> {
+                intent = Intent(this@SpeechAPI, AccountInfo::class.java)
+                type = "available_to_order"
             }
             else -> {
-                startUsingSpeechSDK2("들은 내용은 $txt")
+                isUnderstand = false
+                startUsingSpeechSDK2("무슨말인지 모르겠어요")
             }
+        }
+
+        if(isUnderstand) {
+            intent.putExtra("type", type)
+            startActivity(intent)
+            finish()
         }
 
     }

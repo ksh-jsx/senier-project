@@ -82,6 +82,7 @@ class Tab1 : Fragment(), ITranDataListener {
 
     @SuppressLint("SetTextI18n")
     override fun onTranDataReceived(sTranID: String, nRqId: Int) {
+
         if (m_nJangoRqId == nRqId) {
 
             //총평가금액

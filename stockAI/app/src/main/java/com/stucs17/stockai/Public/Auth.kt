@@ -34,11 +34,10 @@ class Auth: AppCompatActivity() {
     }
 
     fun select(database:SQLiteDatabase): Cursor? {
-
         val query = "SELECT * FROM user;"
-
         return database.rawQuery(query, null)
     }
+
     fun insert(contentValues:ContentValues,database:SQLiteDatabase) {
         database.insert("user", null, contentValues)
     }

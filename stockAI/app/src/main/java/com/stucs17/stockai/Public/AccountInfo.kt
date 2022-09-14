@@ -9,6 +9,8 @@ import com.commexpert.CommExpertMng
 import com.commexpert.ExpertTranProc
 import com.stucs17.stockai.R
 import com.stucs17.stockai.TabActivity
+import com.stucs17.stockai.adapter.MyStockAdapter
+import com.stucs17.stockai.data.MyStockData
 import com.stucs17.stockai.sql.DBHelper
 import com.truefriend.corelib.commexpert.intrf.ITranDataListener
 
@@ -37,8 +39,6 @@ class AccountInfo: AppCompatActivity(), ITranDataListener {
         database = dbHelper.writableDatabase
 
         m_nJangoRqId = getjangoInfo(database,m_JangoTranProc)
-
-
     }
 
     override fun onDestroy() {
@@ -82,19 +82,50 @@ class AccountInfo: AppCompatActivity(), ITranDataListener {
         if(intent.hasExtra("type")) {
             type = intent.getStringExtra("type")
         }
-        var result = 0
+        //총평가금액
+        val strTotal1 = m_JangoTranProc!!.GetMultiData(1, 14, 0).toInt()
+        //손익
+        val strTotal2 = m_JangoTranProc!!.GetMultiData(1, 19, 0).toInt()
+        //보유 주식 수
+        val nCount = m_JangoTranProc!!.GetValidCount(0)
+
+        val array = Array<MyStockData?>(nCount) { null }
+        var buyPriceSum = 0
+
+        for (i in 0 until nCount) {
+            //종목
+            val strCode = m_JangoTranProc!!.GetMultiData(0, 0, i)
+            val strName = m_JangoTranProc!!.GetMultiData(0, 1, i)
+            //잔고
+            val strQty = m_JangoTranProc!!.GetMultiData(0, 7, i)
+            val strbuyPrice = m_JangoTranProc!!.GetMultiData(0, 10, i) // 매입금액
+            val strPrice = m_JangoTranProc!!.GetMultiData(0, 12, i) // 평가금액
+            val strProfit = m_JangoTranProc!!.GetMultiData(0, 13, i) // 손익
+            val strProfitPer = m_JangoTranProc!!.GetMultiData(0, 14, i) // 손익률
+
+            if(strCode.length > 3){
+                val data = MyStockData(i+1,strName,strProfit,strProfitPer,strQty,strPrice)
+                array[i] = data
+                buyPriceSum+=strbuyPrice.toInt()
+            }
+
+        }
         if (m_nJangoRqId == nRqId) {
             Log.d(TAG, "type: $type")
             if(type == "profit_or_loss"){
                 //손익
-                result = m_JangoTranProc!!.GetMultiData(1, 19, 0).toInt()
-                speechAPI.startUsingSpeechSDK2("당신의 수익률은 $result 원입니다.")
+                speechAPI.startUsingSpeechSDK2("당신의 수익률은 $strTotal2 원입니다.")
                 Thread.sleep(3000)
                 gotoTab()
             } else if(type == "total_assets"){
                 //총자산
-                result = m_JangoTranProc!!.GetMultiData(1, 14, 0).toInt()
-                speechAPI.startUsingSpeechSDK2("당신의 총 자산은 $result 원입니다.")
+                speechAPI.startUsingSpeechSDK2("당신의 총 자산은 $strTotal1 원입니다.")
+                Thread.sleep(3000)
+                gotoTab()
+            } else if(type == "available_to_order"){
+                // 주문가능
+                val result = (strTotal1-strTotal2)-buyPriceSum
+                speechAPI.startUsingSpeechSDK2("당신의 주문 가능 금액은 $result 원입니다.")
                 Thread.sleep(3000)
                 gotoTab()
             }
