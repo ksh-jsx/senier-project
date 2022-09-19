@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
 import android.text.Editable
@@ -148,7 +149,8 @@ class Tab2 : Fragment() {
             tv_kosdaq2.text ="${listKosdaq[3]}${listKosdaq[1]}, ${listKosdaq[2].split("%")[0]}%"
 
             tv_news1.text = listNewsText[0]
-            /*tv_news1.setOnClickListener {
+            /*
+            tv_news1.setOnClickListener {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://finance.naver.com${listNewsHref[0]}"))
                 startActivity(intent)
             }*/

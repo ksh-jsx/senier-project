@@ -14,9 +14,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.kakao.sdk.newtoneapi.*
-import com.stucs17.stockai.MainActivity
 import com.stucs17.stockai.R
-import com.stucs17.stockai.Tab1
+import com.stucs17.stockai.TabActivity
 
 
 class SpeechAPI : AppCompatActivity() {
@@ -26,7 +25,6 @@ class SpeechAPI : AppCompatActivity() {
     private val NETWORK_STATE_CODE = 0
 
     private lateinit var test_tv : TextView
-    var ttsClient : TextToSpeechClient? = null
 
     private lateinit var mAudioManager: AudioManager
 
@@ -43,7 +41,6 @@ class SpeechAPI : AppCompatActivity() {
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         return when(keyCode) {
-
             KeyEvent.KEYCODE_VOLUME_DOWN -> {
                 startUsingSpeechSDK()
                 true
@@ -194,12 +191,12 @@ class SpeechAPI : AppCompatActivity() {
     }
 
     private fun nextStep(txt: String?) {
-        var intent = Intent(this@SpeechAPI, Tab1::class.java)
+        var intent = Intent(this@SpeechAPI, TabActivity::class.java)
         var type = ""
         var isUnderstand = true
         when (txt) {
             "수익률" -> {
-                intent = Intent(this@SpeechAPI, Tab1::class.java)
+                intent = Intent(this@SpeechAPI, AccountInfo::class.java)
                 type = "profit_or_loss"
             }
             "총 자산" -> {
@@ -209,6 +206,14 @@ class SpeechAPI : AppCompatActivity() {
             "주문 가능" -> {
                 intent = Intent(this@SpeechAPI, AccountInfo::class.java)
                 type = "available_to_order"
+            }
+            "코스피" -> {
+                intent = Intent(this@SpeechAPI, StockIndex::class.java)
+                type = "kospi"
+            }
+            "코스닥" -> {
+                intent = Intent(this@SpeechAPI, StockIndex::class.java)
+                type = "kosdaq"
             }
             else -> {
                 isUnderstand = false

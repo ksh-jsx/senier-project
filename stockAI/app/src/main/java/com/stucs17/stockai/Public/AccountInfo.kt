@@ -25,7 +25,7 @@ class AccountInfo: AppCompatActivity(), ITranDataListener {
     private lateinit var dbHelper: DBHelper
     private lateinit var database: SQLiteDatabase
 
-    val TAG = "****** AI ******"
+    private val TAG = "****** AI ******"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -112,28 +112,25 @@ class AccountInfo: AppCompatActivity(), ITranDataListener {
         }
         if (m_nJangoRqId == nRqId) {
             Log.d(TAG, "type: $type")
-            if(type == "profit_or_loss"){
-                //손익
-                speechAPI.startUsingSpeechSDK2("당신의 수익률은 $strTotal2 원입니다.")
-                Thread.sleep(3000)
-                gotoTab()
-            } else if(type == "total_assets"){
-                //총자산
-                speechAPI.startUsingSpeechSDK2("당신의 총 자산은 $strTotal1 원입니다.")
-                Thread.sleep(3000)
-                gotoTab()
-            } else if(type == "available_to_order"){
-                // 주문가능
-                val result = (strTotal1-strTotal2)-buyPriceSum
-                speechAPI.startUsingSpeechSDK2("당신의 주문 가능 금액은 $result 원입니다.")
-                Thread.sleep(3000)
-                gotoTab()
+            when(type){
+                "profit_or_loss"->{ //손익
+                    speechAPI.startUsingSpeechSDK2("당신의 수익률은 $strTotal2 원입니다.")
+                }
+                "total_assets"->{ //총자산
+                    speechAPI.startUsingSpeechSDK2("당신의 총 자산은 $strTotal1 원입니다.")
+                }
+                "available_to_order"->{ // 주문가능
+                    speechAPI.startUsingSpeechSDK2("당신의 주문 가능 금액은 ${(strTotal1-strTotal2)-buyPriceSum} 원입니다.")
+                }
             }
+            Thread.sleep(3000)
+            gotoTab1()
         }
     }
 
-    private fun gotoTab() {
+    private fun gotoTab1() {
         val intent = Intent(this@AccountInfo, TabActivity::class.java)
+        intent.putExtra("tab", 0)
         startActivity(intent)
         finish()
     }

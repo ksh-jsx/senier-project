@@ -14,14 +14,19 @@ class TabActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tab)
-
+        var currTab = 0
         val adapter = PageAdapter(supportFragmentManager)
         adapter.addFragment(Tab1(), "홈")
         adapter.addFragment(Tab2(), "매수/매도")
         adapter.addFragment(Tab3(), "자동 투자")
 
+        if(intent.hasExtra("tab")) {
+            currTab = intent.getIntExtra("tab", 0)
+        }
+
         viewpager.adapter = adapter
         tab_layout.setupWithViewPager(viewpager)
+        viewpager.currentItem = currTab
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
