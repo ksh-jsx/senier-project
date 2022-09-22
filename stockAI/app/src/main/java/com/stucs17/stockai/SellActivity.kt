@@ -16,11 +16,14 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.commexpert.CommExpertMng
 import com.commexpert.ExpertRealProc
 import com.commexpert.ExpertTranProc
 import com.kakao.sdk.newtoneapi.SpeechRecognizeListener
 import com.kakao.sdk.newtoneapi.SpeechRecognizerClient
 import com.kakao.sdk.newtoneapi.SpeechRecognizerManager
+import com.stucs17.stockai.Public.AccountInfo
+import com.stucs17.stockai.Public.Auth
 import com.stucs17.stockai.data.MyStockData
 import com.stucs17.stockai.sql.DBHelper
 import com.truefriend.corelib.commexpert.intrf.IRealDataListener
@@ -29,7 +32,7 @@ import java.security.MessageDigest
 
 
 class SellActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
-
+    private val auth = Auth()
     var m_JangoTranProc: ExpertTranProc? = null //잔고 조회
     var m_OrderTranProc: ExpertTranProc? = null //주문
     var m_OrderListTranProc: ExpertTranProc? = null //주문내역 조회
@@ -60,10 +63,10 @@ class SellActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
     private var orderType = "00"
 
     private val gb = GlobalBackground()
+    private val info = AccountInfo()
     //sql 관련
     lateinit var dbHelper: DBHelper
     lateinit var database: SQLiteDatabase
-    private var strPass:String = ""
 
 @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -152,7 +155,7 @@ class SellActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
             finish()
         }
 
-        getJango()
+        m_nJangoRqId = info.getJangoInfo(database,m_JangoTranProc)
     }
 
     override fun onDestroy() {
@@ -178,52 +181,34 @@ class SellActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
         }
     }
 
-    fun getJango(){
-
-        val query = "SELECT * FROM user;"
-        val c = database.rawQuery(query,null)
-        if(c.moveToNext()){
-            strPass = c.getString(c.getColumnIndex("numPwd"))
-        }
-
-        m_JangoTranProc!!.ClearInblockData()
-        val strEncPass = m_JangoTranProc!!.GetEncryptPassword(strPass)
-        //if (tStatus == null) return
-        m_JangoTranProc!!.SetSingleData(0, 0, "68067116")
-        m_JangoTranProc!!.SetSingleData(0, 1, "01") //상품코드
-        m_JangoTranProc!!.SetSingleData(0, 2, strEncPass) //비번
-        m_JangoTranProc!!.SetSingleData(0, 3, "N") //시간외 단일가여부
-        m_JangoTranProc!!.SetSingleData(0, 4, "N") //오프라인 여부
-        m_JangoTranProc!!.SetSingleData(0, 5, "01") //조회구분
-        m_JangoTranProc!!.SetSingleData(0, 6, "01") //단가구분
-        m_JangoTranProc!!.SetSingleData(0, 7, "N") //펀드결제분 포함여부
-        m_JangoTranProc!!.SetSingleData(0, 8, "N") //융자금액자동상환여부
-        m_JangoTranProc!!.SetSingleData(0, 9, "00") //처리구분
-        m_JangoTranProc!!.SetSingleData(0, 10, " ") //연속조회검색조건
-        m_JangoTranProc!!.SetSingleData(0, 11, " ") //연속조회키
-
-        m_nJangoRqId = m_JangoTranProc!!.RequestData("satps")
-    }
-
     fun runSell() {
 
-        var strEncPass = ""
+        var strnumPwd = ""
 
-        m_OrderTranProc!!.ClearInblockData()
-        m_OrderTranProc!!.SetSingleData(0, 0, "68067116") //계좌
-        m_OrderTranProc!!.SetSingleData(0, 1, "01") //상품코드
-        strEncPass = m_OrderTranProc!!.GetEncryptPassword(strPass) //비밀번호
-        m_OrderTranProc!!.SetSingleData(0, 2, strEncPass)
-        m_OrderTranProc!!.SetSingleData(0, 3, currentCode) //상품코드
-        m_OrderTranProc!!.SetSingleData(0, 4, "01") //01
-        m_OrderTranProc!!.SetSingleData(0, 5, orderType) //주문구분  00:지정가 01:시장가
-        m_OrderTranProc!!.SetSingleData(0, 6, currentQty.toString()) //주문수량
-        m_OrderTranProc!!.SetSingleData(0, 7, currentPrice.toString()) //주문단가
-        m_OrderTranProc!!.SetSingleData(0, 8, " ") //연락전화번호
+        val c = auth.select(database)
+        if (c != null) {
+            if(c.moveToNext()){
+                strnumPwd = c.getString(c.getColumnIndex("numPwd"))
+            }
+        }
+
+        val strEncPass = m_OrderTranProc!!.GetEncryptPassword(strnumPwd) //비밀번호
+        val strAcc = CommExpertMng.getInstance().GetAccountNo(0)
+
+        m_OrderTranProc?.ClearInblockData()
+        m_OrderTranProc?.SetSingleData(0, 0, strAcc) //계좌
+        m_OrderTranProc?.SetSingleData(0, 1, "01") //상품코드
+        m_OrderTranProc?.SetSingleData(0, 2, strEncPass)
+        m_OrderTranProc?.SetSingleData(0, 3, currentCode) //상품코드
+        m_OrderTranProc?.SetSingleData(0, 4, "01") //01
+        m_OrderTranProc?.SetSingleData(0, 5, orderType) //주문구분  00:지정가 01:시장가
+        m_OrderTranProc?.SetSingleData(0, 6, currentQty.toString()) //주문수량
+        m_OrderTranProc?.SetSingleData(0, 7, currentPrice.toString()) //주문단가
+        m_OrderTranProc?.SetSingleData(0, 8, " ") //연락전화번호
 
         //축약서명
         m_OrderTranProc!!.SetCertType(1)
-        //매수주문
+        //매도주문
         m_OrderTranProc!!.RequestData("scaao")
 
         //tResult.setText("매수 " + m_strCode + "  " + strOrderPrice)

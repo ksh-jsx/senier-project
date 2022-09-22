@@ -12,18 +12,21 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.commexpert.ExpertRealProc
 import com.commexpert.ExpertTranProc
 import com.stucs17.stockai.Public.AccountInfo
 import com.stucs17.stockai.adapter.MyStockAdapter
 import com.stucs17.stockai.data.MyStockData
 import com.stucs17.stockai.sql.DBHelper
+import com.truefriend.corelib.commexpert.intrf.IRealDataListener
 import com.truefriend.corelib.commexpert.intrf.ITranDataListener
 
 
-class Tab1 : Fragment(), ITranDataListener {
+class Tab1 : Fragment(), ITranDataListener, IRealDataListener {
     private var m_JangoTranProc: ExpertTranProc? = null //잔고 조회
-
+    private var m_OrderListTranProc: ExpertTranProc? = null //주문내역 조회
     var m_nJangoRqId = -1 //잔고 TR ID
+    var m_nOrderListRqId = -1 //주문내역 TR ID
 
     private lateinit var tv_total_assets : TextView
     private lateinit var tv_rest_assets : TextView
@@ -59,6 +62,10 @@ class Tab1 : Fragment(), ITranDataListener {
         m_JangoTranProc!!.InitInstance(this)
         m_JangoTranProc!!.SetShowTrLog(false)
 
+        m_OrderListTranProc = ExpertTranProc(tabActivity)
+        m_OrderListTranProc!!.InitInstance(this)
+        m_OrderListTranProc!!.SetShowTrLog(true)
+
         tv_total_assets = v.findViewById(R.id.tv_total_assets)
         tv_rest_assets = v.findViewById(R.id.tv_rest_assets)
         tv_total_profit_or_loss = v.findViewById(R.id.tv_total_profit_or_loss)
@@ -68,8 +75,8 @@ class Tab1 : Fragment(), ITranDataListener {
         dbHelper = DBHelper(tabActivity, "mydb.db", null, 1)
         database = dbHelper.writableDatabase
 
-        m_nJangoRqId = info.getjangoInfo(database,m_JangoTranProc)
-
+        m_nJangoRqId = info.getJangoInfo(database,m_JangoTranProc)
+        m_nOrderListRqId = info.getNotSignedList(database,m_OrderListTranProc)
         return v
     }
 
@@ -78,11 +85,13 @@ class Tab1 : Fragment(), ITranDataListener {
 
         m_JangoTranProc!!.ClearInstance()
         m_JangoTranProc = null
+
+        m_OrderListTranProc!!.ClearInstance()
+        m_OrderListTranProc = null
     }
 
     @SuppressLint("SetTextI18n")
     override fun onTranDataReceived(sTranID: String, nRqId: Int) {
-
         if (m_nJangoRqId == nRqId) {
 
             //총평가금액
@@ -157,6 +166,37 @@ class Tab1 : Fragment(), ITranDataListener {
             //tTotalRaver.text = "레버리지 : " + leverTotal + " 인버스 : " + inverTotal
             //tStockData2.text = "" + (strTotal1.toInt() - strTotal2.toInt())
             //System.out.println("KospiEx 잔고조회 : " + strTotal1 + ", D-2정산금액 : " + strD2price)
+        } else if(m_nOrderListRqId == nRqId) { //취소 대상 주문 리스트
+            var strNo = " "
+            var strOrderNumberOri = " "
+            var strOrderNumber = " "
+            var strSellBuy = " "
+            var strCode = " "
+            var strName = " "
+            var nOrderCount = " "
+            var nOrderPrice = " "
+
+            val nCount: Int = m_OrderListTranProc!!.GetValidCount(0)
+
+            println("KospiEx : 주문리스트 잔여 - " + nCount)
+
+            for (i in 0 until nCount) {
+                strNo = m_OrderListTranProc!!.GetMultiData(0, 0, i) //주문채번지점번호
+                strOrderNumber = m_OrderListTranProc!!.GetMultiData(0, 1, i) //주문번호
+                strOrderNumberOri = m_OrderListTranProc!!.GetMultiData(0, 2, i) //원주문번호
+                strSellBuy = m_OrderListTranProc!!.GetMultiData(0, 3, i) //주문구분명
+                strCode = m_OrderListTranProc!!.GetMultiData(0, 4, i) //상품번호
+                strName = m_OrderListTranProc!!.GetMultiData(0, 6, i) //정정취소구분명
+                nOrderCount = m_OrderListTranProc!!.GetMultiData(0, 7, i) //주문수량
+                nOrderPrice = m_OrderListTranProc!!.GetMultiData(0, 8, i) //주문단가
+
+                if (strOrderNumber.isEmpty()) continue
+
+                Log.d(TAG,
+                    "KospiEx : 주문채번지점번호 - $strNo 원주문번호 - $strOrderNumberOri 주문번호 - $strOrderNumber"
+                )
+                Log.d(TAG, "KospiEx : 상품번호 - $strCode 주문수량 - $nOrderCount 주문단가 - $nOrderPrice")
+            }
         }
     }
 
@@ -171,6 +211,11 @@ class Tab1 : Fragment(), ITranDataListener {
     override fun onTranTimeout(nRqId: Int) {
         // TODO Auto-generated method stub
         Log.e("onTranTimeout", String.format("RqId:%d ", nRqId))
+    }
+
+    override fun onRealDataReceived(p0: String?) {
+
+
     }
 
 }

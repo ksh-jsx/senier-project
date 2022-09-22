@@ -26,7 +26,8 @@
         android:theme="@style/Theme.StockAI"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".StockDetailActivity"></activity>
+        <activity android:name=".Public.StockIndex"></activity>
+        <activity android:name=".StockDetailActivity" />
         <activity android:name=".Public.SpeechAPI" />
         <activity android:name=".Public.AccountInfo" />
         <activity android:name=".InvestmentSettingActivity" />
