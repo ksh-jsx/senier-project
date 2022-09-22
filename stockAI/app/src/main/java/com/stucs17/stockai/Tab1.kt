@@ -3,12 +3,14 @@ package com.stucs17.stockai
 import android.annotation.SuppressLint
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
@@ -35,10 +37,10 @@ class Tab1 : Fragment(), ITranDataListener, IRealDataListener {
 
     lateinit var myStockAdapter: MyStockAdapter
     private val datas = mutableListOf<MyStockData>()
-    private val gb = GlobalBackground()
     val TAG = "****** Tab1 ******"
     private lateinit var tabActivity: TabActivity
     private val info = AccountInfo()
+    private val gb = GlobalBackground()
 
     //sql 관련
     private lateinit var dbHelper: DBHelper
@@ -49,7 +51,6 @@ class Tab1 : Fragment(), ITranDataListener, IRealDataListener {
 
         tabActivity = context as TabActivity
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -77,6 +78,9 @@ class Tab1 : Fragment(), ITranDataListener, IRealDataListener {
 
         m_nJangoRqId = info.getJangoInfo(database,m_JangoTranProc)
         m_nOrderListRqId = info.getNotSignedList(database,m_OrderListTranProc)
+
+
+
         return v
     }
 

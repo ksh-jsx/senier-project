@@ -1,7 +1,13 @@
 package com.stucs17.stockai
 
-import android.content.ContentValues.TAG
+
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.util.Log
+import androidx.work.Worker
+import com.stucs17.stockai.Public.BackgroundWorker
 import java.text.DecimalFormat
 
 class GlobalBackground{
@@ -18,6 +24,4 @@ class GlobalBackground{
             price-unitNum
         else 0
     }
-
-
 }

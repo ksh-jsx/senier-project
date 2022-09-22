@@ -1,7 +1,10 @@
 package com.stucs17.stockai
 
 import android.Manifest
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.sqlite.SQLiteDatabase
@@ -13,14 +16,17 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
 import com.bumptech.glide.Glide
 import com.commexpert.CommExpertMng
-import com.stucs17.stockai.Public.AccountInfo
 import com.stucs17.stockai.Public.Auth
-import com.stucs17.stockai.Public.SpeechAPI
+import com.stucs17.stockai.Public.BackgroundWorker
 import com.stucs17.stockai.sql.DBHelper
 import com.truefriend.corelib.commexpert.intrf.IExpertInitListener
 import com.truefriend.corelib.commexpert.intrf.IExpertLoginListener
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity(), IExpertInitListener, IExpertLoginListener {
     private val TAG : String = "HantooSample" // 로깅용 태그
@@ -35,7 +41,6 @@ class MainActivity : AppCompatActivity(), IExpertInitListener, IExpertLoginListe
     private var caPwStr : String = ""
     private var numPwStr : String = ""
     private val auth = Auth()
-    private val listen = SpeechAPI()
 
     //sql 관련
     private lateinit var dbHelper: DBHelper
@@ -68,6 +73,7 @@ class MainActivity : AppCompatActivity(), IExpertInitListener, IExpertLoginListe
 
         dbHelper = DBHelper(this, "mydb.db", null, 1)
         database = dbHelper.writableDatabase
+
     }
 
 
