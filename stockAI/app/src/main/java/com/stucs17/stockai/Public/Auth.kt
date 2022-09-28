@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.commexpert.CommExpertMng
@@ -40,5 +41,24 @@ class Auth: AppCompatActivity() {
 
     fun insert(contentValues:ContentValues,database:SQLiteDatabase) {
         database.insert("user", null, contentValues)
+    }
+
+    fun select_like(database:SQLiteDatabase): Cursor? {
+        val query = "SELECT * FROM like;"
+        return database.rawQuery(query, null)
+    }
+
+    fun isExist_like(database:SQLiteDatabase, stockCode:String): Cursor? {
+        val query = "SELECT * FROM like where code = '$stockCode';"
+        return database.rawQuery(query, null)
+    }
+
+    fun delete_like(database:SQLiteDatabase, stockCode:String) {
+        val query = "DELETE FROM like WHERE code = '$stockCode';"
+        database.execSQL(query)
+    }
+
+    fun insert_like(contentValues:ContentValues,database:SQLiteDatabase) {
+        database.insert("like", null, contentValues)
     }
 }

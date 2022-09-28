@@ -55,8 +55,7 @@
                 android:layout_marginRight="10dp"
                 app:backgroundTint="@color/red"
                 android:text="주문 취소하기"
-                android:textSize="15sp"
-                 />
+                android:textSize="15sp" />
             <TextView
                 android:id="@+id/stock_price"
                 android:layout_width="match_parent"

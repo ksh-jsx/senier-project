@@ -9,17 +9,37 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <TextView
-            android:id="@+id/tv_stock_name"
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0sp"
-            android:layout_marginHorizontal="10sp"
-            android:text="주식 이름"
-            android:fontFamily="@font/nanumsquare_eb"
-            android:layout_weight="1"
-            android:textSize="45sp"
-            android:textColor="@color/black"
-            android:gravity="center_vertical"/>
+            android:layout_height="60dp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tv_stock_name"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.8"
+                android:layout_marginHorizontal="10sp"
+                android:text="주식 이름"
+                android:fontFamily="@font/nanumsquare_eb"
+                android:textSize="45sp"
+                android:textColor="@color/black"
+                android:gravity="center_vertical"/>
+
+            <ImageButton
+                android:id="@+id/btn_heart"
+                android:layout_width="50dp"
+                android:layout_height="60dp"
+                android:layout_alignParentRight="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/heart_off"
+                android:background="#ffffff"
+                android:layout_marginRight="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="MissingConstraints" />
+        </LinearLayout>
         <LinearLayout
             android:id="@+id/priceBox"
             android:layout_width="match_parent"

@@ -8,19 +8,26 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.commexpert.ExpertTranProc
 import com.stucs17.stockai.Public.AccountInfo
+import com.stucs17.stockai.Public.Auth
+import com.stucs17.stockai.adapter.InterestingStockAdapter
 import com.stucs17.stockai.adapter.MyStockAdapter
 import com.stucs17.stockai.adapter.NotSignedStockAdapter
+import com.stucs17.stockai.data.InterestingStockData
 import com.stucs17.stockai.data.MyStockData
 import com.stucs17.stockai.data.NotSignedStockData
 import com.stucs17.stockai.sql.DBHelper
 import com.truefriend.corelib.commexpert.intrf.IRealDataListener
 import com.truefriend.corelib.commexpert.intrf.ITranDataListener
+import kotlinx.android.synthetic.main.fragment_tab1.*
 
 
 class Tab1 : Fragment(), ITranDataListener, IRealDataListener {
@@ -37,15 +44,20 @@ class Tab1 : Fragment(), ITranDataListener, IRealDataListener {
     private lateinit var tv_total_profit_or_loss : TextView
     private lateinit var rv_myStock : RecyclerView
     private lateinit var rv_myStock2 : RecyclerView
+    private lateinit var rv_myStock3 : RecyclerView
 
     lateinit var myStockAdapter: MyStockAdapter
-    lateinit var notSignedStockAdapter: NotSignedStockAdapter
+    private lateinit var notSignedStockAdapter: NotSignedStockAdapter
+    private lateinit var interestingStockAdapter: InterestingStockAdapter
     private val datas = mutableListOf<MyStockData>()
     private val datas2 = mutableListOf<NotSignedStockData>()
+    private val datas3 = mutableListOf<InterestingStockData>()
     val TAG = "****** Tab1 ******"
     private lateinit var tabActivity: TabActivity
     private val info = AccountInfo()
     private val gb = GlobalBackground()
+    private val auth = Auth()
+
 
     //sql 관련
     private lateinit var dbHelper: DBHelper
@@ -78,6 +90,7 @@ class Tab1 : Fragment(), ITranDataListener, IRealDataListener {
 
         rv_myStock = v.findViewById(R.id.rv_myStock)
         rv_myStock2 = v.findViewById(R.id.rv_myStock2)
+        rv_myStock3 = v.findViewById(R.id.rv_myStock3)
 
         dbHelper = DBHelper(tabActivity, "mydb.db", null, 1)
         database = dbHelper.writableDatabase
@@ -85,7 +98,35 @@ class Tab1 : Fragment(), ITranDataListener, IRealDataListener {
         m_nJangoRqId = info.getJangoInfo(database,m_JangoTranProc)
         m_nOrderListRqId = info.getNotSignedList(database,m_OrderListTranProc)
 
+        interestingStockAdapter = InterestingStockAdapter(tabActivity)
+        rv_myStock3.adapter = interestingStockAdapter
 
+        val c = auth.select_like(database)
+
+        val array = Array<InterestingStockData?>(c!!.count) { null }
+        var arraySize = 0
+        if(c.count> 0) Log.d(TAG, "저장된 관심종목 없음")
+
+        while(c.moveToNext()) {
+            val stockCode = c.getString(c.getColumnIndex("code"))
+            val stockName = c.getString(c.getColumnIndex("name"))
+
+            val data = InterestingStockData(stockCode,stockName)
+            array[arraySize] = data
+            arraySize+=1
+        }
+
+        datas3.clear()
+        datas3.apply {
+            for (x in 0 until arraySize) {
+                add(
+                    InterestingStockData(stockCode=array[x]!!.stockCode, stockName=array[x]!!.stockName)
+                )
+            }
+
+            interestingStockAdapter.datas = datas3
+            interestingStockAdapter.notifyDataSetChanged()
+        }
 
         return v
     }

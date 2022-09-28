@@ -1,7 +1,9 @@
 package com.stucs17.stockai
 
 import android.annotation.SuppressLint
+import android.content.ContentValues
 import android.content.Intent
+import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,10 +12,13 @@ import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.commexpert.ExpertTranProc
+import com.stucs17.stockai.Public.Auth
 import com.stucs17.stockai.Public.StockIndex
+import com.stucs17.stockai.sql.DBHelper
 import com.truefriend.corelib.commexpert.intrf.ITranDataListener
 import kotlin.math.abs
 import kotlin.math.roundToInt
@@ -21,6 +26,7 @@ import kotlin.math.roundToInt
 class StockDetailActivity : AppCompatActivity(), ITranDataListener {
 
     private val gb = GlobalBackground()
+    private val auth = Auth()
     private lateinit var expertTranProc : ExpertTranProc
     private var currentPriceRqId = 0
 
@@ -33,6 +39,7 @@ class StockDetailActivity : AppCompatActivity(), ITranDataListener {
     private lateinit var tv20 : TextView
     private lateinit var tv18 : TextView
     private lateinit var tv43 : TextView
+    private lateinit var btn_heart : ImageButton
     private lateinit var tv_expectPercent : TextView
     private lateinit var tv_stock_name : TextView
     private lateinit var priceView : TextView
@@ -42,8 +49,13 @@ class StockDetailActivity : AppCompatActivity(), ITranDataListener {
     private lateinit var buttonForSell : Button
     val TAG = "****** SD ******"
 
+    //sql 관련
+    private lateinit var dbHelper: DBHelper
+    lateinit var database: SQLiteDatabase
+
     private val stockInfo = StockIndex()
 
+    @SuppressLint("Recycle")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_stock_detail)
@@ -56,6 +68,7 @@ class StockDetailActivity : AppCompatActivity(), ITranDataListener {
         tv20 = findViewById(R.id.tv20) // 하한가
         tv18 = findViewById(R.id.tv18) // PER
         tv43 = findViewById(R.id.tv43) // PBR
+        btn_heart = findViewById(R.id.btn_heart)
         tv_expectPercent = findViewById(R.id.tv_expectPercent)
         tv_stock_name = findViewById(R.id.tv_stock_name)
         priceView = findViewById(R.id.priceView) // 현재가
@@ -78,6 +91,32 @@ class StockDetailActivity : AppCompatActivity(), ITranDataListener {
 
         tv_expectPercent.text = ssb
         tv_stock_name.text = stockName
+
+        dbHelper = DBHelper(this, "mydb.db", null, 1)
+        database = dbHelper.writableDatabase
+
+        val c = auth.isExist_like(database,stockCode)
+
+        if(c!!.count> 0)
+            btn_heart.setImageResource(R.drawable.heart_on)
+        else
+            btn_heart.setImageResource(R.drawable.heart_off)
+        btn_heart.setOnClickListener {
+
+            if(c.count> 0){
+                auth.delete_like(database,stockCode)
+                btn_heart.setImageResource(R.drawable.heart_off)
+            }
+            else {
+                val contentValues = ContentValues()
+                contentValues.put("code", stockCode)
+                contentValues.put("name", stockName)
+
+                auth.insert_like(contentValues,database)
+                btn_heart.setImageResource(R.drawable.heart_on)
+            }
+
+        }
 
         buttonForBuy.setOnClickListener {
             val intent = Intent(this@StockDetailActivity, BuyActivity::class.java)

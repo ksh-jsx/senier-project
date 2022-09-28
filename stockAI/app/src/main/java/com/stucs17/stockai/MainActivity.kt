@@ -76,8 +76,6 @@ class MainActivity : AppCompatActivity(), IExpertInitListener, IExpertLoginListe
 
     }
 
-
-
     private fun startApp() {
         Log.d(TAG,"라이브러리 초기화 요청")
 
