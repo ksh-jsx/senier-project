@@ -117,7 +117,7 @@ class BuyActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
         }
         buttonBuy.setOnClickListener {
             builder.setTitle("매수")
-            builder.setMessage("${currentName} ${currentQty.toString()}주 매수합니다")
+            builder.setMessage("$currentName $currentQty 주 매수합니다")
             builder.setPositiveButton("네") { dialogInterface: DialogInterface, i: Int ->
                 runBuy()
             }
@@ -139,7 +139,7 @@ class BuyActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
         m_OrderTranProc = null
     }
 
-    fun getUnit(price:Int):Int {
+    private fun getUnit(price:Int):Int {
 
         return if(price<1000) 1
         else if(price<5000) 5
@@ -155,7 +155,7 @@ class BuyActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
         }
     }
 
-    fun runBuy() {
+    private fun runBuy() {
         var strPass = ""
         val query = "SELECT * FROM user;"
         val c = database.rawQuery(query,null)

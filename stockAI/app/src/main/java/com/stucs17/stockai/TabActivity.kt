@@ -67,7 +67,7 @@ class TabActivity : AppCompatActivity() {
         val cal = Calendar.getInstance()
         cal.set(Calendar.SECOND, 0)
 
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, cal.timeInMillis,1000*60, pIntent)
+        alarmManager.setInexactRepeating (AlarmManager.RTC_WAKEUP, cal.timeInMillis,1000*60, pIntent)
     }
 
 }

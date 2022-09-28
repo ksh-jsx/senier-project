@@ -13,6 +13,7 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.commexpert.ExpertTranProc
+import com.stucs17.stockai.Public.StockIndex
 import com.truefriend.corelib.commexpert.intrf.ITranDataListener
 import kotlin.math.abs
 import kotlin.math.roundToInt
@@ -41,6 +42,8 @@ class StockDetailActivity : AppCompatActivity(), ITranDataListener {
     private lateinit var buttonForSell : Button
     val TAG = "****** SD ******"
 
+    private val stockInfo = StockIndex()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_stock_detail)
@@ -65,9 +68,7 @@ class StockDetailActivity : AppCompatActivity(), ITranDataListener {
         expertTranProc.InitInstance(this)
         expertTranProc.SetShowTrLog(true)
 
-        expertTranProc.SetSingleData(0,0, "J") // J 는 주식
-        expertTranProc.SetSingleData(0,1, stockCode)
-        currentPriceRqId = expertTranProc.RequestData("scp")
+        currentPriceRqId = stockInfo.getStockInfo(expertTranProc,stockCode)
 
         val ssb = SpannableStringBuilder("75% 확률로 상승 예상되는 종목입니다!")
         ssb.apply{
@@ -108,9 +109,9 @@ class StockDetailActivity : AppCompatActivity(), ITranDataListener {
 
             tv19.text = gb.dec(expertTranProc.GetSingleData(0, 19).toInt()) // 19 : 최고가
             tv20.text = gb.dec(expertTranProc.GetSingleData(0, 20).toInt()) // 20 : 최저가
-            tv18.text = gb.dec(expertTranProc.GetSingleData(0, 18).toInt()) // 18 : PER
+            tv18.text = gb.dec(expertTranProc.GetSingleData(0, 18).toInt()) // 18 : 주식 시가
 
-            val tmp = expertTranProc.GetSingleData(0, 43) // 43 : PBR
+            val tmp = expertTranProc.GetSingleData(0, 43) // 43 : PER
             var cnt = 0
             for(i in tmp){
                 if(i.toString() == "0")
@@ -119,12 +120,12 @@ class StockDetailActivity : AppCompatActivity(), ITranDataListener {
             val rng = IntRange(cnt,tmp.length-1)
             tv43.text = tmp.slice(rng)
 
-            var plus="";
+
             for(i in 0..50) {
                 val info = expertTranProc.GetSingleData(0, i)
                 //Log.d(TAG, i.toString()+":"+info)
             }
-
+            var plus="";
             val variancePercent = (abs(dayChange.toDouble()) /(currentPrice+dayChange*(-1)).toDouble())*100
             val setDecimal = (variancePercent * 100).roundToInt() /100f
 
@@ -137,8 +138,8 @@ class StockDetailActivity : AppCompatActivity(), ITranDataListener {
             }
 
             gb.dec(currentPrice)
-            priceView.setText(gb.dec(currentPrice)+"원")
-            priceView2.setText(plus+""+gb.dec(dayChange)+", "+"$setDecimal%")
+            priceView.text = gb.dec(currentPrice)+"원"
+            priceView2.text = plus+""+gb.dec(dayChange)+", "+"$setDecimal%"
             //Toast.makeText(this, "현재가 : $currentPrice, 전일 대비 : $dayChange", Toast.LENGTH_SHORT).show()
         }
     }

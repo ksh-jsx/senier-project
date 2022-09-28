@@ -3,22 +3,21 @@ package com.stucs17.stockai
 import android.annotation.SuppressLint
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import com.commexpert.ExpertRealProc
 import com.commexpert.ExpertTranProc
 import com.stucs17.stockai.Public.AccountInfo
 import com.stucs17.stockai.adapter.MyStockAdapter
+import com.stucs17.stockai.adapter.NotSignedStockAdapter
 import com.stucs17.stockai.data.MyStockData
+import com.stucs17.stockai.data.NotSignedStockData
 import com.stucs17.stockai.sql.DBHelper
 import com.truefriend.corelib.commexpert.intrf.IRealDataListener
 import com.truefriend.corelib.commexpert.intrf.ITranDataListener
@@ -29,14 +28,20 @@ class Tab1 : Fragment(), ITranDataListener, IRealDataListener {
     private var m_OrderListTranProc: ExpertTranProc? = null //주문내역 조회
     var m_nJangoRqId = -1 //잔고 TR ID
     var m_nOrderListRqId = -1 //주문내역 TR ID
+    var buyPriceSum = 0
+    var strTotal1 = 0
+    var strTotal2 = 0
 
     private lateinit var tv_total_assets : TextView
     private lateinit var tv_rest_assets : TextView
     private lateinit var tv_total_profit_or_loss : TextView
     private lateinit var rv_myStock : RecyclerView
+    private lateinit var rv_myStock2 : RecyclerView
 
     lateinit var myStockAdapter: MyStockAdapter
+    lateinit var notSignedStockAdapter: NotSignedStockAdapter
     private val datas = mutableListOf<MyStockData>()
+    private val datas2 = mutableListOf<NotSignedStockData>()
     val TAG = "****** Tab1 ******"
     private lateinit var tabActivity: TabActivity
     private val info = AccountInfo()
@@ -72,6 +77,7 @@ class Tab1 : Fragment(), ITranDataListener, IRealDataListener {
         tv_total_profit_or_loss = v.findViewById(R.id.tv_total_profit_or_loss)
 
         rv_myStock = v.findViewById(R.id.rv_myStock)
+        rv_myStock2 = v.findViewById(R.id.rv_myStock2)
 
         dbHelper = DBHelper(tabActivity, "mydb.db", null, 1)
         database = dbHelper.writableDatabase
@@ -98,16 +104,14 @@ class Tab1 : Fragment(), ITranDataListener, IRealDataListener {
     override fun onTranDataReceived(sTranID: String, nRqId: Int) {
         if (m_nJangoRqId == nRqId) {
 
-            //총평가금액
-            val strTotal1 = m_JangoTranProc!!.GetMultiData(1, 14, 0).toInt()
-            //손익
-            val strTotal2 = m_JangoTranProc!!.GetMultiData(1, 19, 0).toInt()
+
+            strTotal1 = m_JangoTranProc!!.GetMultiData(1, 14, 0).toInt() //총평가금액
+            strTotal2 = m_JangoTranProc!!.GetMultiData(1, 19, 0).toInt() //손익
 
             val nCount = m_JangoTranProc!!.GetValidCount(0)
 
             val array = Array<MyStockData?>(nCount) { null }
             var arraySize = 0
-            var buyPriceSum = 0
 
             myStockAdapter = MyStockAdapter(tabActivity)
             rv_myStock.adapter = myStockAdapter
@@ -166,33 +170,26 @@ class Tab1 : Fragment(), ITranDataListener, IRealDataListener {
                 myStockAdapter.notifyDataSetChanged()
             }
 
-            //tResultText.text = resultText
-            //tTotalRaver.text = "레버리지 : " + leverTotal + " 인버스 : " + inverTotal
-            //tStockData2.text = "" + (strTotal1.toInt() - strTotal2.toInt())
-            //System.out.println("KospiEx 잔고조회 : " + strTotal1 + ", D-2정산금액 : " + strD2price)
         } else if(m_nOrderListRqId == nRqId) { //취소 대상 주문 리스트
-            var strNo = " "
-            var strOrderNumberOri = " "
-            var strOrderNumber = " "
-            var strSellBuy = " "
-            var strCode = " "
-            var strName = " "
-            var nOrderCount = " "
-            var nOrderPrice = " "
 
             val nCount: Int = m_OrderListTranProc!!.GetValidCount(0)
 
-            println("KospiEx : 주문리스트 잔여 - " + nCount)
+            val array = Array<NotSignedStockData?>(nCount) { null }
+            var arraySize = 0
+
+            println("KospiEx : 주문리스트 잔여 - $nCount")
+
+            notSignedStockAdapter = NotSignedStockAdapter(tabActivity)
+            rv_myStock2.adapter = notSignedStockAdapter
 
             for (i in 0 until nCount) {
-                strNo = m_OrderListTranProc!!.GetMultiData(0, 0, i) //주문채번지점번호
-                strOrderNumber = m_OrderListTranProc!!.GetMultiData(0, 1, i) //주문번호
-                strOrderNumberOri = m_OrderListTranProc!!.GetMultiData(0, 2, i) //원주문번호
-                strSellBuy = m_OrderListTranProc!!.GetMultiData(0, 3, i) //주문구분명
-                strCode = m_OrderListTranProc!!.GetMultiData(0, 4, i) //상품번호
-                strName = m_OrderListTranProc!!.GetMultiData(0, 6, i) //정정취소구분명
-                nOrderCount = m_OrderListTranProc!!.GetMultiData(0, 7, i) //주문수량
-                nOrderPrice = m_OrderListTranProc!!.GetMultiData(0, 8, i) //주문단가
+                val strNo = m_OrderListTranProc!!.GetMultiData(0, 0, i) //주문채번지점번호
+                val strOrderNumber = m_OrderListTranProc!!.GetMultiData(0, 1, i) //주문번호
+                val strOrderNumberOri = m_OrderListTranProc!!.GetMultiData(0, 2, i) //원주문번호
+                val strCode = m_OrderListTranProc!!.GetMultiData(0, 4, i) //상품번호
+                val strName = m_OrderListTranProc!!.GetMultiData(0, 5, i) //상품명
+                val nOrderCount = m_OrderListTranProc!!.GetMultiData(0, 7, i).toInt() //주문수량
+                val nOrderPrice = m_OrderListTranProc!!.GetMultiData(0, 8, i).toInt() //주문단가
 
                 if (strOrderNumber.isEmpty()) continue
 
@@ -200,6 +197,35 @@ class Tab1 : Fragment(), ITranDataListener, IRealDataListener {
                     "KospiEx : 주문채번지점번호 - $strNo 원주문번호 - $strOrderNumberOri 주문번호 - $strOrderNumber"
                 )
                 Log.d(TAG, "KospiEx : 상품번호 - $strCode 주문수량 - $nOrderCount 주문단가 - $nOrderPrice")
+
+                if(strCode.length > 3){
+                    val data = NotSignedStockData(i+1,strName,nOrderCount,(nOrderPrice*nOrderCount))
+                    array[i] = data
+                    arraySize+=1
+                    buyPriceSum+=nOrderPrice
+                }
+
+            }
+
+            tv_rest_assets.text = "주문 가능: "+gb.dec((strTotal1-strTotal2)-buyPriceSum)+"원"
+
+            datas2.clear()
+
+            datas2.apply {
+
+                for (x in 0 until arraySize) {
+
+                    add(
+                        NotSignedStockData(
+                            id=array[x]!!.id,
+                            stockName=array[x]!!.stockName,
+                            stockQty=array[x]!!.stockQty,
+                            orderPrice=array[x]!!.orderPrice)
+                    )
+                }
+
+                notSignedStockAdapter.datas = datas2
+                notSignedStockAdapter.notifyDataSetChanged()
             }
         }
     }

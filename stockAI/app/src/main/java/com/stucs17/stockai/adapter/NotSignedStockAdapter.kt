@@ -9,14 +9,14 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.stucs17.stockai.R
-import com.stucs17.stockai.data.MyStockData
+import com.stucs17.stockai.data.NotSignedStockData
 import java.text.DecimalFormat
 
-class MyStockAdapter(private val context: Context) : RecyclerView.Adapter<MyStockAdapter.ViewHolder>() {
+class NotSignedStockAdapter(private val context: Context) : RecyclerView.Adapter<NotSignedStockAdapter.ViewHolder>() {
 
-    var datas = mutableListOf<MyStockData>()
+    var datas = mutableListOf<NotSignedStockData>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.my_stock_list,parent,false)
+        val view = LayoutInflater.from(context).inflate(R.layout.not_signed_stock_list,parent,false)
         return ViewHolder(view)
     }
 
@@ -29,23 +29,17 @@ class MyStockAdapter(private val context: Context) : RecyclerView.Adapter<MyStoc
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         private val stock_name: TextView = itemView.findViewById(R.id.stock_name)
-        private val stock_profit_or_loss: TextView = itemView.findViewById(R.id.stock_profit_or_loss)
         private val stock_quantity: TextView = itemView.findViewById(R.id.stock_quantity)
         private val stock_price: TextView = itemView.findViewById(R.id.stock_price)
 
         val dec = DecimalFormat("#,###")
 
         @SuppressLint("SetTextI18n")
-        fun bind(item: MyStockData) {
+        fun bind(item: NotSignedStockData) {
             stock_name.text = item.stockName
 
-            stock_profit_or_loss.text = dec.format(item.stockProfit.toInt())+" ("+item.stockProfitPer+"%)"
-            if(item.stockProfit.toInt()>=0)
-                stock_profit_or_loss.setTextColor((ContextCompat.getColor(context!!, R.color.red)))
-            else
-                stock_profit_or_loss.setTextColor((ContextCompat.getColor(context!!, R.color.blue)))
-            stock_quantity.text = item.stockQty+"주"
-            stock_price.text = dec.format(item.stockPrice.toInt())
+            stock_quantity.text = item.stockQty.toString()+"주"
+            stock_price.text = dec.format(item.orderPrice.toInt())
 
         }
     }

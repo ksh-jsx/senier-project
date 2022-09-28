@@ -11,28 +11,50 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import com.commexpert.CommExpertMng
+import com.commexpert.ExpertTranProc
+import com.stucs17.stockai.GlobalBackground
 import com.stucs17.stockai.MainActivity
 import com.stucs17.stockai.R
 import com.stucs17.stockai.TabActivity
+import com.truefriend.corelib.commexpert.intrf.ITranDataListener
+import java.time.LocalDate
+import java.time.LocalDateTime
+import kotlin.math.abs
+import kotlin.math.roundToInt
 
-class BackgroundWorker: BroadcastReceiver() {
+class BackgroundWorker: BroadcastReceiver(), ITranDataListener {
 
     private lateinit var notificationManager: NotificationManager
     private val CHANNEL_ID = "roboStock"
+    private lateinit var expertTranProc : ExpertTranProc
+    private var currentPriceRqId = 0
+    private lateinit var ctt : Context
+    private var target =  ""
+    private val arrItemKospiCode = CommExpertMng.getInstance().GetKospiCodeList() // 코스피 주식 목록
+    private val arrItemKosdaqCode = CommExpertMng.getInstance().GetKosdaqCodeList() // 코스닥 주식 목록
 
-    @RequiresApi(Build.VERSION_CODES.O)
+    private val stockInfo = StockIndex()
+
     override fun onReceive(context: Context?, intent: Intent?) {
         if(intent != null){
-
             if (context != null) {
+                ctt = context
                 notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             }
+            expertTranProc = ExpertTranProc(context)
+            expertTranProc.InitInstance(this)
+            expertTranProc.SetShowTrLog(true)
+            target = "005930"
+            currentPriceRqId = stockInfo.getStockInfo(expertTranProc,target)
+
             createNotificationChannel()
-            displayNotification(context)
+
         }
     }
 
-    fun displayNotification(context :Context?) {
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun displayNotification(context :Context?,name:String,per:Float,sign:Int) {
         val contentIntent = Intent(context, MainActivity::class.java)
         val contentPendingIntent = PendingIntent.getActivity(
             context,
@@ -46,12 +68,13 @@ class BackgroundWorker: BroadcastReceiver() {
             4. FLAG_ONE_SHOT : 한번 사용되면, 그 다음에 다시 사용하지 않음
              */
         )
+        var word = if(sign === 1) "상승" else "하락"
 
         val builder = context?.let {
             NotificationCompat.Builder(it, CHANNEL_ID)
                 .setSmallIcon(R.drawable.logo) // 아이콘
                 .setContentTitle("타이틀 입니다.") // 제목
-                .setContentText("내용 입니다.") // 내용
+                .setContentText("관심종목 ${name}: $per% $word 중입니다.") // 내용
                 .setContentIntent(contentPendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true)
@@ -63,7 +86,7 @@ class BackgroundWorker: BroadcastReceiver() {
         }
     }
 
-    fun createNotificationChannel() {
+    private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel = NotificationChannel(
                 CHANNEL_ID, // 채널의 아이디
@@ -83,5 +106,29 @@ class BackgroundWorker: BroadcastReceiver() {
             notificationManager.createNotificationChannel(
                 notificationChannel)
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onTranDataReceived(sTranID: String?, nRqId: Int) {
+
+        val info11 = expertTranProc.GetSingleData(0, 11).toInt() // 11 : 주식 현재가
+        val info12 = expertTranProc.GetSingleData(0, 12).toInt() // 12 : 전일 대비
+        val info13= expertTranProc.GetSingleData(0, 12).toInt() // 12 : 전일 대비 부호 0:보합, 1:상승, 2:상한
+
+        val inList = (arrItemKospiCode+arrItemKosdaqCode).sorted().filter{ it.code.startsWith(target) } //입력한 텍스트와 주식 목록 비교->필터링
+        inList[0].name
+        val variancePercent = (abs(info12.toDouble()) /(info11+info12*(-1)).toDouble())*100
+        val setDecimal = (variancePercent * 100).roundToInt() /100f
+        if(setDecimal>2.5)
+            displayNotification(ctt,inList[0].name,setDecimal,info13)
+
+    }
+
+    override fun onTranMessageReceived(p0: Int, p1: String?, p2: String?, p3: String?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onTranTimeout(p0: Int) {
+        TODO("Not yet implemented")
     }
 }
