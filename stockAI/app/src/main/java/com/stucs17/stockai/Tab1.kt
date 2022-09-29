@@ -105,7 +105,7 @@ class Tab1 : Fragment(), ITranDataListener, IRealDataListener {
 
         val array = Array<InterestingStockData?>(c!!.count) { null }
         var arraySize = 0
-        if(c.count> 0) Log.d(TAG, "저장된 관심종목 없음")
+        if(c.count<0) Log.d(TAG, "저장된 관심종목 없음")
 
         while(c.moveToNext()) {
             val stockCode = c.getString(c.getColumnIndex("code"))

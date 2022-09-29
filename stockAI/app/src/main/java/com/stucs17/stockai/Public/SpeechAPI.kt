@@ -194,32 +194,53 @@ class SpeechAPI : AppCompatActivity() {
         var intent = Intent(this@SpeechAPI, TabActivity::class.java)
         var type = ""
         var isUnderstand = true
-        when (txt) {
-            "수익률" -> {
+
+            if(txt!!.indexOf("수익률")>-1) {
                 intent = Intent(this@SpeechAPI, AccountInfo::class.java)
                 type = "profit_or_loss"
             }
-            "총 자산" -> {
+            else if(txt.indexOf("총 자산")>-1) {
                 intent = Intent(this@SpeechAPI, AccountInfo::class.java)
                 type = "total_assets"
             }
-            "주문 가능" -> {
+            else if(txt.indexOf("주문 가능")>-1){
                 intent = Intent(this@SpeechAPI, AccountInfo::class.java)
                 type = "available_to_order"
             }
-            "코스피" -> {
+            else if(txt.indexOf("총 매입가")>-1){
+                intent = Intent(this@SpeechAPI, AccountInfo::class.java)
+                type = "total_order_price"
+            }
+            else if(txt.indexOf("내 주식")>-1){
+                intent = Intent(this@SpeechAPI, AccountInfo::class.java)
+                type = "my_stocks"
+            }
+            else if(txt.indexOf("미체결")>-1){
+                intent = Intent(this@SpeechAPI, AccountInfo::class.java)
+                type = "not_sign_stocks"
+            }
+            else if(txt.indexOf("관심 목록")>-1){
+                intent = Intent(this@SpeechAPI, AccountInfo::class.java)
+                type = "interesting_stocks"
+            }
+            else if(txt.indexOf("코스피")>-1){
                 intent = Intent(this@SpeechAPI, StockIndex::class.java)
                 type = "kospi"
             }
-            "코스닥" -> {
+            else if(txt.indexOf("코스닥")>-1){
                 intent = Intent(this@SpeechAPI, StockIndex::class.java)
                 type = "kosdaq"
             }
-            else -> {
+            else if (txt.indexOf("주가")>-1) {
+                intent = Intent(this@SpeechAPI, StockIndex::class.java)
+                type = "stockPrice"
+                intent.putExtra("target", txt.split(" ")[0])
+            }
+            else{
                 isUnderstand = false
                 startUsingSpeechSDK2("무슨말인지 모르겠어요")
             }
-        }
+
 
         if(isUnderstand) {
             intent.putExtra("type", type)

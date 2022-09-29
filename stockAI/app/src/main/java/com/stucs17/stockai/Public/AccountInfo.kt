@@ -10,7 +10,9 @@ import com.commexpert.ExpertTranProc
 import com.stucs17.stockai.R
 import com.stucs17.stockai.TabActivity
 import com.stucs17.stockai.adapter.MyStockAdapter
+import com.stucs17.stockai.data.InterestingStockData
 import com.stucs17.stockai.data.MyStockData
+import com.stucs17.stockai.data.NotSignedStockData
 import com.stucs17.stockai.sql.DBHelper
 import com.truefriend.corelib.commexpert.intrf.IRealDataListener
 import com.truefriend.corelib.commexpert.intrf.ITranDataListener
@@ -46,8 +48,37 @@ class AccountInfo: AppCompatActivity(), ITranDataListener, IRealDataListener {
         dbHelper = DBHelper(this, "mydb.db", null, 1)
         database = dbHelper.writableDatabase
 
-        m_nJangoRqId = getJangoInfo(database,m_JangoTranProc)
-        m_nOrderListRqId = getNotSignedList(database,m_OrderListTranProc )
+        if(intent.hasExtra("type")) {
+            type = intent.getStringExtra("type")
+        }
+        when(type){
+            "not_sign_stocks"->{
+                m_nOrderListRqId = getNotSignedList(database,m_OrderListTranProc )
+            }
+            "interesting_stocks"->{
+                val c = auth.select_like(database)
+
+                val array = Array<InterestingStockData?>(c!!.count) { null }
+                var arraySize = 0
+                if(c.count<0) speechAPI.startUsingSpeechSDK2("저장된 관심종목이 없습니다.")
+
+                while(c.moveToNext()) {
+                    val stockCode = c.getString(c.getColumnIndex("code"))
+                    val stockName = c.getString(c.getColumnIndex("name"))
+
+                    val data = InterestingStockData(stockCode, stockName)
+                    array[arraySize] = data
+                    arraySize += 1
+                }
+
+                val arrs = array.mapNotNull { it?.stockName }.joinToString(",","","")
+                speechAPI.startUsingSpeechSDK2("당신이 관심 주식은 $arrs 입니다.")
+            }
+            else -> m_nJangoRqId = getJangoInfo(database,m_JangoTranProc)
+        }
+
+
+
     }
 
     override fun onDestroy() {
@@ -111,17 +142,12 @@ class AccountInfo: AppCompatActivity(), ITranDataListener, IRealDataListener {
         m_OrderListTranProc .SetSingleData(0, 4, " ") //연속조회키100
         m_OrderListTranProc .SetSingleData(0, 5, "0") //조회구분 0주문순, 1종목순
 
-
-
-
         return m_OrderListTranProc .RequestData("smcp")  //주식 정정 취소 가능 주문 조회
     }
 
     override fun onTranDataReceived(sTranID: String, nRqId: Int) {
         if (m_nJangoRqId == nRqId) {
-            if(intent.hasExtra("type")) {
-                type = intent.getStringExtra("type")
-            }
+
             //총평가금액
             val strTotal1 = m_JangoTranProc!!.GetMultiData(1, 14, 0).toInt()
             //손익
@@ -162,36 +188,51 @@ class AccountInfo: AppCompatActivity(), ITranDataListener, IRealDataListener {
                 "available_to_order"->{ // 주문가능
                     speechAPI.startUsingSpeechSDK2("당신의 주문 가능 금액은 ${(strTotal1-strTotal2)-buyPriceSum} 원입니다.")
                 }
+                "my_stocks"->{ //매입 주식 목록
+                    val arrs = array.mapNotNull { it?.stockName }.joinToString(",","","")
+                    speechAPI.startUsingSpeechSDK2("당신이 매입한 주식은 $arrs 입니다.")
+                }
+                "total_order_price"->{
+                    speechAPI.startUsingSpeechSDK2("당신의 총 매입가는 $buyPriceSum 원 입니다.")
+                }
             }
-            Thread.sleep(3000)
+            Thread.sleep(1000)
             gotoTab1()
         } else if(m_nOrderListRqId == nRqId) { //취소 대상 주문 리스트
-            var strNo = " "
-            var strOrderNumberOri = " "
-            var strOrderNumber = " "
-            var strCode = " "
-            var nOrderCount = " "
-            var nOrderPrice = " "
 
             val nCount: Int = m_OrderListTranProc!!.GetValidCount(0)
-
-            println("KospiEx : 주문리스트 잔여 : $nCount")
+            val array = Array<NotSignedStockData?>(nCount) { null }
 
             for (i in 0 until nCount) {
-                strNo = m_OrderListTranProc!!.GetMultiData(0, 0, i) //주문채번지점번호
-                strOrderNumber = m_OrderListTranProc!!.GetMultiData(0, 1, i) //주문번호
-                strOrderNumberOri = m_OrderListTranProc!!.GetMultiData(0, 2, i) //원주문번호
-                strCode = m_OrderListTranProc!!.GetMultiData(0, 4, i) //상품번호
-                nOrderCount = m_OrderListTranProc!!.GetMultiData(0, 7, i) //주문수량
-                nOrderPrice = m_OrderListTranProc!!.GetMultiData(0, 8, i) //주문단가
+                val strNo = m_OrderListTranProc!!.GetMultiData(0, 0, i) //주문채번지점번호
+                val strOrderNumber = m_OrderListTranProc!!.GetMultiData(0, 1, i) //주문번호
+                val strOrderNumberOri = m_OrderListTranProc!!.GetMultiData(0, 2, i) //원주문번호
+                val strCode = m_OrderListTranProc!!.GetMultiData(0, 4, i) //상품번호
+                val strName = m_OrderListTranProc!!.GetMultiData(0, 5, i) //상품명
+                val nOrderCount = m_OrderListTranProc!!.GetMultiData(0, 7, i).toInt() //주문수량
+                val nOrderPrice = m_OrderListTranProc!!.GetMultiData(0, 8, i).toInt() //주문단가
 
                 if (strOrderNumber.isEmpty()) continue
-
+                else{
+                    val data = NotSignedStockData(i+1,strName,nOrderCount,(nOrderPrice*nOrderCount))
+                    array[i] = data
+                }
                 Log.d(TAG,
                     "KospiEx : 주문채번지점번호 - $strNo 원주문번호 - $strOrderNumberOri 주문번호 - $strOrderNumber"
                 )
                 Log.d(TAG, "KospiEx : 상품번호 - $strCode 주문수량 - $nOrderCount 주문단가 - $nOrderPrice")
             }
+
+            val arrs = array.mapNotNull{ it?.stockName }.joinToString(",","","")
+            when(type){
+                "not_sign_stocks"->{ //미체결
+                    if(arrs.isNotEmpty()) speechAPI.startUsingSpeechSDK2("현재 미체결 주식은 $arrs 입니다")
+                    else speechAPI.startUsingSpeechSDK2("현재 미체결 주식은 없습니다")
+                }
+            }
+            Thread.sleep(1000)
+            gotoTab1()
+
         }
     }
 
@@ -207,7 +248,9 @@ class AccountInfo: AppCompatActivity(), ITranDataListener, IRealDataListener {
         strErrorType: String?, strMessage: String?
     ) {
         Log.e("onTranMessageReceived", String.format("MsgCode:%s ErrorType:%s %s",  strMsgCode ,  strErrorType  , strMessage));
+
     }
+
 
     override fun onTranTimeout(nRqId: Int) {
         Log.e("onTranTimeout", String.format("RqId:%d ", nRqId))

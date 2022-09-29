@@ -63,6 +63,7 @@ class StockDetailActivity : AppCompatActivity(), ITranDataListener {
         if(intent.hasExtra("stockCode")) {
             stockCode = intent.getStringExtra("stockCode")
             stockName = intent.getStringExtra("stockName")
+            Log.d(TAG, "code: $stockCode / name: $stockName")
         }
         tv19 = findViewById(R.id.tv19) // 상한가
         tv20 = findViewById(R.id.tv20) // 하한가
