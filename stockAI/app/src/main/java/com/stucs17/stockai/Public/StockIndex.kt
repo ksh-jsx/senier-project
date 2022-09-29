@@ -90,9 +90,8 @@ class StockIndex : AppCompatActivity(), ITranDataListener {
 
         expertTranProc.SetSingleData(0,0, "J") // J 는 주식
         expertTranProc.SetSingleData(0,1, stockCode)
-        currentPriceRqId = expertTranProc.RequestData("scp")
 
-        return currentPriceRqId
+        return expertTranProc.RequestData("scp")
     }
 
     private fun gotoTab2() {

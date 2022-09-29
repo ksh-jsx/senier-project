@@ -169,9 +169,7 @@ class AccountInfo: AppCompatActivity(), ITranDataListener, IRealDataListener {
             var strNo = " "
             var strOrderNumberOri = " "
             var strOrderNumber = " "
-            var strSellBuy = " "
             var strCode = " "
-            var strName = " "
             var nOrderCount = " "
             var nOrderPrice = " "
 
@@ -183,9 +181,7 @@ class AccountInfo: AppCompatActivity(), ITranDataListener, IRealDataListener {
                 strNo = m_OrderListTranProc!!.GetMultiData(0, 0, i) //주문채번지점번호
                 strOrderNumber = m_OrderListTranProc!!.GetMultiData(0, 1, i) //주문번호
                 strOrderNumberOri = m_OrderListTranProc!!.GetMultiData(0, 2, i) //원주문번호
-                strSellBuy = m_OrderListTranProc!!.GetMultiData(0, 3, i) //주문구분명
                 strCode = m_OrderListTranProc!!.GetMultiData(0, 4, i) //상품번호
-                strName = m_OrderListTranProc!!.GetMultiData(0, 6, i) //정정취소구분명
                 nOrderCount = m_OrderListTranProc!!.GetMultiData(0, 7, i) //주문수량
                 nOrderPrice = m_OrderListTranProc!!.GetMultiData(0, 8, i) //주문단가
 

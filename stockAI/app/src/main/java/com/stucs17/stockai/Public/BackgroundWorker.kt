@@ -6,6 +6,8 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import android.os.Build
 import android.util.Log
@@ -17,6 +19,8 @@ import com.stucs17.stockai.GlobalBackground
 import com.stucs17.stockai.MainActivity
 import com.stucs17.stockai.R
 import com.stucs17.stockai.TabActivity
+import com.stucs17.stockai.data.InterestingStockData
+import com.stucs17.stockai.sql.DBHelper
 import com.truefriend.corelib.commexpert.intrf.ITranDataListener
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -31,9 +35,15 @@ class BackgroundWorker: BroadcastReceiver(), ITranDataListener {
     private var currentPriceRqId = 0
     private lateinit var ctt : Context
     private var target =  ""
+    private var cnt =  0
+    private lateinit var c: Cursor
     private val arrItemKospiCode = CommExpertMng.getInstance().GetKospiCodeList() // 코스피 주식 목록
     private val arrItemKosdaqCode = CommExpertMng.getInstance().GetKosdaqCodeList() // 코스닥 주식 목록
 
+    private lateinit var dbHelper: DBHelper
+    lateinit var database: SQLiteDatabase
+
+    private val auth = Auth()
     private val stockInfo = StockIndex()
 
     override fun onReceive(context: Context?, intent: Intent?) {
@@ -45,16 +55,21 @@ class BackgroundWorker: BroadcastReceiver(), ITranDataListener {
             expertTranProc = ExpertTranProc(context)
             expertTranProc.InitInstance(this)
             expertTranProc.SetShowTrLog(true)
-            target = "005930"
-            currentPriceRqId = stockInfo.getStockInfo(expertTranProc,target)
 
-            createNotificationChannel()
+            dbHelper = DBHelper(context, "mydb.db", null, 1)
+            database = dbHelper.writableDatabase
 
+            c = auth.select_like(database)!!
+            if(c.moveToNext()){
+                target = c.getString(c.getColumnIndex("code"))
+                currentPriceRqId = stockInfo.getStockInfo(expertTranProc,target)
+                cnt++
+            }
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun displayNotification(context :Context?,name:String,per:Float,sign:Int) {
+    fun displayNotification(cnt:Int,context :Context?,name:String,per:Float,sign:Int) {
         val contentIntent = Intent(context, MainActivity::class.java)
         val contentPendingIntent = PendingIntent.getActivity(
             context,
@@ -68,12 +83,12 @@ class BackgroundWorker: BroadcastReceiver(), ITranDataListener {
             4. FLAG_ONE_SHOT : 한번 사용되면, 그 다음에 다시 사용하지 않음
              */
         )
-        var word = if(sign === 1) "상승" else "하락"
-
+        val word = if(sign == 1) "상승" else "하락"
+        Log.d("test", CHANNEL_ID+cnt.toString())
         val builder = context?.let {
-            NotificationCompat.Builder(it, CHANNEL_ID)
+            NotificationCompat.Builder(it, CHANNEL_ID+cnt.toString())
                 .setSmallIcon(R.drawable.logo) // 아이콘
-                .setContentTitle("타이틀 입니다.") // 제목
+                .setContentTitle("로보스톡") // 제목
                 .setContentText("관심종목 ${name}: $per% $word 중입니다.") // 내용
                 .setContentIntent(contentPendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -86,11 +101,11 @@ class BackgroundWorker: BroadcastReceiver(), ITranDataListener {
         }
     }
 
-    private fun createNotificationChannel() {
+    private fun createNotificationChannel(cnt:Int) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel = NotificationChannel(
-                CHANNEL_ID, // 채널의 아이디
-                "RoboStock.", // 채널의 이름
+                CHANNEL_ID+cnt.toString(), // 채널의 아이디
+                "RoboStock$cnt", // 채널의 이름
                 NotificationManager.IMPORTANCE_HIGH
                 /*
                 1. IMPORTANCE_HIGH = 알림음이 울리고 헤드업 알림으로 표시
@@ -119,16 +134,26 @@ class BackgroundWorker: BroadcastReceiver(), ITranDataListener {
         inList[0].name
         val variancePercent = (abs(info12.toDouble()) /(info11+info12*(-1)).toDouble())*100
         val setDecimal = (variancePercent * 100).roundToInt() /100f
-        if(setDecimal>2.5)
-            displayNotification(ctt,inList[0].name,setDecimal,info13)
+        if(setDecimal>2.5){
+            createNotificationChannel(cnt)
+            displayNotification(cnt,ctt,inList[0].name,setDecimal,info13)
+        }
+
+
+        if(c.moveToNext()) {
+            Thread.sleep(5000)
+            target = c.getString(c.getColumnIndex("code"))
+            currentPriceRqId = stockInfo.getStockInfo(expertTranProc,target)
+            cnt++
+        }
 
     }
 
     override fun onTranMessageReceived(p0: Int, p1: String?, p2: String?, p3: String?) {
-        TODO("Not yet implemented")
+        Log.d("onTranMessageReceived", "$p0/$p1")
     }
 
     override fun onTranTimeout(p0: Int) {
-        TODO("Not yet implemented")
+        Log.d("onTranTimeout", "$p0")
     }
 }
