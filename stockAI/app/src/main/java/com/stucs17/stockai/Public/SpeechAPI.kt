@@ -236,6 +236,16 @@ class SpeechAPI : AppCompatActivity() {
                 type = "stockPrice"
                 intent.putExtra("target", txt.split(" ")[0])
             }
+            else if (txt.indexOf("매수")>-1) {
+                intent = Intent(this@SpeechAPI, Trade::class.java)
+                type = "buy"
+                intent.putExtra("target", txt.split(" ")[0])
+            }
+            else if (txt.indexOf("매도")>-1) {
+                intent = Intent(this@SpeechAPI, Trade::class.java)
+                type = "sell"
+                intent.putExtra("target", txt.split(" ")[0])
+            }
             else{
                 isUnderstand = false
                 startUsingSpeechSDK2("무슨말인지 모르겠어요")

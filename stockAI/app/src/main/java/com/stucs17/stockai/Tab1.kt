@@ -8,13 +8,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.commexpert.ExpertTranProc
 import com.stucs17.stockai.Public.AccountInfo
 import com.stucs17.stockai.Public.Auth
@@ -127,6 +124,7 @@ class Tab1 : Fragment(), ITranDataListener, IRealDataListener {
             interestingStockAdapter.datas = datas3
             interestingStockAdapter.notifyDataSetChanged()
         }
+
 
         return v
     }

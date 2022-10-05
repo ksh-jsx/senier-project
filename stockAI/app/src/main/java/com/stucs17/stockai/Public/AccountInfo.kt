@@ -76,9 +76,6 @@ class AccountInfo: AppCompatActivity(), ITranDataListener, IRealDataListener {
             }
             else -> m_nJangoRqId = getJangoInfo(database,m_JangoTranProc)
         }
-
-
-
     }
 
     override fun onDestroy() {

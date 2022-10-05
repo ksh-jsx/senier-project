@@ -24,6 +24,7 @@ import com.kakao.sdk.newtoneapi.SpeechRecognizerClient
 import com.kakao.sdk.newtoneapi.SpeechRecognizerManager
 import com.stucs17.stockai.Public.AccountInfo
 import com.stucs17.stockai.Public.Auth
+import com.stucs17.stockai.Public.Trade
 import com.stucs17.stockai.data.MyStockData
 import com.stucs17.stockai.sql.DBHelper
 import com.truefriend.corelib.commexpert.intrf.IRealDataListener
@@ -32,7 +33,7 @@ import java.security.MessageDigest
 
 
 class SellActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
-    private val auth = Auth()
+
     var m_JangoTranProc: ExpertTranProc? = null //잔고 조회
     var m_OrderTranProc: ExpertTranProc? = null //주문
     var m_OrderListTranProc: ExpertTranProc? = null //주문내역 조회
@@ -40,7 +41,6 @@ class SellActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
 
     var m_nJangoRqId = -1 //잔고 TR ID
     var m_nOrderRqId = -1 //주문 TR ID
-    var m_nOrderListRqId = -1 //주문내역 TR ID
 
     private lateinit var tv_stock_name : TextView
     private lateinit var tv_stock_price : TextView
@@ -64,6 +64,8 @@ class SellActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
 
     private val gb = GlobalBackground()
     private val info = AccountInfo()
+    private val trade = Trade()
+
     //sql 관련
     lateinit var dbHelper: DBHelper
     lateinit var database: SQLiteDatabase
@@ -143,9 +145,10 @@ class SellActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
         }
         buttonBuy.setOnClickListener {
             builder.setTitle("매도")
-            builder.setMessage("${currentName} ${currentQty.toString()}주 매도합니다")
+            builder.setMessage("$currentName ${currentQty.toString()}주 매도합니다")
             builder.setPositiveButton("네") { dialogInterface: DialogInterface, i: Int ->
-                runSell()
+                //runSell()
+                m_nOrderRqId = trade.runSell(database,currentCode,orderType,currentQty.toString(),currentPrice.toString())!!
             }
             builder.setNegativeButton("취소") { dialogInterface: DialogInterface, i: Int ->
             }
@@ -181,38 +184,6 @@ class SellActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
         }
     }
 
-    fun runSell() {
-
-        var strnumPwd = ""
-
-        val c = auth.select(database)
-        if (c != null) {
-            if(c.moveToNext()){
-                strnumPwd = c.getString(c.getColumnIndex("numPwd"))
-            }
-        }
-
-        val strEncPass = m_OrderTranProc!!.GetEncryptPassword(strnumPwd) //비밀번호
-        val strAcc = CommExpertMng.getInstance().GetAccountNo(0)
-
-        m_OrderTranProc?.ClearInblockData()
-        m_OrderTranProc?.SetSingleData(0, 0, strAcc) //계좌
-        m_OrderTranProc?.SetSingleData(0, 1, "01") //상품코드
-        m_OrderTranProc?.SetSingleData(0, 2, strEncPass)
-        m_OrderTranProc?.SetSingleData(0, 3, currentCode) //상품코드
-        m_OrderTranProc?.SetSingleData(0, 4, "01") //01
-        m_OrderTranProc?.SetSingleData(0, 5, orderType) //주문구분  00:지정가 01:시장가
-        m_OrderTranProc?.SetSingleData(0, 6, currentQty.toString()) //주문수량
-        m_OrderTranProc?.SetSingleData(0, 7, currentPrice.toString()) //주문단가
-        m_OrderTranProc?.SetSingleData(0, 8, " ") //연락전화번호
-
-        //축약서명
-        m_OrderTranProc!!.SetCertType(1)
-        //매도주문
-        m_OrderTranProc!!.RequestData("scaao")
-
-        //tResult.setText("매수 " + m_strCode + "  " + strOrderPrice)
-    }
 
     @SuppressLint("SetTextI18n")
     override fun onTranDataReceived(sTranID: String, nRqId: Int) {
@@ -223,11 +194,9 @@ class SellActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
 
                 if (strName == currentName) {
                     val strQty = m_JangoTranProc!!.GetMultiData(0, 7, i)//수량
-                    tv_sell_available_qty.setText(strQty+"주")
+                    tv_sell_available_qty.text = strQty+"주"
 
                 }
-
-
                 //System.out.println("1: " + strCode + ", 2: " + strName)
                 //System.out.println("3: " + strQty + ", 4: " + strAverPrice)
             }
@@ -238,11 +207,8 @@ class SellActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
         nRqId: Int, strMsgCode: String?,
         strErrorType: String?, strMessage: String?
     ) {
-
         // TODO Auto-generated method stub
         Log.e("onTranMessageReceived", String.format("MsgCode:%s ErrorType:%s %s",  strMsgCode ,  strErrorType  , strMessage));
-
-
     }
 
     override fun onTranTimeout(nRqId: Int) {

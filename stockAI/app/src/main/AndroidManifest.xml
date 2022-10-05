@@ -26,7 +26,8 @@
         android:theme="@style/Theme.StockAI"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".Public.StockIndex"></activity>
+        <activity android:name=".Public.Trade"></activity>
+        <activity android:name=".Public.StockIndex" />
         <activity android:name=".StockDetailActivity" />
         <activity android:name=".Public.SpeechAPI" />
         <activity android:name=".Public.AccountInfo" />
@@ -36,7 +37,9 @@
         <activity
             android:name=".TabActivity"
             android:windowSoftInputMode="adjustNothing" />
-        <receiver android:name=".Public.BackgroundWorker"/>
+
+        <receiver android:name=".Public.BackgroundWorker" />
+
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />

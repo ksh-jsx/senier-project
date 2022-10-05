@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.commexpert.ExpertRealProc
 import com.commexpert.ExpertTranProc
 import com.stucs17.stockai.Public.AccountInfo
+import com.stucs17.stockai.Public.Trade
 import com.stucs17.stockai.sql.DBHelper
 import com.truefriend.corelib.commexpert.intrf.IRealDataListener
 import com.truefriend.corelib.commexpert.intrf.ITranDataListener
@@ -44,6 +45,7 @@ class BuyActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
     private var orderType = "00"
 
     private val gb = GlobalBackground()
+    private val trade = Trade()
     //sql 관련
     lateinit var dbHelper: DBHelper
     lateinit var database: SQLiteDatabase
@@ -118,14 +120,11 @@ class BuyActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
         buttonBuy.setOnClickListener {
             builder.setTitle("매수")
             builder.setMessage("$currentName $currentQty 주 매수합니다")
-            builder.setPositiveButton("네") { dialogInterface: DialogInterface, i: Int ->
-                runBuy()
+            builder.setPositiveButton("네") { _: DialogInterface, i: Int ->
+                m_nOrderRqId = trade.runBuy(database,currentCode,orderType,currentQty.toString(),currentPrice.toString())!!
             }
-            builder.setNegativeButton("취소") { dialogInterface: DialogInterface, i: Int ->
-            }
+            builder.setNegativeButton("취소") { _: DialogInterface, i: Int -> }
             builder.show()
-
-
         }
         buttonCancel.setOnClickListener {
             finish()
@@ -155,45 +154,6 @@ class BuyActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
         }
     }
 
-    private fun runBuy() {
-        var strPass = ""
-        val query = "SELECT * FROM user;"
-        val c = database.rawQuery(query,null)
-        if(c.moveToNext()){
-            strPass = c.getString(c.getColumnIndex("numPwd"))
-        }
-        var strEncPass = ""
-
-        m_OrderTranProc!!.ClearInblockData()
-
-        //계좌
-        m_OrderTranProc!!.SetSingleData(0, 0, "68067116")
-        //상품코드
-        m_OrderTranProc!!.SetSingleData(0, 1, "01")
-        //비밀번호
-        strEncPass = m_OrderTranProc!!.GetEncryptPassword(strPass)
-        m_OrderTranProc!!.SetSingleData(0, 2, strEncPass)
-
-
-
-        m_OrderTranProc!!.SetSingleData(0, 3, currentCode) //상품코드
-        m_OrderTranProc!!.SetSingleData(0, 4, orderType) //주문구분  00:지정가 01:시장가
-
-        //주문수량
-        m_OrderTranProc!!.SetSingleData(0, 5, currentQty.toString())
-
-        //주문단가
-        m_OrderTranProc!!.SetSingleData(0, 6, currentPrice.toString())
-        m_OrderTranProc!!.SetSingleData(0, 7, " ") //연락전화번호
-
-        //축약서명
-        m_OrderTranProc!!.SetCertType(1)
-        //매수주문
-        m_OrderTranProc!!.RequestData("scabo")
-
-        //tResult.setText("매수 " + m_strCode + "  " + strOrderPrice)
-    }
-
     override fun onTranDataReceived(sTranID: String, nRqId: Int) {
 
     }
@@ -206,8 +166,6 @@ class BuyActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
             Toast.makeText(this, strMessage, Toast.LENGTH_LONG).show()
             // TODO Auto-generated method stub
         Log.e("onTranMessageReceived", String.format("MsgCode:%s ErrorType:%s %s",  strMsgCode ,  strErrorType  , strMessage));
-
-
     }
 
     override fun onTranTimeout(nRqId: Int) {

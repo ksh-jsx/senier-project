@@ -49,7 +49,6 @@ class StockIndex : AppCompatActivity(), ITranDataListener {
                 MyAsyncTask().execute(weburl)
             }
             "stockPrice"->{ //주가
-
                 expertTranProc = ExpertTranProc(this)
                 expertTranProc.InitInstance(this)
                 expertTranProc.SetShowTrLog(true)
