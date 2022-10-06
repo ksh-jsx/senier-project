@@ -13,21 +13,23 @@ import android.os.Bundle
 import android.view.KeyEvent
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import com.commexpert.ExpertTranProc
 import com.stucs17.stockai.Public.BackgroundWorker
 import com.stucs17.stockai.Public.SpeechAPI
 import com.stucs17.stockai.adapter.PageAdapter
+import com.truefriend.corelib.commexpert.intrf.ITranDataListener
 import kotlinx.android.synthetic.main.activity_tab.*
 import java.util.*
 import kotlin.random.Random.Default.nextInt
 
 class TabActivity : AppCompatActivity() {
 
-
-
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tab)
+
+
         var currTab = 0
         val adapter = PageAdapter(supportFragmentManager)
         adapter.addFragment(Tab1(), "홈")
@@ -66,8 +68,6 @@ class TabActivity : AppCompatActivity() {
 
         val cal = Calendar.getInstance()
         cal.set(Calendar.SECOND, 0)
-
         alarmManager.setInexactRepeating (AlarmManager.RTC_WAKEUP, cal.timeInMillis,1000*60, pIntent)
     }
-
 }

@@ -103,7 +103,6 @@ class SpeechAPI : AppCompatActivity() {
     private fun startUsingSpeechSDK(){
         Toast.makeText(this, "말하세요", Toast.LENGTH_SHORT).show()
 
-
         test_tv.text = ""
         //클라이언트 생성
         val builder = SpeechRecognizerClient.Builder().setServiceType(SpeechRecognizerClient.SERVICE_TYPE_WEB)

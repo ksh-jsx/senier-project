@@ -2,6 +2,7 @@ package com.stucs17.stockai
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
@@ -32,9 +34,10 @@ class Tab1 : Fragment(), ITranDataListener, IRealDataListener {
     private var m_OrderListTranProc: ExpertTranProc? = null //주문내역 조회
     var m_nJangoRqId = -1 //잔고 TR ID
     var m_nOrderListRqId = -1 //주문내역 TR ID
-    var buyPriceSum = 0
-    var strTotal1 = 0
-    var strTotal2 = 0
+    private var buyPriceSum = 0
+    private var strTotal1 = 0
+    private var strTotal2 = 0
+    private var strTotal3 = 0
 
     private lateinit var tv_total_assets : TextView
     private lateinit var tv_rest_assets : TextView
@@ -125,6 +128,12 @@ class Tab1 : Fragment(), ITranDataListener, IRealDataListener {
             interestingStockAdapter.notifyDataSetChanged()
         }
 
+        tv_total_assets.setOnClickListener{
+            val intent = Intent(tabActivity, tabActivity::class.java)
+            startActivity(intent);
+        }
+
+
 
         return v
     }
@@ -143,10 +152,9 @@ class Tab1 : Fragment(), ITranDataListener, IRealDataListener {
     override fun onTranDataReceived(sTranID: String, nRqId: Int) {
         if (m_nJangoRqId == nRqId) {
 
-
             strTotal1 = m_JangoTranProc!!.GetMultiData(1, 14, 0).toInt() //총평가금액
             strTotal2 = m_JangoTranProc!!.GetMultiData(1, 19, 0).toInt() //손익
-
+            strTotal3 = (strTotal1 - strTotal2) - m_JangoTranProc!!.GetMultiData(1, 17, 0).toInt()
             val nCount = m_JangoTranProc!!.GetValidCount(0)
 
             val array = Array<MyStockData?>(nCount) { null }
@@ -161,25 +169,22 @@ class Tab1 : Fragment(), ITranDataListener, IRealDataListener {
                 val strName = m_JangoTranProc!!.GetMultiData(0, 1, i)
                 //잔고
                 val strQty = m_JangoTranProc!!.GetMultiData(0, 7, i)
-                val strbuyPrice = m_JangoTranProc!!.GetMultiData(0, 10, i) // 매입금액
                 val strPrice = m_JangoTranProc!!.GetMultiData(0, 12, i) // 평가금액
                 val strProfit = m_JangoTranProc!!.GetMultiData(0, 13, i) // 손익
                 val strProfitPer = m_JangoTranProc!!.GetMultiData(0, 14, i) // 손익률
 
-                if(strCode.length > 3){
+                if(strCode.length > 1){
                     val data = MyStockData(i+1,strName,strProfit,strProfitPer,strQty,strPrice)
                     array[i] = data
                     arraySize+=1
-                    buyPriceSum+=strbuyPrice.toInt()
                 }
 
                 //System.out.println("1: " + strCode + ", 2: " + strName)
-                //System.out.println("3: " + strQty + ", 4: " + strAverPrice)
             }
 
             tv_total_assets.text = gb.dec(strTotal1)+"원"
             tv_total_profit_or_loss.text = gb.dec(strTotal2)+"원"
-            tv_rest_assets.text = "주문 가능: "+gb.dec((strTotal1-strTotal2)-buyPriceSum)+"원"
+            tv_rest_assets.text = "주문 가능: "+gb.dec(strTotal3)+"원"
 
             if(strTotal2 > 0)
                 tv_total_profit_or_loss.setTextColor((ContextCompat.getColor(tabActivity.applicationContext!!, R.color.red)))
@@ -191,9 +196,7 @@ class Tab1 : Fragment(), ITranDataListener, IRealDataListener {
             datas.clear()
 
             datas.apply {
-
                 for (x in 0 until arraySize) {
-
                     add(
                         MyStockData(
                             id=array[x]!!.id,
@@ -201,7 +204,8 @@ class Tab1 : Fragment(), ITranDataListener, IRealDataListener {
                             stockProfit=array[x]!!.stockProfit,
                             stockProfitPer=array[x]!!.stockProfitPer,
                             stockQty=array[x]!!.stockQty,
-                            stockPrice=array[x]!!.stockPrice)
+                            stockPrice=array[x]!!.stockPrice
+                        )
                     )
                 }
 
@@ -229,6 +233,7 @@ class Tab1 : Fragment(), ITranDataListener, IRealDataListener {
                 val strName = m_OrderListTranProc!!.GetMultiData(0, 5, i) //상품명
                 val nOrderCount = m_OrderListTranProc!!.GetMultiData(0, 7, i).toInt() //주문수량
                 val nOrderPrice = m_OrderListTranProc!!.GetMultiData(0, 8, i).toInt() //주문단가
+                val tradeType = m_OrderListTranProc!!.GetMultiData(0, 13, i)
 
                 if (strOrderNumber.isEmpty()) continue
 
@@ -238,15 +243,16 @@ class Tab1 : Fragment(), ITranDataListener, IRealDataListener {
                 Log.d(TAG, "KospiEx : 상품번호 - $strCode 주문수량 - $nOrderCount 주문단가 - $nOrderPrice")
 
                 if(strCode.length > 3){
-                    val data = NotSignedStockData(i+1,strName,nOrderCount,(nOrderPrice*nOrderCount))
+                    val data = NotSignedStockData(i+1,strName,nOrderCount,(nOrderPrice*nOrderCount),tradeType)
                     array[i] = data
                     arraySize+=1
-                    buyPriceSum+=nOrderPrice
+                    if(tradeType == "02")
+                        buyPriceSum+=nOrderPrice
                 }
 
             }
 
-            tv_rest_assets.text = "주문 가능: "+gb.dec((strTotal1-strTotal2)-buyPriceSum)+"원"
+            tv_rest_assets.text = "주문 가능: "+gb.dec((strTotal3)-buyPriceSum)+"원"
 
             datas2.clear()
 
@@ -259,7 +265,8 @@ class Tab1 : Fragment(), ITranDataListener, IRealDataListener {
                             id=array[x]!!.id,
                             stockName=array[x]!!.stockName,
                             stockQty=array[x]!!.stockQty,
-                            orderPrice=array[x]!!.orderPrice)
+                            orderPrice=array[x]!!.orderPrice,
+                            tradeType=array[x]!!.tradeType)
                     )
                 }
 

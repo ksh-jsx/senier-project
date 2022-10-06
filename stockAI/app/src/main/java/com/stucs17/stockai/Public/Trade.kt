@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import com.commexpert.CommExpertMng
 import com.commexpert.ExpertRealProc
 import com.commexpert.ExpertTranProc
@@ -43,6 +44,7 @@ class Trade : AppCompatActivity(), ITranDataListener, IRealDataListener {
         m_OrderTranProc!!.InitInstance(this)
         m_OrderTranProc!!.SetShowTrLog(true)
 
+
         dbHelper = DBHelper(this, "mydb.db", null, 1)
         database = dbHelper.writableDatabase
 
@@ -54,12 +56,17 @@ class Trade : AppCompatActivity(), ITranDataListener, IRealDataListener {
 
         when(type){
             "buy"->{
-                m_nOrderRqId = runBuy(database,code,"00","1","")!!
+                m_nOrderRqId = runBuy(m_OrderTranProc,database,code,"00","1","162")!!
 
             }
             "sell"->{
+
+                m_JangoTranProc = ExpertTranProc(this)
+                m_JangoTranProc!!.InitInstance(this)
+                m_JangoTranProc!!.SetShowTrLog(false)
+
                 m_nJangoRqId = info.getJangoInfo(database,m_JangoTranProc)
-                m_nOrderRqId = runSell(database,code,"00","1","")!!
+                m_nOrderRqId = runSell(m_OrderTranProc,database,code,"00","1","163")!!
             }
         }
     }
@@ -71,7 +78,7 @@ class Trade : AppCompatActivity(), ITranDataListener, IRealDataListener {
         m_OrderTranProc = null
     }
 
-    private fun setTrade(database: SQLiteDatabase,currentCode:String){
+    private fun setTrade(database: SQLiteDatabase,currentCode:String,m_OrderTranProc:ExpertTranProc?){
         var strnumPwd = ""
 
         val c = auth.select(database)
@@ -84,16 +91,16 @@ class Trade : AppCompatActivity(), ITranDataListener, IRealDataListener {
         val strEncPass = m_OrderTranProc!!.GetEncryptPassword(strnumPwd) //비밀번호
         val strAcc = CommExpertMng.getInstance().GetAccountNo(0)
 
-        m_OrderTranProc?.ClearInblockData()
-        m_OrderTranProc?.SetSingleData(0, 0, strAcc) //계좌
-        m_OrderTranProc?.SetSingleData(0, 1, "01") //상품코드
-        m_OrderTranProc?.SetSingleData(0, 2, strEncPass) //비밀번호
-        m_OrderTranProc?.SetSingleData(0, 3, currentCode) //상품코드
+        m_OrderTranProc.ClearInblockData()
+        m_OrderTranProc.SetSingleData(0, 0, strAcc) //계좌
+        m_OrderTranProc.SetSingleData(0, 1, "01") //상품코드
+        m_OrderTranProc.SetSingleData(0, 2, strEncPass) //비밀번호
+        m_OrderTranProc.SetSingleData(0, 3, currentCode) //상품코드
     }
 
-    fun runBuy(database: SQLiteDatabase,currentCode:String,orderType:String,currentQty:String,currentPrice:String): Int? {
+    fun runBuy(m_OrderTranProc:ExpertTranProc?,database: SQLiteDatabase,currentCode:String,orderType:String,currentQty:String,currentPrice:String): Int? {
 
-        setTrade(database,currentCode)
+        setTrade(database,currentCode,m_OrderTranProc)
         m_OrderTranProc?.SetSingleData(0, 4, orderType) //주문구분  00:지정가 01:시장가
         m_OrderTranProc?.SetSingleData(0, 5, currentQty)//주문수량
         m_OrderTranProc?.SetSingleData(0, 6, currentPrice)//주문단가
@@ -103,9 +110,9 @@ class Trade : AppCompatActivity(), ITranDataListener, IRealDataListener {
         return m_OrderTranProc?.RequestData("scabo") //매수주문
     }
 
-    fun runSell(database: SQLiteDatabase,currentCode:String,orderType:String,currentQty:String,currentPrice:String ): Int? {
+    fun runSell(m_OrderTranProc:ExpertTranProc?,database: SQLiteDatabase,currentCode:String,orderType:String,currentQty:String,currentPrice:String ): Int? {
 
-        setTrade(database,currentCode)
+        setTrade(database,currentCode,m_OrderTranProc)
         m_OrderTranProc?.SetSingleData(0, 4, "01") //01
         m_OrderTranProc?.SetSingleData(0, 5, orderType) //주문구분  00:지정가 01:시장가
         m_OrderTranProc?.SetSingleData(0, 6, currentQty) //주문수량
@@ -132,8 +139,16 @@ class Trade : AppCompatActivity(), ITranDataListener, IRealDataListener {
         }
     }
 
-    override fun onTranMessageReceived(p0: Int, p1: String?, p2: String?, p3: String?) {
-        TODO("Not yet implemented")
+    override fun onTranMessageReceived(
+        nRqId: Int, strMsgCode: String?,
+        strErrorType: String?, strMessage: String?
+    ) {
+        if(strMsgCode == "APBK0013") {
+            Toast.makeText(this, strMessage, Toast.LENGTH_LONG).show()
+            speechAPI.startUsingSpeechSDK2("주문 전송 완료 되었습니다.")
+        }
+        // TODO Auto-generated method stub
+        Log.e("onTranMessageReceived", String.format("MsgCode:%s ErrorType:%s %s",  strMsgCode ,  strErrorType  , strMessage));
     }
 
     override fun onTranTimeout(p0: Int) {
@@ -149,7 +164,7 @@ class Trade : AppCompatActivity(), ITranDataListener, IRealDataListener {
                 "==주식 체결통보==",
                 String.format("주문번호:%s 매도매수구분:%s 종목코드:%s", strOrderNumber, strOrderGubun, strCode)
             )
-            speechAPI.startUsingSpeechSDK2("거래되었습니다.")
+
         }
     }
 }

@@ -3,6 +3,7 @@ package com.stucs17.stockai.adapter
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,10 +53,10 @@ class NotSignedStockAdapter(private val context: Context) : RecyclerView.Adapter
                     context.startActivity(intent)
                 }
             }
-
+            val type = if (item.tradeType == "01") "매도" else "매수"
             stock_name.text = item.stockName
             stock_quantity.text = item.stockQty.toString()+"주"
-            stock_price.text = dec.format(item.orderPrice.toInt())
+            stock_price.text = type+": "+dec.format(item.orderPrice)
 
         }
     }

@@ -1,5 +1,6 @@
 package com.stucs17.stockai
 
+import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
@@ -11,6 +12,7 @@ import com.commexpert.ExpertRealProc
 import com.commexpert.ExpertTranProc
 import com.stucs17.stockai.Public.AccountInfo
 import com.stucs17.stockai.Public.Trade
+import com.stucs17.stockai.data.MyStockData
 import com.stucs17.stockai.sql.DBHelper
 import com.truefriend.corelib.commexpert.intrf.IRealDataListener
 import com.truefriend.corelib.commexpert.intrf.ITranDataListener
@@ -21,9 +23,9 @@ class BuyActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
     var m_OrderListTranProc: ExpertTranProc? = null //주문내역 조회
     var m_OrderRealProc: ExpertRealProc? = null
 
+    private var m_JangoTranProc: ExpertTranProc? = null //잔고 조회
     var m_nJangoRqId = -1 //잔고 TR ID
     var m_nOrderRqId = -1 //주문 TR ID
-    var m_nOrderListRqId = -1 //주문내역 TR ID
 
     private lateinit var tv_stock_name : TextView
     private lateinit var tv_stock_price : TextView
@@ -44,15 +46,25 @@ class BuyActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
     private var marketName = ""
     private var orderType = "00"
 
+    private var strTotal1 = 0
+    private var strTotal2 = 0
+    private var buyPriceSum = 0
+
     private val gb = GlobalBackground()
     private val trade = Trade()
+    private val info = AccountInfo()
     //sql 관련
     lateinit var dbHelper: DBHelper
     lateinit var database: SQLiteDatabase
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_buy)
+
+        m_JangoTranProc = ExpertTranProc(this)
+        m_JangoTranProc!!.InitInstance(this)
+        m_JangoTranProc!!.SetShowTrLog(false)
 
         //TR 초기화
         m_OrderTranProc = ExpertTranProc(this)
@@ -76,9 +88,9 @@ class BuyActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
 
         if(intent.hasExtra("Price")) {
             currentPrice = intent.getIntExtra("Price",0)
-            currentName = intent.getStringExtra("Name")
-            marketName = intent.getStringExtra("Market")
-            currentCode = intent.getStringExtra("Code")
+            currentName = intent.getStringExtra("Name")!!
+            marketName = intent.getStringExtra("Market")!!
+            currentCode = intent.getStringExtra("Code")!!
         }
 
         currentQty = tv_order_qty.text.toString().toInt()
@@ -96,6 +108,7 @@ class BuyActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
         val builder = AlertDialog.Builder(this)
 
         tv_order_price.setText(gb.dec(currentPrice))
+        m_nJangoRqId = info.getJangoInfo(database,m_JangoTranProc)
 
         btn_plus1.setOnClickListener {
             val temp = gb.plus(currentQty,1)
@@ -121,7 +134,10 @@ class BuyActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
             builder.setTitle("매수")
             builder.setMessage("$currentName $currentQty 주 매수합니다")
             builder.setPositiveButton("네") { _: DialogInterface, i: Int ->
-                m_nOrderRqId = trade.runBuy(database,currentCode,orderType,currentQty.toString(),currentPrice.toString())!!
+                if((strTotal1-strTotal2)-buyPriceSum>currentQty*currentPrice)
+                    m_nOrderRqId = trade.runBuy(m_OrderTranProc,database,currentCode,orderType,currentQty.toString(),currentPrice.toString())!!
+                else
+                    Toast.makeText(this@BuyActivity, "잔액이 부족합니다", Toast.LENGTH_SHORT).show()
             }
             builder.setNegativeButton("취소") { _: DialogInterface, i: Int -> }
             builder.show()
@@ -155,7 +171,36 @@ class BuyActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
     }
 
     override fun onTranDataReceived(sTranID: String, nRqId: Int) {
+        if (m_nJangoRqId == nRqId) {
 
+            strTotal1 = m_JangoTranProc!!.GetMultiData(1, 14, 0).toInt() //총평가금액
+            strTotal2 = m_JangoTranProc!!.GetMultiData(1, 19, 0).toInt() //손익
+            buyPriceSum = 0
+            //보유 주식 수
+            val nCount = m_JangoTranProc!!.GetValidCount(0)
+
+            val array = Array<MyStockData?>(nCount) { null }
+
+
+            for (i in 0 until nCount) {
+                //종목
+                val strCode = m_JangoTranProc!!.GetMultiData(0, 0, i)
+                val strName = m_JangoTranProc!!.GetMultiData(0, 1, i)
+                //잔고
+                val strQty = m_JangoTranProc!!.GetMultiData(0, 7, i)
+                val strbuyPrice = m_JangoTranProc!!.GetMultiData(0, 10, i) // 매입금액
+                val strPrice = m_JangoTranProc!!.GetMultiData(0, 12, i) // 평가금액
+                val strProfit = m_JangoTranProc!!.GetMultiData(0, 13, i) // 손익
+                val strProfitPer = m_JangoTranProc!!.GetMultiData(0, 14, i) // 손익률
+
+                if(strCode.length > 3){
+                    val data = MyStockData(i+1,strName,strProfit,strProfitPer,strQty,strPrice)
+                    array[i] = data
+                    buyPriceSum+=strbuyPrice.toInt()
+                }
+
+            }
+        }
     }
 
     override fun onTranMessageReceived(

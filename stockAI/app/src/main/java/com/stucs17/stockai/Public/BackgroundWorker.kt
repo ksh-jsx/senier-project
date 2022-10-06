@@ -26,6 +26,8 @@ import com.truefriend.corelib.commexpert.intrf.IRealDataListener
 import com.truefriend.corelib.commexpert.intrf.ITranDataListener
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
@@ -41,8 +43,10 @@ class BackgroundWorker: BroadcastReceiver(), ITranDataListener, IRealDataListene
     private val arrItemKosdaqCode = CommExpertMng.getInstance().GetKosdaqCodeList() // 코스닥 주식 목록
     private lateinit var expertTranProc : ExpertTranProc
     private var currentPriceRqId = 0
+    var m_timeId = -1 //주문가능시간 TR ID
     var m_nOrderRqId = -1 //주문 TR ID
     var m_OrderRealProc: ExpertRealProc? = null
+    var m_OrderTranProc: ExpertTranProc? = null //주문
 
     private lateinit var dbHelper: DBHelper
     lateinit var database: SQLiteDatabase
@@ -51,8 +55,14 @@ class BackgroundWorker: BroadcastReceiver(), ITranDataListener, IRealDataListene
     private val stockInfo = StockIndex()
     private val trade = Trade()
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onReceive(context: Context?, intent: Intent?) {
-        if(intent != null){
+        val dateNow = LocalDate.now()
+        val timeNow = LocalDateTime.now()
+        val dayOfHour = timeNow.hour
+        val dayOfWeek = dateNow.dayOfWeek.toString()
+
+        if(intent != null && dayOfWeek != "SATURDAY" && dayOfWeek != "SUNDAY" && dayOfHour>8 && dayOfHour<15){
             if (context != null) {
                 ctt = context
                 notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -60,6 +70,10 @@ class BackgroundWorker: BroadcastReceiver(), ITranDataListener, IRealDataListene
             expertTranProc = ExpertTranProc(context)
             expertTranProc.InitInstance(this)
             expertTranProc.SetShowTrLog(true)
+
+            m_OrderTranProc = ExpertTranProc(context)
+            m_OrderTranProc!!.InitInstance(this)
+            m_OrderTranProc!!.SetShowTrLog(true)
 
             dbHelper = DBHelper(context, "mydb.db", null, 1)
             database = dbHelper.writableDatabase
@@ -88,8 +102,7 @@ class BackgroundWorker: BroadcastReceiver(), ITranDataListener, IRealDataListene
             4. FLAG_ONE_SHOT : 한번 사용되면, 그 다음에 다시 사용하지 않음
              */
         )
-        val word = if(sign == 1) "상승" else "하락"
-        Log.d("test", CHANNEL_ID+cnt.toString())
+        val word = if(sign>0) "상승" else "하락"
         val builder = context?.let {
             NotificationCompat.Builder(it, CHANNEL_ID+cnt.toString())
                 .setSmallIcon(R.drawable.logo) // 아이콘
@@ -106,7 +119,7 @@ class BackgroundWorker: BroadcastReceiver(), ITranDataListener, IRealDataListene
         }
     }
 
-    fun displayNotification2(cnt:Int,context :Context?,name:String,strOrderGubun:String) {
+    private fun displayNotification2(cnt:Int, context :Context?, name:String, strOrderGubun:String) {
         val contentIntent = Intent(context, MainActivity::class.java)
         val contentPendingIntent = PendingIntent.getActivity(
             context,
@@ -163,27 +176,28 @@ class BackgroundWorker: BroadcastReceiver(), ITranDataListener, IRealDataListene
 
         val info11 = expertTranProc.GetSingleData(0, 11).toInt() // 11 : 주식 현재가
         val info12 = expertTranProc.GetSingleData(0, 12).toInt() // 12 : 전일 대비
-        val info13= expertTranProc.GetSingleData(0, 12).toInt() // 12 : 전일 대비 부호 0:보합, 1:상승, 2:상한
 
-        val inList = (arrItemKospiCode+arrItemKosdaqCode).sorted().filter{ it.code.startsWith(target) }[0].name //입력한 텍스트와 주식 목록 비교->필터링
-
-        val variancePercent = (abs(info12.toDouble()) /(info11+info12*(-1)).toDouble())*100
-        val setDecimal = (variancePercent * 100).roundToInt() /100f
-        if(setDecimal>5){ //변동폭이 5% 이상이면 알림
+        val inList = (arrItemKospiCode + arrItemKosdaqCode).sorted()
+            .filter { it.code.startsWith(target) }[0].name //입력한 텍스트와 주식 목록 비교->필터링
+        val variancePercent =
+            (abs(info12.toDouble()) / (info11 + info12 * (-1)).toDouble()) * 100
+        val setDecimal = (variancePercent * 100).roundToInt() / 100f
+        if (setDecimal > 2) { //변동폭이 5% 이상이면 알림
             createNotificationChannel(cnt)
-            displayNotification(cnt,ctt,inList,setDecimal,info13)
+            displayNotification(cnt, ctt, inList, setDecimal, info12)
         }
 
-        if(info11<900){
-            m_nOrderRqId = trade.runBuy(database,target,"00","1","")!!
+        if (info11 < 1) {
+            m_nOrderRqId = trade.runBuy(m_OrderTranProc, database, target, "00", "1", "5")!!
         }
 
-        if(c.moveToNext()) {
+        if (c.moveToNext()) {
             Thread.sleep(5000)
             target = c.getString(c.getColumnIndex("code"))
-            currentPriceRqId = stockInfo.getStockInfo(expertTranProc,target)
+            currentPriceRqId = stockInfo.getStockInfo(expertTranProc, target)
             cnt++
         }
+
 
     }
 

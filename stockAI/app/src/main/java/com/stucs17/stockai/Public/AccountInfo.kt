@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import com.commexpert.CommExpertMng
 import com.commexpert.ExpertTranProc
 import com.stucs17.stockai.R
@@ -166,7 +167,7 @@ class AccountInfo: AppCompatActivity(), ITranDataListener, IRealDataListener {
                 val strProfit = m_JangoTranProc!!.GetMultiData(0, 13, i) // 손익
                 val strProfitPer = m_JangoTranProc!!.GetMultiData(0, 14, i) // 손익률
 
-                if(strCode.length > 3){
+                if(strCode.length > 3 && strQty.toInt() > 0){
                     val data = MyStockData(i+1,strName,strProfit,strProfitPer,strQty,strPrice)
                     array[i] = data
                     buyPriceSum+=strbuyPrice.toInt()
@@ -208,10 +209,11 @@ class AccountInfo: AppCompatActivity(), ITranDataListener, IRealDataListener {
                 val strName = m_OrderListTranProc!!.GetMultiData(0, 5, i) //상품명
                 val nOrderCount = m_OrderListTranProc!!.GetMultiData(0, 7, i).toInt() //주문수량
                 val nOrderPrice = m_OrderListTranProc!!.GetMultiData(0, 8, i).toInt() //주문단가
+                val tradeType = m_OrderListTranProc!!.GetMultiData(0, 13, i)
 
                 if (strOrderNumber.isEmpty()) continue
                 else{
-                    val data = NotSignedStockData(i+1,strName,nOrderCount,(nOrderPrice*nOrderCount))
+                    val data = NotSignedStockData(i+1,strName,nOrderCount,(nOrderPrice*nOrderCount),tradeType)
                     array[i] = data
                 }
                 Log.d(TAG,
@@ -236,6 +238,7 @@ class AccountInfo: AppCompatActivity(), ITranDataListener, IRealDataListener {
     private fun gotoTab1() {
         val intent = Intent(this@AccountInfo, TabActivity::class.java)
         intent.putExtra("tab", 0)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         startActivity(intent)
         finish()
     }

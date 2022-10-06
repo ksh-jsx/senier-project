@@ -102,9 +102,9 @@ class SellActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
 
         if(intent.hasExtra("Price")) {
             currentPrice = intent.getIntExtra("Price",0)
-            currentName = intent.getStringExtra("Name")
-            marketName = intent.getStringExtra("Market")
-            currentCode = intent.getStringExtra("Code")
+            currentName = intent.getStringExtra("Name")!!
+            marketName = intent.getStringExtra("Market")!!
+            currentCode = intent.getStringExtra("Code")!!
         }
 
         currentQty = tv_order_qty.text.toString().toInt()
@@ -148,7 +148,7 @@ class SellActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
             builder.setMessage("$currentName ${currentQty.toString()}주 매도합니다")
             builder.setPositiveButton("네") { dialogInterface: DialogInterface, i: Int ->
                 //runSell()
-                m_nOrderRqId = trade.runSell(database,currentCode,orderType,currentQty.toString(),currentPrice.toString())!!
+                m_nOrderRqId = trade.runSell(m_OrderTranProc,database,currentCode,orderType,currentQty.toString(),currentPrice.toString())!!
             }
             builder.setNegativeButton("취소") { dialogInterface: DialogInterface, i: Int ->
             }

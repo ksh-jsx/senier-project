@@ -4,5 +4,6 @@ data class NotSignedStockData (
     val id : Int,
     val stockName : String,
     val stockQty : Int,
-    val orderPrice: Int
+    val orderPrice: Int,
+    val tradeType: String,
 )
