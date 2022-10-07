@@ -95,9 +95,33 @@ class Tab1 : Fragment(), ITranDataListener, IRealDataListener {
         dbHelper = DBHelper(tabActivity, "mydb.db", null, 1)
         database = dbHelper.writableDatabase
 
-        m_nJangoRqId = info.getJangoInfo(database,m_JangoTranProc)
-        m_nOrderListRqId = info.getNotSignedList(database,m_OrderListTranProc)
+        Thread {
+            while (!Thread.interrupted()) try {
+                Thread.sleep(1000)
+                tabActivity.runOnUiThread {
+                    getInterestingStock()
+                    m_nJangoRqId = info.getJangoInfo(database,m_JangoTranProc)
+                    m_nOrderListRqId = info.getNotSignedList(database,m_OrderListTranProc)
+                }
+            } catch (e: InterruptedException) {
+                // ooops
+            }
+        }.start()
 
+        return v
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        m_JangoTranProc!!.ClearInstance()
+        m_JangoTranProc = null
+
+        m_OrderListTranProc!!.ClearInstance()
+        m_OrderListTranProc = null
+    }
+
+    private fun getInterestingStock(){
         interestingStockAdapter = InterestingStockAdapter(tabActivity)
         rv_myStock3.adapter = interestingStockAdapter
 
@@ -127,25 +151,6 @@ class Tab1 : Fragment(), ITranDataListener, IRealDataListener {
             interestingStockAdapter.datas = datas3
             interestingStockAdapter.notifyDataSetChanged()
         }
-
-        tv_total_assets.setOnClickListener{
-            val intent = Intent(tabActivity, tabActivity::class.java)
-            startActivity(intent);
-        }
-
-
-
-        return v
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        m_JangoTranProc!!.ClearInstance()
-        m_JangoTranProc = null
-
-        m_OrderListTranProc!!.ClearInstance()
-        m_OrderListTranProc = null
     }
 
     @SuppressLint("SetTextI18n")

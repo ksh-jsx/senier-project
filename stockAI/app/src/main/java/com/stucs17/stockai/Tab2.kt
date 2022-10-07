@@ -104,7 +104,18 @@ class Tab2 : Fragment() {
             requestCurrentPrice(editStockName.text.toString())
         }
 
-        MyAsyncTask().execute(weburl)
+        Thread {
+            while (!Thread.interrupted()) try {
+                Thread.sleep(1000)
+                tabActivity.runOnUiThread {
+                    MyAsyncTask().execute(weburl)
+                }
+            } catch (e: InterruptedException) {
+                // ooops
+            }
+        }.start()
+
+
 
         return v
     }
@@ -116,7 +127,7 @@ class Tab2 : Fragment() {
         @SuppressLint("ResourceAsColor", "SetTextI18n")
         override fun doInBackground(vararg params: String?): String {
 
-            val doc: Document = Jsoup.connect("$weburl").get()
+            val doc: Document = Jsoup.connect(weburl).get()
             val kospi: Elements = doc.select("#content > div.article > div.section2 > div.section_stock_market > div.section_stock > div.kospi_area.group_quot.quot_opn > div.heading_area > a > span span")
             val kosdaq: Elements = doc.select("#content > div.article > div.section2 > div.section_stock_market > div.section_stock > div.kosdaq_area.group_quot > div.heading_area > a > span span")
             val news: Elements = doc.select("#content > div.article > div.section > div.news_area > div.section_strategy > ul > li")

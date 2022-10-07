@@ -5,7 +5,6 @@ import android.content.ContentValues
 import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableStringBuilder
@@ -15,11 +14,13 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.commexpert.ExpertTranProc
 import com.stucs17.stockai.Public.Auth
 import com.stucs17.stockai.Public.StockIndex
 import com.stucs17.stockai.sql.DBHelper
 import com.truefriend.corelib.commexpert.intrf.ITranDataListener
+import java.util.*
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
@@ -27,6 +28,7 @@ class StockDetailActivity : AppCompatActivity(), ITranDataListener {
 
     private val gb = GlobalBackground()
     private val auth = Auth()
+    private val stockInfo = StockIndex()
     private lateinit var expertTranProc : ExpertTranProc
     private var currentPriceRqId = 0
 
@@ -53,7 +55,6 @@ class StockDetailActivity : AppCompatActivity(), ITranDataListener {
     private lateinit var dbHelper: DBHelper
     lateinit var database: SQLiteDatabase
 
-    private val stockInfo = StockIndex()
 
     @SuppressLint("Recycle")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,7 +88,6 @@ class StockDetailActivity : AppCompatActivity(), ITranDataListener {
         val ssb = SpannableStringBuilder("75% 확률로 상승 예상되는 종목입니다!")
         ssb.apply{
             setSpan(ForegroundColorSpan(Color.RED), 8, 10, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-
         }
 
         tv_expectPercent.text = ssb
@@ -138,6 +138,15 @@ class StockDetailActivity : AppCompatActivity(), ITranDataListener {
             startActivity(intent)
             //finish()
         }
+
+        Thread {
+            while (!Thread.interrupted()) try {
+                Thread.sleep(1000)
+                runOnUiThread { currentPriceRqId = stockInfo.getStockInfo(expertTranProc,stockCode) }
+            } catch (e: InterruptedException) {
+                // ooops
+            }
+        }.start()
     }
 
     @SuppressLint("SetTextI18n")
@@ -177,7 +186,6 @@ class StockDetailActivity : AppCompatActivity(), ITranDataListener {
                 priceBox.setBackgroundResource(R.drawable.radius_blue)
             }
 
-            gb.dec(currentPrice)
             priceView.text = gb.dec(currentPrice)+"원"
             priceView2.text = plus+""+gb.dec(dayChange)+", "+"$setDecimal%"
             //Toast.makeText(this, "현재가 : $currentPrice, 전일 대비 : $dayChange", Toast.LENGTH_SHORT).show()
