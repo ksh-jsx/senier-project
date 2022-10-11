@@ -23,6 +23,10 @@ class DBHelper(
                 "code text primary key ," +
                 "name text);"
         db.execSQL(sql2)
+        val sql3: String = "CREATE TABLE if not exists orders (" +
+                "OrderNumberOri text primary key ," +
+                "OrderNumberKET text);"
+        db.execSQL(sql3)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
@@ -30,6 +34,8 @@ class DBHelper(
         db.execSQL(sql)
         val sql2 = "DROP TABLE if exists like"
         db.execSQL(sql2)
+        val sql3 = "DROP TABLE if exists orders"
+        db.execSQL(sql3)
         onCreate(db)
     }
 }

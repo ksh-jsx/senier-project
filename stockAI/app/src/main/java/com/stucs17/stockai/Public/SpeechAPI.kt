@@ -260,7 +260,7 @@ class SpeechAPI : AppCompatActivity() {
     }
 
     private fun volumeUp(){
-        mAudioManager.ringerMode = AudioManager.RINGER_MODE_NORMAL
+          mAudioManager.ringerMode = AudioManager.RINGER_MODE_NORMAL
         mAudioManager.setStreamVolume(
             AudioManager.STREAM_MUSIC,
             (mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC) * 50/100.0).toInt(),

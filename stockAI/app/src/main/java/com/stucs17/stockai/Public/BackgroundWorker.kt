@@ -182,7 +182,7 @@ class BackgroundWorker: BroadcastReceiver(), ITranDataListener, IRealDataListene
         val variancePercent =
             (abs(info12.toDouble()) / (info11 + info12 * (-1)).toDouble()) * 100
         val setDecimal = (variancePercent * 100).roundToInt() / 100f
-        if (setDecimal > 2) { //변동폭이 5% 이상이면 알림
+        if (setDecimal > 5) { //변동폭이 5% 이상이면 알림
             createNotificationChannel(cnt)
             displayNotification(cnt, ctt, inList, setDecimal, info12)
         }

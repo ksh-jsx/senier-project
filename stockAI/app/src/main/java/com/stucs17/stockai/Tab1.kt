@@ -218,7 +218,7 @@ class Tab1 : Fragment(), ITranDataListener, IRealDataListener {
                 myStockAdapter.notifyDataSetChanged()
             }
 
-        } else if(m_nOrderListRqId == nRqId) { //취소 대상 주문 리스트
+        } else if(m_nOrderListRqId == nRqId) {
 
             val nCount: Int = m_OrderListTranProc!!.GetValidCount(0)
 
@@ -248,7 +248,7 @@ class Tab1 : Fragment(), ITranDataListener, IRealDataListener {
                 Log.d(TAG, "KospiEx : 상품번호 - $strCode 주문수량 - $nOrderCount 주문단가 - $nOrderPrice")
 
                 if(strCode.length > 3){
-                    val data = NotSignedStockData(i+1,strName,nOrderCount,(nOrderPrice*nOrderCount),tradeType)
+                    val data = NotSignedStockData(i+1,strName,nOrderCount,(nOrderPrice*nOrderCount),tradeType,strOrderNumberOri)
                     array[i] = data
                     arraySize+=1
                     if(tradeType == "02")
@@ -257,7 +257,7 @@ class Tab1 : Fragment(), ITranDataListener, IRealDataListener {
 
             }
 
-            tv_rest_assets.text = "주문 가능: "+gb.dec((strTotal3)-buyPriceSum)+"원"
+            //tv_rest_assets.text = "주문 가능: "+gb.dec((strTotal3)-buyPriceSum)+"원"
 
             datas2.clear()
 
@@ -271,7 +271,8 @@ class Tab1 : Fragment(), ITranDataListener, IRealDataListener {
                             stockName=array[x]!!.stockName,
                             stockQty=array[x]!!.stockQty,
                             orderPrice=array[x]!!.orderPrice,
-                            tradeType=array[x]!!.tradeType)
+                            tradeType=array[x]!!.tradeType,
+                            strOrderNumberOri=array[x]!!.strOrderNumberOri)
                     )
                 }
 

@@ -1,6 +1,7 @@
 package com.stucs17.stockai
 
 import android.annotation.SuppressLint
+import android.content.ContentValues
 import android.content.DialogInterface
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
@@ -11,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.commexpert.ExpertRealProc
 import com.commexpert.ExpertTranProc
 import com.stucs17.stockai.Public.AccountInfo
+import com.stucs17.stockai.Public.Auth
 import com.stucs17.stockai.Public.Trade
 import com.stucs17.stockai.data.MyStockData
 import com.stucs17.stockai.sql.DBHelper
@@ -50,6 +52,7 @@ class BuyActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
     private var strTotal2 = 0
     private var buyPriceSum = 0
 
+    private val auth = Auth()
     private val gb = GlobalBackground()
     private val trade = Trade()
     private val info = AccountInfo()
@@ -179,27 +182,31 @@ class BuyActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
             //보유 주식 수
             val nCount = m_JangoTranProc!!.GetValidCount(0)
 
-            val array = Array<MyStockData?>(nCount) { null }
-
 
             for (i in 0 until nCount) {
                 //종목
                 val strCode = m_JangoTranProc!!.GetMultiData(0, 0, i)
-                val strName = m_JangoTranProc!!.GetMultiData(0, 1, i)
                 //잔고
-                val strQty = m_JangoTranProc!!.GetMultiData(0, 7, i)
                 val strbuyPrice = m_JangoTranProc!!.GetMultiData(0, 10, i) // 매입금액
-                val strPrice = m_JangoTranProc!!.GetMultiData(0, 12, i) // 평가금액
-                val strProfit = m_JangoTranProc!!.GetMultiData(0, 13, i) // 손익
-                val strProfitPer = m_JangoTranProc!!.GetMultiData(0, 14, i) // 손익률
+
 
                 if(strCode.length > 3){
-                    val data = MyStockData(i+1,strName,strProfit,strProfitPer,strQty,strPrice)
-                    array[i] = data
                     buyPriceSum+=strbuyPrice.toInt()
                 }
-
             }
+        } else if(m_nOrderRqId == nRqId){
+
+            val orderNumberKET = m_OrderTranProc!!.GetSingleData(0,0) //한국거래소전송주문조직번호
+            val orderNumber = m_OrderTranProc!!.GetSingleData(0,1) //주문번호
+            val orderTime = m_OrderTranProc!!.GetSingleData(0,2) //주문시각
+
+            Log.d("주문 접수","$orderNumberKET / $orderNumber / $orderTime")
+
+            val contentValues = ContentValues()
+            contentValues.put("OrderNumber", orderNumberKET)
+            contentValues.put("OrderNumber", orderNumber)
+
+            auth.insert_order(contentValues,database)
         }
     }
 

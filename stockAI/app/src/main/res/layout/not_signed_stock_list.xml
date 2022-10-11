@@ -47,6 +47,7 @@
             android:layout_weight="1"
             android:orientation="vertical">
             <Button
+                android:id="@+id/btn_cancelOrder"
                 android:layout_width="match_parent"
                 android:fontFamily="@font/nanumsquare_eb"
                 android:layout_height="0dp"

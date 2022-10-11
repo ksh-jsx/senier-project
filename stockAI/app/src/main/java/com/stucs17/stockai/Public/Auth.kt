@@ -48,6 +48,10 @@ class Auth: AppCompatActivity() {
         return database.rawQuery(query, null)
     }
 
+    fun insert_like(contentValues:ContentValues,database:SQLiteDatabase) {
+        database.insert("like", null, contentValues)
+    }
+
     fun isExist_like(database:SQLiteDatabase, stockCode:String): Cursor? {
         val query = "SELECT * FROM like where code = '$stockCode';"
         return database.rawQuery(query, null)
@@ -58,7 +62,13 @@ class Auth: AppCompatActivity() {
         database.execSQL(query)
     }
 
-    fun insert_like(contentValues:ContentValues,database:SQLiteDatabase) {
-        database.insert("like", null, contentValues)
+    fun select_order(database:SQLiteDatabase,strOrderNumberOri:String): Cursor? {
+        val query = "SELECT * FROM orders where strOrderNumberOri = $strOrderNumberOri;"
+        return database.rawQuery(query, null)
     }
+
+    fun insert_order(contentValues:ContentValues,database:SQLiteDatabase) {
+        database.insert("orders", null, contentValues)
+    }
+
 }

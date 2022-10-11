@@ -1,6 +1,7 @@
 package com.stucs17.stockai.Public
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,6 +11,7 @@ import com.commexpert.CommExpertMng
 import com.commexpert.ExpertRealProc
 import com.commexpert.ExpertTranProc
 import com.stucs17.stockai.R
+import com.stucs17.stockai.TabActivity
 import com.stucs17.stockai.sql.DBHelper
 import com.truefriend.corelib.commexpert.intrf.IRealDataListener
 import com.truefriend.corelib.commexpert.intrf.ITranDataListener
@@ -56,7 +58,7 @@ class Trade : AppCompatActivity(), ITranDataListener, IRealDataListener {
 
         when(type){
             "buy"->{
-                m_nOrderRqId = runBuy(m_OrderTranProc,database,code,"00","1","162")!!
+                m_nOrderRqId = runBuy(m_OrderTranProc,database,code,"00","1","216")!!
 
             }
             "sell"->{
@@ -66,7 +68,7 @@ class Trade : AppCompatActivity(), ITranDataListener, IRealDataListener {
                 m_JangoTranProc!!.SetShowTrLog(false)
 
                 m_nJangoRqId = info.getJangoInfo(database,m_JangoTranProc)
-                m_nOrderRqId = runSell(m_OrderTranProc,database,code,"00","1","163")!!
+                m_nOrderRqId = runSell(m_OrderTranProc,database,code,"00","1","160")!!
             }
         }
     }
@@ -123,6 +125,34 @@ class Trade : AppCompatActivity(), ITranDataListener, IRealDataListener {
         return m_OrderTranProc?.RequestData("scaao") //매도주문
     }
 
+    fun runCancel(m_OrderTranProc:ExpertTranProc?,database: SQLiteDatabase,strOrderNumberOri:String): Int? {
+        var OrderNumberKET = ""
+        val c = auth.select_order(database,strOrderNumberOri)
+        if (c != null) {
+            if(c.moveToNext()){
+                OrderNumberKET = c.getString(c.getColumnIndex("OrderNumberKET"))
+            }
+        }
+
+        setTrade(database,"",m_OrderTranProc)
+        m_OrderTranProc?.SetSingleData(0, 3, OrderNumberKET) // 한국거래소전송주문조직번호
+        m_OrderTranProc?.SetSingleData(0, 4, strOrderNumberOri) // 원주문번호
+        m_OrderTranProc?.SetSingleData(0, 5, "00") //주문 구분 00:취소
+        m_OrderTranProc?.SetSingleData(0, 6, "02") //정정 : 01 / 취소 : 02
+        m_OrderTranProc?.SetSingleData(0, 7, " ") //주문수량
+        m_OrderTranProc?.SetSingleData(0, 8, " ") //주문단가
+        m_OrderTranProc?.SetSingleData(0, 9, "Y") //잔량전부주문여부
+
+        return m_OrderTranProc?.RequestData("SMCO") //매도주문
+    }
+
+    private fun gotoTab1() {
+        val intent = Intent(this@Trade, TabActivity::class.java)
+        intent.putExtra("tab", 0)
+        startActivity(intent)
+        finish()
+    }
+
     @SuppressLint("SetTextI18n")
     override fun onTranDataReceived(sTranID: String, nRqId: Int) {
         if (m_nJangoRqId == nRqId) {
@@ -146,6 +176,8 @@ class Trade : AppCompatActivity(), ITranDataListener, IRealDataListener {
         if(strMsgCode == "APBK0013") {
             Toast.makeText(this, strMessage, Toast.LENGTH_LONG).show()
             speechAPI.startUsingSpeechSDK2("주문 전송 완료 되었습니다.")
+            Thread.sleep(500)
+            gotoTab1()
         }
         // TODO Auto-generated method stub
         Log.e("onTranMessageReceived", String.format("MsgCode:%s ErrorType:%s %s",  strMsgCode ,  strErrorType  , strMessage));
