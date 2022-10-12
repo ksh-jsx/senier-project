@@ -6,5 +6,5 @@ data class NotSignedStockData (
     val stockQty : Int,
     val orderPrice: Int,
     val tradeType: String,
-    val strOrderNumberOri: String,
+    val strOrderNumber: String,
 )

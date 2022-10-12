@@ -213,7 +213,7 @@ class AccountInfo: AppCompatActivity(), ITranDataListener, IRealDataListener {
 
                 if (strOrderNumber.isEmpty()) continue
                 else{
-                    val data = NotSignedStockData(i+1,strName,nOrderCount,(nOrderPrice*nOrderCount),tradeType)
+                    val data = NotSignedStockData(i+1,strName,nOrderCount,(nOrderPrice*nOrderCount),tradeType,strOrderNumberOri)
                     array[i] = data
                 }
                 Log.d(TAG,

@@ -174,6 +174,7 @@ class BuyActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
     }
 
     override fun onTranDataReceived(sTranID: String, nRqId: Int) {
+        Log.d("onTranDataReceived","$sTranID / $nRqId / $m_nOrderRqId")
         if (m_nJangoRqId == nRqId) {
 
             strTotal1 = m_JangoTranProc!!.GetMultiData(1, 14, 0).toInt() //총평가금액
@@ -203,8 +204,8 @@ class BuyActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
             Log.d("주문 접수","$orderNumberKET / $orderNumber / $orderTime")
 
             val contentValues = ContentValues()
-            contentValues.put("OrderNumber", orderNumberKET)
-            contentValues.put("OrderNumber", orderNumber)
+            contentValues.put("OrderNumberOri", orderNumber)
+            contentValues.put("orderNumberKET", orderNumberKET)
 
             auth.insert_order(contentValues,database)
         }

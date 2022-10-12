@@ -243,12 +243,12 @@ class Tab1 : Fragment(), ITranDataListener, IRealDataListener {
                 if (strOrderNumber.isEmpty()) continue
 
                 Log.d(TAG,
-                    "KospiEx : 주문채번지점번호 - $strNo 원주문번호 - $strOrderNumberOri 주문번호 - $strOrderNumber"
+                    "KospiEx : 주문채번지점번호 - $strNo / 원주문번호 - $strOrderNumberOri / 주문번호 - $strOrderNumber"
                 )
-                Log.d(TAG, "KospiEx : 상품번호 - $strCode 주문수량 - $nOrderCount 주문단가 - $nOrderPrice")
+                Log.d(TAG, "KospiEx : 상품번호 - $strCode / 주문수량 - $nOrderCount 주문단가 / - $nOrderPrice")
 
                 if(strCode.length > 3){
-                    val data = NotSignedStockData(i+1,strName,nOrderCount,(nOrderPrice*nOrderCount),tradeType,strOrderNumberOri)
+                    val data = NotSignedStockData(i+1,strName,nOrderCount,(nOrderPrice*nOrderCount),tradeType,strOrderNumber)
                     array[i] = data
                     arraySize+=1
                     if(tradeType == "02")
@@ -272,7 +272,7 @@ class Tab1 : Fragment(), ITranDataListener, IRealDataListener {
                             stockQty=array[x]!!.stockQty,
                             orderPrice=array[x]!!.orderPrice,
                             tradeType=array[x]!!.tradeType,
-                            strOrderNumberOri=array[x]!!.strOrderNumberOri)
+                            strOrderNumber=array[x]!!.strOrderNumber)
                     )
                 }
 

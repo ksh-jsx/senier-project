@@ -125,18 +125,19 @@ class Trade : AppCompatActivity(), ITranDataListener, IRealDataListener {
         return m_OrderTranProc?.RequestData("scaao") //매도주문
     }
 
-    fun runCancel(m_OrderTranProc:ExpertTranProc?,database: SQLiteDatabase,strOrderNumberOri:String): Int? {
+    fun runCancel(m_OrderTranProc:ExpertTranProc?,database: SQLiteDatabase,strOrderNumber:String): Int? {
         var OrderNumberKET = ""
-        val c = auth.select_order(database,strOrderNumberOri)
+
+        val c = auth.select_order(database,strOrderNumber)
         if (c != null) {
             if(c.moveToNext()){
                 OrderNumberKET = c.getString(c.getColumnIndex("OrderNumberKET"))
             }
         }
-
+        Log.d("test", OrderNumberKET)
         setTrade(database,"",m_OrderTranProc)
         m_OrderTranProc?.SetSingleData(0, 3, OrderNumberKET) // 한국거래소전송주문조직번호
-        m_OrderTranProc?.SetSingleData(0, 4, strOrderNumberOri) // 원주문번호
+        m_OrderTranProc?.SetSingleData(0, 4, strOrderNumber) // 원주문번호
         m_OrderTranProc?.SetSingleData(0, 5, "00") //주문 구분 00:취소
         m_OrderTranProc?.SetSingleData(0, 6, "02") //정정 : 01 / 취소 : 02
         m_OrderTranProc?.SetSingleData(0, 7, " ") //주문수량

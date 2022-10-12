@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.commexpert.CommExpertMng
 import com.commexpert.ExpertTranProc
+import com.stucs17.stockai.Public.Auth
 import com.stucs17.stockai.Public.Trade
 import com.stucs17.stockai.R
 import com.stucs17.stockai.StockDetailActivity
@@ -34,7 +35,8 @@ class NotSignedStockAdapter(private val context: Context) : RecyclerView.Adapter
     lateinit var dbHelper: DBHelper
     lateinit var database: SQLiteDatabase
     private val trade = Trade()
-
+    private val auth = Auth()
+    var strOrderNumber = ""
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.not_signed_stock_list,parent,false)
         return ViewHolder(view)
@@ -61,11 +63,11 @@ class NotSignedStockAdapter(private val context: Context) : RecyclerView.Adapter
 
             dbHelper = DBHelper(context, "mydb.db", null, 1)
             database = dbHelper.writableDatabase
+            strOrderNumber = item.strOrderNumber
 
             m_OrderTranProc = ExpertTranProc(context)
             m_OrderTranProc!!.InitInstance(this)
             m_OrderTranProc!!.SetShowTrLog(true)
-
             itemView.setOnClickListener{
                 val stockCode = (arrItemKospiCode+arrItemKosdaqCode).sorted().filter{ it.name.startsWith(item.stockName) }[0].code //입력한 텍스트와 주식 목록 비교->필터링
                 if (stockCode.isNotEmpty()) {
@@ -77,7 +79,7 @@ class NotSignedStockAdapter(private val context: Context) : RecyclerView.Adapter
             }
 
             btn_cancelOrder.setOnClickListener{
-                m_nOrderRqId = trade.runCancel(m_OrderTranProc,database,item.strOrderNumberOri)!!
+                m_nOrderRqId = trade.runCancel(m_OrderTranProc,database,item.strOrderNumber)!!
             }
 
             val type = if (item.tradeType == "01") "매도" else "매수"
@@ -93,13 +95,17 @@ class NotSignedStockAdapter(private val context: Context) : RecyclerView.Adapter
                 val orderNumberKET = m_OrderTranProc!!.GetSingleData(0,0) //한국거래소전송주문조직번호
                 val orderNumber = m_OrderTranProc!!.GetSingleData(0,1) //주문번호
                 val orderTime = m_OrderTranProc!!.GetSingleData(0,2) //주문시각
-                Log.d("주문 접수","$orderNumberKET / $orderNumber / $orderTime")
+                Log.d("주문 취소","$orderNumberKET / $orderNumber / $orderTime")
 
             }
         }
 
-        override fun onTranMessageReceived(p0: Int, p1: String?, p2: String?, p3: String?) {
-            TODO("Not yet implemented")
+        override fun onTranMessageReceived(
+            nRqId: Int, strMsgCode: String?,
+            strErrorType: String?, strMessage: String?
+        ) {
+            Log.e("주문 취소", String.format("MsgCode:%s ErrorType:%s %s",  strMsgCode ,  strErrorType  , strMessage));
+            auth.delete_order(database,strOrderNumber)
         }
 
         override fun onTranTimeout(p0: Int) {

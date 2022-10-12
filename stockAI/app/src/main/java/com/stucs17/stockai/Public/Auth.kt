@@ -62,13 +62,25 @@ class Auth: AppCompatActivity() {
         database.execSQL(query)
     }
 
-    fun select_order(database:SQLiteDatabase,strOrderNumberOri:String): Cursor? {
-        val query = "SELECT * FROM orders where strOrderNumberOri = $strOrderNumberOri;"
+    fun select_order(database:SQLiteDatabase,OrderNumberOri:String): Cursor? {
+        val query = "SELECT * FROM orders where OrderNumberOri = '$OrderNumberOri';"
+        val temp = "SELECT * FROM orders;"  //
+        val c = database.rawQuery(temp, null)
+        while(c.moveToNext()) {
+            val OrderNumberOri = c.getString(c.getColumnIndex("OrderNumberOri"))
+            val OrderNumberKET = c.getString(c.getColumnIndex("OrderNumberKET"))
+
+            Log.d("db","OrderNumberOri:$OrderNumberOri / OrderNumberKET:$OrderNumberKET /")
+        }
         return database.rawQuery(query, null)
     }
 
     fun insert_order(contentValues:ContentValues,database:SQLiteDatabase) {
         database.insert("orders", null, contentValues)
+    }
+    fun delete_order(database:SQLiteDatabase, OrderNumberOri:String) {
+        val query = "DELETE FROM orders WHERE OrderNumberOri = '$OrderNumberOri';"
+        database.execSQL(query)
     }
 
 }
