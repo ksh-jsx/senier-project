@@ -12,9 +12,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.commexpert.ExpertRealProc
 import com.commexpert.ExpertTranProc
 import com.stucs17.stockai.Public.AccountInfo
-import com.stucs17.stockai.Public.Auth
+import com.stucs17.stockai.Public.Database
 import com.stucs17.stockai.Public.Trade
-import com.stucs17.stockai.data.MyStockData
 import com.stucs17.stockai.sql.DBHelper
 import com.truefriend.corelib.commexpert.intrf.IRealDataListener
 import com.truefriend.corelib.commexpert.intrf.ITranDataListener
@@ -52,7 +51,7 @@ class BuyActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
     private var strTotal2 = 0
     private var buyPriceSum = 0
 
-    private val auth = Auth()
+    private val db = Database()
     private val gb = GlobalBackground()
     private val trade = Trade()
     private val info = AccountInfo()
@@ -207,7 +206,7 @@ class BuyActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
             contentValues.put("OrderNumberOri", orderNumber)
             contentValues.put("orderNumberKET", orderNumberKET)
 
-            auth.insert_order(contentValues,database)
+            db.insert_order(contentValues,database)
         }
     }
 

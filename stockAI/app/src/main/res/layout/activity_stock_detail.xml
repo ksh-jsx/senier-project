@@ -27,6 +27,20 @@
                 android:gravity="center_vertical"/>
 
             <ImageButton
+                android:id="@+id/btn_star"
+                android:layout_width="50dp"
+                android:layout_height="60dp"
+                android:layout_alignParentRight="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/star_off"
+                android:background="#ffffff"
+                android:layout_marginRight="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="MissingConstraints" />
+
+            <ImageButton
                 android:id="@+id/btn_heart"
                 android:layout_width="50dp"
                 android:layout_height="60dp"
@@ -189,32 +203,7 @@
                         android:paddingTop="10sp"/>
                 </LinearLayout>
             </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0sp"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="bottom">
 
-                <TextView
-                    android:id="@+id/tv_expectPercent"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:fontFamily="@font/nanumsquare_eb"
-                    android:textSize="25sp"
-                    android:text="xx% 확률로 xx 예상되는 종목입니다!"/>
-                <Button
-                    android:id="@+id/btn_ai"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10sp"
-                    app:backgroundTint="@color/second"
-                    android:text="자동투자 \n종목으로 넣기"
-                    android:fontFamily="@font/nanumsquare_eb"
-                    android:textColor="@color/white"
-                    android:textSize="35sp"    />
-            </LinearLayout>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/BSbuttonBox"

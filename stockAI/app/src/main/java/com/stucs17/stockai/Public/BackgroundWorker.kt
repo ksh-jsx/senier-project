@@ -16,18 +16,13 @@ import androidx.core.app.NotificationCompat
 import com.commexpert.CommExpertMng
 import com.commexpert.ExpertRealProc
 import com.commexpert.ExpertTranProc
-import com.stucs17.stockai.GlobalBackground
 import com.stucs17.stockai.MainActivity
 import com.stucs17.stockai.R
-import com.stucs17.stockai.TabActivity
-import com.stucs17.stockai.data.InterestingStockData
 import com.stucs17.stockai.sql.DBHelper
 import com.truefriend.corelib.commexpert.intrf.IRealDataListener
 import com.truefriend.corelib.commexpert.intrf.ITranDataListener
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.util.*
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
@@ -51,7 +46,7 @@ class BackgroundWorker: BroadcastReceiver(), ITranDataListener, IRealDataListene
     private lateinit var dbHelper: DBHelper
     lateinit var database: SQLiteDatabase
 
-    private val auth = Auth()
+    private val db = Database()
     private val stockInfo = StockIndex()
     private val trade = Trade()
 
@@ -78,7 +73,7 @@ class BackgroundWorker: BroadcastReceiver(), ITranDataListener, IRealDataListene
             dbHelper = DBHelper(context, "mydb.db", null, 1)
             database = dbHelper.writableDatabase
 
-            c = auth.select_like(database)!!
+            c = db.select_like(database)!!
             if(c.moveToNext()){
                 target = c.getString(c.getColumnIndex("code"))
                 currentPriceRqId = stockInfo.getStockInfo(expertTranProc,target)
@@ -188,7 +183,7 @@ class BackgroundWorker: BroadcastReceiver(), ITranDataListener, IRealDataListene
         }
 
         if (info11 < 1) {
-            m_nOrderRqId = trade.runBuy(m_OrderTranProc, database, target, "00", "1", "5")!!
+            m_nOrderRqId = trade.runBuy(m_OrderTranProc, database, target, "01", "1", "")!!
         }
 
         if (c.moveToNext()) {
@@ -197,8 +192,6 @@ class BackgroundWorker: BroadcastReceiver(), ITranDataListener, IRealDataListene
             currentPriceRqId = stockInfo.getStockInfo(expertTranProc, target)
             cnt++
         }
-
-
     }
 
     override fun onTranMessageReceived(p0: Int, p1: String?, p2: String?, p3: String?) {

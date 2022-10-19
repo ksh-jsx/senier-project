@@ -35,7 +35,7 @@ class Trade : AppCompatActivity(), ITranDataListener, IRealDataListener {
     private val arrItemKosdaqCode = CommExpertMng.getInstance().GetKosdaqCodeList() // 코스닥 주식 목록
 
     private val info = AccountInfo()
-    private val auth = Auth()
+    private val db = Database()
     private val speechAPI = SpeechAPI()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,7 +83,7 @@ class Trade : AppCompatActivity(), ITranDataListener, IRealDataListener {
     private fun setTrade(database: SQLiteDatabase,currentCode:String,m_OrderTranProc:ExpertTranProc?){
         var strnumPwd = ""
 
-        val c = auth.select(database)
+        val c = db.select(database)
         if (c != null) {
             if(c.moveToNext()){
                 strnumPwd = c.getString(c.getColumnIndex("numPwd"))
@@ -128,7 +128,7 @@ class Trade : AppCompatActivity(), ITranDataListener, IRealDataListener {
     fun runCancel(m_OrderTranProc:ExpertTranProc?,database: SQLiteDatabase,strOrderNumber:String): Int? {
         var OrderNumberKET = ""
 
-        val c = auth.select_order(database,strOrderNumber)
+        val c = db.select_order(database,strOrderNumber)
         if (c != null) {
             if(c.moveToNext()){
                 OrderNumberKET = c.getString(c.getColumnIndex("OrderNumberKET"))

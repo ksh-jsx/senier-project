@@ -1,10 +1,7 @@
 package com.stucs17.stockai
 
 import android.Manifest
-import android.app.AlarmManager
-import android.app.PendingIntent
 import android.content.ContentValues
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.sqlite.SQLiteDatabase
@@ -16,12 +13,9 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.work.OneTimeWorkRequest
-import androidx.work.WorkManager
 import com.bumptech.glide.Glide
 import com.commexpert.CommExpertMng
-import com.stucs17.stockai.Public.Auth
-import com.stucs17.stockai.Public.BackgroundWorker
+import com.stucs17.stockai.Public.Database
 import com.stucs17.stockai.sql.DBHelper
 import com.truefriend.corelib.commexpert.intrf.IExpertInitListener
 import com.truefriend.corelib.commexpert.intrf.IExpertLoginListener
@@ -40,7 +34,7 @@ class MainActivity : AppCompatActivity(), IExpertInitListener, IExpertLoginListe
     private var pwStr : String = ""
     private var caPwStr : String = ""
     private var numPwStr : String = ""
-    private val auth = Auth()
+    private val db = Database()
 
     //sql 관련
     private lateinit var dbHelper: DBHelper
@@ -62,7 +56,7 @@ class MainActivity : AppCompatActivity(), IExpertInitListener, IExpertLoginListe
             if (!isConnected){
                 Toast.makeText(this, "서버가 연결되지 않았습니다.", Toast.LENGTH_SHORT).show()
             } else {
-                auth.login(idStr,pwStr,caPwStr,numPwStr)
+                db.login(idStr,pwStr,caPwStr,numPwStr)
             }
         }
 
@@ -125,26 +119,26 @@ class MainActivity : AppCompatActivity(), IExpertInitListener, IExpertLoginListe
             Toast.makeText(this, "서버가 연결되지 않았습니다.", Toast.LENGTH_SHORT).show()
         } else {
 
-            val c = auth.select(database)
-            if (c != null) {
-                if(c.moveToNext()) {
+            val c = db.select(database)
 
-                    idStr = c.getString(c.getColumnIndex("id"))
-                    pwStr = c.getString(c.getColumnIndex("pwd"))
-                    caPwStr = c.getString(c.getColumnIndex("certPwd"))
-                    numPwStr = c.getString(c.getColumnIndex("numPwd"))
+            if(c!!.moveToNext()) {
 
-                    findViewById<EditText>(R.id.editId).setText(idStr)
-                    findViewById<EditText>(R.id.editPw).setText(pwStr)
-                    findViewById<EditText>(R.id.editCaPw).setText(caPwStr)
-                    findViewById<EditText>(R.id.editNumPw).setText(numPwStr)
+                idStr = c.getString(c.getColumnIndex("id"))
+                pwStr = c.getString(c.getColumnIndex("pwd"))
+                caPwStr = c.getString(c.getColumnIndex("certPwd"))
+                numPwStr = c.getString(c.getColumnIndex("numPwd"))
 
-                    auth.login(idStr, pwStr, caPwStr, numPwStr)
-                    isLoggedin = false
-                } else {
-                    Toast.makeText(baseContext, "자동로그인 실패", Toast.LENGTH_SHORT).show()
-                }
+                findViewById<EditText>(R.id.editId).setText(idStr)
+                findViewById<EditText>(R.id.editPw).setText(pwStr)
+                findViewById<EditText>(R.id.editCaPw).setText(caPwStr)
+                findViewById<EditText>(R.id.editNumPw).setText(numPwStr)
+
+                db.login(idStr, pwStr, caPwStr, numPwStr)
+                isLoggedin = false
+            } else {
+                Toast.makeText(baseContext, "자동로그인 실패", Toast.LENGTH_SHORT).show()
             }
+
         }
     }
 
@@ -235,12 +229,10 @@ class MainActivity : AppCompatActivity(), IExpertInitListener, IExpertLoginListe
             contentValues.put("pwd", pwStr)
             contentValues.put("certPwd", caPwStr)
             contentValues.put("numPwd", numPwStr)
-
-            auth.insert(contentValues,database)
+            contentValues.put("autoTrade", 0)
+            db.insert(contentValues,database)
             Toast.makeText(this, "추가되었습니다.", Toast.LENGTH_SHORT).show()
         }
-
-
         gotoHome()
     }
 

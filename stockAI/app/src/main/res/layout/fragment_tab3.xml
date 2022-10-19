@@ -148,68 +148,32 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/nanumsquare_eb"
                     android:textSize="35dp"
-                    android:text="자동" />
+                    android:text="수동" />
             </LinearLayout>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:fontFamily="@font/nanumsquare_eb"
-                android:textSize="35dp"
-                android:text="투자 대상 종목"
-                android:textColor="@color/second"/>
-
         </LinearLayout>
-        <LinearLayout
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="15dp"
+            android:layout_marginVertical="10dp"
+            android:background="@color/gray2" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:fontFamily="@font/nanumsquare_eb"
+            android:textSize="35dp"
+            android:text="투자 대상 종목"
+            android:textColor="@color/second"/>
+        <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/rv_myStock"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="vertical"
-            android:layout_marginHorizontal="15dp"
-            android:background="@color/second">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="KODEX 인버스"
-                android:textSize="20dp"
-                android:layout_marginVertical="1dp"
-                android:background="@color/white"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="KODEX 200선물인버스2X"
-                android:textSize="20dp"
-                android:layout_marginBottom="1dp"
-                android:background="@color/white"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TIGER 차이나전기차SOLACTIVE"
-                android:textSize="20dp"
-                android:layout_marginBottom="1dp"
-                android:background="@color/white"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="KODEX 단기채권PLUS"
-                android:textSize="20dp"
-                android:layout_marginBottom="1dp"
-                android:background="@color/white"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="KODEX 레버리지"
-                android:textSize="20dp"
-                android:layout_marginBottom="1dp"
-                android:background="@color/white"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="KODEX 코스닥150레버리지"
-                android:textSize="20dp"
-                android:layout_marginBottom="1dp"
-                android:background="@color/white"/>
-
-        </LinearLayout>
+            tools:listitem="@layout/interesting_stock_list"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

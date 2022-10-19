@@ -16,10 +16,11 @@ class DBHelper(
                 "id text primary key ," +
                 "pwd text," +
                 "certPwd text," +
-                "numPwd integer);"
+                "numPwd integer," +
+                "autoTrade integer);"
 
         db.execSQL(sql)
-        val sql2: String = "CREATE TABLE if not exists like (" +
+        val sql2: String = "CREATE TABLE if not exists likes (" +
                 "code text primary key ," +
                 "name text);"
         db.execSQL(sql2)
@@ -27,15 +28,21 @@ class DBHelper(
                 "OrderNumberOri text primary key ," +
                 "OrderNumberKET text);"
         db.execSQL(sql3)
+        val sql4: String = "CREATE TABLE if not exists autoTradeTarget (" +
+                "code text primary key ," +
+                "name text);"
+        db.execSQL(sql4)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         val sql = "DROP TABLE if exists user"
         db.execSQL(sql)
-        val sql2 = "DROP TABLE if exists like"
+        val sql2 = "DROP TABLE if exists likes"
         db.execSQL(sql2)
         val sql3 = "DROP TABLE if exists orders"
         db.execSQL(sql3)
+        val sql4 = "DROP TABLE if exists autoTradeTarget"
+        db.execSQL(sql4)
         onCreate(db)
     }
 }

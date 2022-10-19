@@ -1,35 +1,20 @@
 package com.stucs17.stockai
 
-import android.Manifest
 import android.annotation.SuppressLint
-import android.content.ContentValues.TAG
-import android.content.Context
 import android.content.DialogInterface
-import android.content.pm.PackageManager
 import android.database.sqlite.SQLiteDatabase
-import android.media.MediaPlayer
 import android.os.Bundle
-import android.util.Base64
 import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import com.commexpert.CommExpertMng
 import com.commexpert.ExpertRealProc
 import com.commexpert.ExpertTranProc
-import com.kakao.sdk.newtoneapi.SpeechRecognizeListener
-import com.kakao.sdk.newtoneapi.SpeechRecognizerClient
-import com.kakao.sdk.newtoneapi.SpeechRecognizerManager
 import com.stucs17.stockai.Public.AccountInfo
-import com.stucs17.stockai.Public.Auth
 import com.stucs17.stockai.Public.Trade
-import com.stucs17.stockai.data.MyStockData
 import com.stucs17.stockai.sql.DBHelper
 import com.truefriend.corelib.commexpert.intrf.IRealDataListener
 import com.truefriend.corelib.commexpert.intrf.ITranDataListener
-import java.security.MessageDigest
 
 
 class SellActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {

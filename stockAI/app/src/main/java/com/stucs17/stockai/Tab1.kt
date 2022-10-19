@@ -2,7 +2,6 @@ package com.stucs17.stockai
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.util.Log
@@ -10,13 +9,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.commexpert.ExpertTranProc
 import com.stucs17.stockai.Public.AccountInfo
-import com.stucs17.stockai.Public.Auth
+import com.stucs17.stockai.Public.Database
 import com.stucs17.stockai.adapter.InterestingStockAdapter
 import com.stucs17.stockai.adapter.MyStockAdapter
 import com.stucs17.stockai.adapter.NotSignedStockAdapter
@@ -56,7 +54,7 @@ class Tab1 : Fragment(), ITranDataListener, IRealDataListener {
     private lateinit var tabActivity: TabActivity
     private val info = AccountInfo()
     private val gb = GlobalBackground()
-    private val auth = Auth()
+    private val db = Database()
 
 
     //sql 관련
@@ -95,9 +93,13 @@ class Tab1 : Fragment(), ITranDataListener, IRealDataListener {
         dbHelper = DBHelper(tabActivity, "mydb.db", null, 1)
         database = dbHelper.writableDatabase
 
+        getInterestingStock()
+        m_nJangoRqId = info.getJangoInfo(database,m_JangoTranProc)
+        m_nOrderListRqId = info.getNotSignedList(database,m_OrderListTranProc)
+
         Thread {
             while (!Thread.interrupted()) try {
-                Thread.sleep(1000)
+                Thread.sleep(10000)
                 tabActivity.runOnUiThread {
                     getInterestingStock()
                     m_nJangoRqId = info.getJangoInfo(database,m_JangoTranProc)
@@ -125,7 +127,7 @@ class Tab1 : Fragment(), ITranDataListener, IRealDataListener {
         interestingStockAdapter = InterestingStockAdapter(tabActivity)
         rv_myStock3.adapter = interestingStockAdapter
 
-        val c = auth.select_like(database)
+        val c = db.select_like(database)
 
         val array = Array<InterestingStockData?>(c!!.count) { null }
         var arraySize = 0

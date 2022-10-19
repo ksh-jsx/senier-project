@@ -5,12 +5,10 @@ import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import com.commexpert.CommExpertMng
 import com.commexpert.ExpertTranProc
 import com.stucs17.stockai.R
 import com.stucs17.stockai.TabActivity
-import com.stucs17.stockai.adapter.MyStockAdapter
 import com.stucs17.stockai.data.InterestingStockData
 import com.stucs17.stockai.data.MyStockData
 import com.stucs17.stockai.data.NotSignedStockData
@@ -19,7 +17,7 @@ import com.truefriend.corelib.commexpert.intrf.IRealDataListener
 import com.truefriend.corelib.commexpert.intrf.ITranDataListener
 
 class AccountInfo: AppCompatActivity(), ITranDataListener, IRealDataListener {
-    private val auth = Auth()
+    private val db = Database()
     private val speechAPI = SpeechAPI()
     private var type : String? = ""
     //한투Api 관련
@@ -57,7 +55,7 @@ class AccountInfo: AppCompatActivity(), ITranDataListener, IRealDataListener {
                 m_nOrderListRqId = getNotSignedList(database,m_OrderListTranProc )
             }
             "interesting_stocks"->{
-                val c = auth.select_like(database)
+                val c = db.select_like(database)
 
                 val array = Array<InterestingStockData?>(c!!.count) { null }
                 var arraySize = 0
@@ -92,12 +90,12 @@ class AccountInfo: AppCompatActivity(), ITranDataListener, IRealDataListener {
     fun getJangoInfo(database: SQLiteDatabase,m_JangoTranProc:ExpertTranProc?): Int {
         var strnumPwd = ""
 
-        val c = auth.select(database)
-        if (c != null) {
-            if(c.moveToNext()){
-                strnumPwd = c.getString(c.getColumnIndex("numPwd"))
-            }
+        val c = db.select(database)
+
+        if(c!!.moveToNext()){
+            strnumPwd = c.getString(c.getColumnIndex("numPwd"))
         }
+
 
         val strEncPass = m_JangoTranProc!!.GetEncryptPassword(strnumPwd)
         val strAcc = CommExpertMng.getInstance().GetAccountNo(0)
@@ -122,12 +120,12 @@ class AccountInfo: AppCompatActivity(), ITranDataListener, IRealDataListener {
     fun getNotSignedList(database: SQLiteDatabase,m_OrderListTranProc :ExpertTranProc?): Int {
         var strnumPwd = ""
 
-        val c = auth.select(database)
-        if (c != null) {
-            if(c.moveToNext()){
-                strnumPwd = c.getString(c.getColumnIndex("numPwd"))
-            }
+        val c = db.select(database)
+
+        if(c!!.moveToNext()){
+            strnumPwd = c.getString(c.getColumnIndex("numPwd"))
         }
+
 
         val strEncPass = m_OrderListTranProc !!.GetEncryptPassword(strnumPwd) //비밀번호
         val strAcc = CommExpertMng.getInstance().GetAccountNo(0)

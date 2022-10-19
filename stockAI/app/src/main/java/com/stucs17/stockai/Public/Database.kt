@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.commexpert.CommExpertMng
 import com.stucs17.stockai.sql.DBHelper
 
-class Auth: AppCompatActivity() {
+class Database: AppCompatActivity() {
 
     fun login(idStr:String, pwStr:String, caPwStr:String, numPwStr:String) {
 
@@ -43,22 +43,27 @@ class Auth: AppCompatActivity() {
         database.insert("user", null, contentValues)
     }
 
+    fun update(database:SQLiteDatabase,state:Int) {
+        val query = "UPDATE user SET autoTrade = '$state';"
+        database.execSQL(query)
+    }
+
     fun select_like(database:SQLiteDatabase): Cursor? {
-        val query = "SELECT * FROM like;"
+        val query = "SELECT * FROM likes;"
         return database.rawQuery(query, null)
     }
 
     fun insert_like(contentValues:ContentValues,database:SQLiteDatabase) {
-        database.insert("like", null, contentValues)
+        database.insert("likes", null, contentValues)
     }
 
     fun isExist_like(database:SQLiteDatabase, stockCode:String): Cursor? {
-        val query = "SELECT * FROM like where code = '$stockCode';"
+        val query = "SELECT * FROM likes where code = '$stockCode';"
         return database.rawQuery(query, null)
     }
 
     fun delete_like(database:SQLiteDatabase, stockCode:String) {
-        val query = "DELETE FROM like WHERE code = '$stockCode';"
+        val query = "DELETE FROM likes WHERE code = '$stockCode';"
         database.execSQL(query)
     }
 
@@ -74,12 +79,28 @@ class Auth: AppCompatActivity() {
         }
         return database.rawQuery(query, null)
     }
-
     fun insert_order(contentValues:ContentValues,database:SQLiteDatabase) {
         database.insert("orders", null, contentValues)
     }
     fun delete_order(database:SQLiteDatabase, OrderNumberOri:String) {
         val query = "DELETE FROM orders WHERE OrderNumberOri = '$OrderNumberOri';"
+        database.execSQL(query)
+    }
+
+    fun select_autoTradeTarget(database:SQLiteDatabase): Cursor? {
+        val query = "SELECT * FROM autoTradeTarget;"
+        return database.rawQuery(query, null)
+    }
+
+    fun insert_autoTradeTarget(contentValues:ContentValues,database:SQLiteDatabase) {
+        database.insert("autoTradeTarget", null, contentValues)
+    }
+    fun isExist_autoTradeTarget(database:SQLiteDatabase, stockCode:String): Cursor? {
+        val query = "SELECT * FROM autoTradeTarget where code = '$stockCode';"
+        return database.rawQuery(query, null)
+    }
+    fun delete_autoTradeTarget(database:SQLiteDatabase, stockCode:String) {
+        val query = "DELETE FROM autoTradeTarget WHERE code = '$stockCode';"
         database.execSQL(query)
     }
 

@@ -10,13 +10,14 @@ import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.commexpert.ExpertTranProc
-import com.stucs17.stockai.Public.Auth
+import com.stucs17.stockai.Public.Database
 import com.stucs17.stockai.Public.StockIndex
 import com.stucs17.stockai.sql.DBHelper
 import com.truefriend.corelib.commexpert.intrf.ITranDataListener
@@ -27,7 +28,7 @@ import kotlin.math.roundToInt
 class StockDetailActivity : AppCompatActivity(), ITranDataListener {
 
     private val gb = GlobalBackground()
-    private val auth = Auth()
+    private val db = Database()
     private val stockInfo = StockIndex()
     private lateinit var expertTranProc : ExpertTranProc
     private var currentPriceRqId = 0
@@ -41,8 +42,8 @@ class StockDetailActivity : AppCompatActivity(), ITranDataListener {
     private lateinit var tv20 : TextView
     private lateinit var tv18 : TextView
     private lateinit var tv43 : TextView
+    private lateinit var btn_star : ImageButton
     private lateinit var btn_heart : ImageButton
-    private lateinit var tv_expectPercent : TextView
     private lateinit var tv_stock_name : TextView
     private lateinit var priceView : TextView
     private lateinit var priceView2 : TextView
@@ -62,16 +63,16 @@ class StockDetailActivity : AppCompatActivity(), ITranDataListener {
         setContentView(R.layout.activity_stock_detail)
 
         if(intent.hasExtra("stockCode")) {
-            stockCode = intent.getStringExtra("stockCode")
-            stockName = intent.getStringExtra("stockName")
+            stockCode = intent.getStringExtra("stockCode")!!
+            stockName = intent.getStringExtra("stockName")!!
             Log.d(TAG, "code: $stockCode / name: $stockName")
         }
         tv19 = findViewById(R.id.tv19) // 상한가
         tv20 = findViewById(R.id.tv20) // 하한가
         tv18 = findViewById(R.id.tv18) // PER
         tv43 = findViewById(R.id.tv43) // PBR
+        btn_star = findViewById(R.id.btn_star)
         btn_heart = findViewById(R.id.btn_heart)
-        tv_expectPercent = findViewById(R.id.tv_expectPercent)
         tv_stock_name = findViewById(R.id.tv_stock_name)
         priceView = findViewById(R.id.priceView) // 현재가
         priceView2 = findViewById(R.id.priceView2) // 변동치
@@ -85,27 +86,21 @@ class StockDetailActivity : AppCompatActivity(), ITranDataListener {
 
         currentPriceRqId = stockInfo.getStockInfo(expertTranProc,stockCode)
 
-        val ssb = SpannableStringBuilder("75% 확률로 상승 예상되는 종목입니다!")
-        ssb.apply{
-            setSpan(ForegroundColorSpan(Color.RED), 8, 10, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        }
-
-        tv_expectPercent.text = ssb
         tv_stock_name.text = stockName
 
         dbHelper = DBHelper(this, "mydb.db", null, 1)
         database = dbHelper.writableDatabase
 
-        val c = auth.isExist_like(database,stockCode)
+        val c = db.isExist_like(database,stockCode)!!
+        val c2 = db.isExist_autoTradeTarget(database,stockCode)!!
 
-        if(c!!.count> 0)
+        if(c.count> 0)
             btn_heart.setImageResource(R.drawable.heart_on)
         else
             btn_heart.setImageResource(R.drawable.heart_off)
         btn_heart.setOnClickListener {
-
             if(c.count> 0){
-                auth.delete_like(database,stockCode)
+                db.delete_like(database,stockCode)
                 btn_heart.setImageResource(R.drawable.heart_off)
             }
             else {
@@ -113,10 +108,39 @@ class StockDetailActivity : AppCompatActivity(), ITranDataListener {
                 contentValues.put("code", stockCode)
                 contentValues.put("name", stockName)
 
-                auth.insert_like(contentValues,database)
+                db.insert_like(contentValues, database)
                 btn_heart.setImageResource(R.drawable.heart_on)
             }
+        }
 
+        val c_select = db.select(database)!!
+        if(c_select.moveToNext()) {
+            val state = c_select.getString(c_select.getColumnIndex("autoTrade")).toInt()
+            if(state == 0){
+                btn_star.visibility = View.GONE
+            }
+            else
+                btn_star.visibility = View.VISIBLE
+        }
+
+        if(c2.count> 0)
+            btn_star.setImageResource(R.drawable.star_on)
+        else
+            btn_star.setImageResource(R.drawable.star_off)
+
+        btn_star.setOnClickListener {
+            if(c2.count> 0){
+                db.delete_autoTradeTarget(database,stockCode)
+                btn_star.setImageResource(R.drawable.star_off)
+            }
+            else {
+                val contentValues = ContentValues()
+                contentValues.put("code", stockCode)
+                contentValues.put("name", stockName)
+
+                db.insert_autoTradeTarget(contentValues, database)
+                btn_star.setImageResource(R.drawable.star_on)
+            }
         }
 
         buttonForBuy.setOnClickListener {

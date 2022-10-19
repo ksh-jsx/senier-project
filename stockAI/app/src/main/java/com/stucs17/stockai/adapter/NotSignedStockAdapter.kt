@@ -1,7 +1,6 @@
 package com.stucs17.stockai.adapter
 
 import android.annotation.SuppressLint
-import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
@@ -10,11 +9,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.commexpert.CommExpertMng
 import com.commexpert.ExpertTranProc
-import com.stucs17.stockai.Public.Auth
+import com.stucs17.stockai.Public.Database
 import com.stucs17.stockai.Public.Trade
 import com.stucs17.stockai.R
 import com.stucs17.stockai.StockDetailActivity
@@ -35,7 +33,7 @@ class NotSignedStockAdapter(private val context: Context) : RecyclerView.Adapter
     lateinit var dbHelper: DBHelper
     lateinit var database: SQLiteDatabase
     private val trade = Trade()
-    private val auth = Auth()
+    private val db = Database()
     var strOrderNumber = ""
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.not_signed_stock_list,parent,false)
@@ -105,7 +103,7 @@ class NotSignedStockAdapter(private val context: Context) : RecyclerView.Adapter
             strErrorType: String?, strMessage: String?
         ) {
             Log.e("주문 취소", String.format("MsgCode:%s ErrorType:%s %s",  strMsgCode ,  strErrorType  , strMessage));
-            auth.delete_order(database,strOrderNumber)
+            db.delete_order(database,strOrderNumber)
         }
 
         override fun onTranTimeout(p0: Int) {
