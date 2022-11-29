@@ -56,7 +56,7 @@ class BackgroundWorker: BroadcastReceiver(), ITranDataListener, IRealDataListene
         val timeNow = LocalDateTime.now()
         val dayOfHour = timeNow.hour
         val dayOfWeek = dateNow.dayOfWeek.toString()
-
+//&& dayOfHour>8 && dayOfHour<15
         if(intent != null && dayOfWeek != "SATURDAY" && dayOfWeek != "SUNDAY" && dayOfHour>8 && dayOfHour<15){
             if (context != null) {
                 ctt = context
@@ -182,10 +182,6 @@ class BackgroundWorker: BroadcastReceiver(), ITranDataListener, IRealDataListene
             displayNotification(cnt, ctt, inList, setDecimal, info12)
         }
 
-        if (info11 < 1) {
-            m_nOrderRqId = trade.runBuy(m_OrderTranProc, database, target, "01", "1", "")!!
-        }
-
         if (c.moveToNext()) {
             Thread.sleep(5000)
             target = c.getString(c.getColumnIndex("code"))
@@ -202,19 +198,7 @@ class BackgroundWorker: BroadcastReceiver(), ITranDataListener, IRealDataListene
         Log.d("onTranTimeout", "$p0")
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun onRealDataReceived(strServiceId: String) {
-        if (strServiceId === "scn_r" || strServiceId === "scn_m") {
-            val strOrderNumber = m_OrderRealProc!!.GetRealData(0, 2) //주문번호
-            val strOrderGubun = m_OrderRealProc!!.GetRealData(0, 4) //매도매수구분
-            val strCode = m_OrderRealProc!!.GetRealData(0, 8) //종목코드
-            val inList = (arrItemKospiCode+arrItemKosdaqCode).sorted().filter{ it.code.startsWith(strCode) }[0].name //입력한 텍스트와 주식 목록 비교->필터링
-            Log.d(
-                "==주식 체결통보==",
-                String.format("주문번호:%s 매도매수구분:%s 종목코드:%s", strOrderNumber, strOrderGubun, strCode)
-            )
-            createNotificationChannel(cnt)
-            displayNotification2(cnt,ctt,inList,strOrderGubun)
-        }
+    override fun onRealDataReceived(p0: String?) {
+        TODO("Not yet implemented")
     }
 }

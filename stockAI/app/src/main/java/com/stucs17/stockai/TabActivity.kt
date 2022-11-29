@@ -15,6 +15,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.commexpert.ExpertTranProc
 import com.stucs17.stockai.Public.BackgroundWorker
+import com.stucs17.stockai.Public.BackgroundWorker_autoTrade
 import com.stucs17.stockai.Public.SpeechAPI
 import com.stucs17.stockai.adapter.PageAdapter
 import com.truefriend.corelib.commexpert.intrf.ITranDataListener
@@ -45,6 +46,7 @@ class TabActivity : AppCompatActivity() {
         viewpager.currentItem = currTab
 
         addAlarm()
+        addAutoTrade()
         //displayNotification()
     }
 
@@ -69,5 +71,17 @@ class TabActivity : AppCompatActivity() {
         val cal = Calendar.getInstance()
         cal.set(Calendar.SECOND, 0)
         alarmManager.setInexactRepeating (AlarmManager.RTC_WAKEUP, cal.timeInMillis,1000*60, pIntent)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun addAutoTrade(){
+        val alarmManager = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(this, BackgroundWorker_autoTrade::class.java)
+        val pIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT)
+
+        val cal = Calendar.getInstance()
+        cal.set(Calendar.HOUR_OF_DAY, 13)
+
+        alarmManager.setInexactRepeating (AlarmManager.RTC_WAKEUP, cal.timeInMillis,1000*60*60*24, pIntent)
     }
 }

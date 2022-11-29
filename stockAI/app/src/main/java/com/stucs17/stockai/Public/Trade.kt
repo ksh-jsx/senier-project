@@ -58,7 +58,7 @@ class Trade : AppCompatActivity(), ITranDataListener, IRealDataListener {
 
         when(type){
             "buy"->{
-                m_nOrderRqId = runBuy(m_OrderTranProc,database,code,"00","1","216")!!
+                m_nOrderRqId = runBuy(m_OrderTranProc,database,code,"01","1","")!!
 
             }
             "sell"->{

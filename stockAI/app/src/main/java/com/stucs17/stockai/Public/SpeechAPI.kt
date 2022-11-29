@@ -16,17 +16,30 @@ import androidx.core.content.ContextCompat
 import com.kakao.sdk.newtoneapi.*
 import com.stucs17.stockai.R
 import com.stucs17.stockai.TabActivity
+import io.ktor.client.*
+import io.ktor.client.engine.cio.*
+import io.ktor.client.features.*
+import io.ktor.client.request.*
+import io.ktor.client.statement.*
+import io.ktor.http.*
+import kotlinx.coroutines.*
+import kotlin.coroutines.CoroutineContext
 
 
-class SpeechAPI : AppCompatActivity() {
+class SpeechAPI : AppCompatActivity(), CoroutineScope {
 
     private val RECORD_REQUEST_CODE = 1000
     private val STORAGE_REQUEST_CODE = 1000
     private val NETWORK_STATE_CODE = 0
 
     private lateinit var test_tv : TextView
+    private var isFirst = true
 
     private lateinit var mAudioManager: AudioManager
+
+    private lateinit var job: Job
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main + job
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +49,14 @@ class SpeechAPI : AppCompatActivity() {
 
         test_tv = findViewById(R.id.test_tv)
 
+        job = Job()
+
         setupPermissions()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        job.cancel() // Activity종료시 job이 종료되도록 한다.
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
@@ -100,7 +120,7 @@ class SpeechAPI : AppCompatActivity() {
         }
     }
 
-    private fun startUsingSpeechSDK(){
+    private fun startUsingSpeechSDK(isOutside:Boolean = false, intent: Intent? = null){
         Toast.makeText(this, "말하세요", Toast.LENGTH_SHORT).show()
 
         test_tv.text = ""
@@ -114,7 +134,10 @@ class SpeechAPI : AppCompatActivity() {
             override fun onReady() {
                 Log.d(TAG, "모든 하드웨어 및 오디오 서비스가 준비되었습니다.")
                 volumeUp()
-                startUsingSpeechSDK2("네!")
+                if(isFirst) {
+                    startUsingSpeechSDK2("네!")
+                    isFirst = false
+                }
             }
 
             override fun onBeginningOfSpeech() {
@@ -137,14 +160,16 @@ class SpeechAPI : AppCompatActivity() {
             override fun onResults(results: Bundle?) {
                 val texts = results?.getStringArrayList(SpeechRecognizerClient.KEY_RECOGNITION_RESULTS)
 
-                Log.d(TAG, texts?.get(0).toString())
-                //정확도가 높은 첫번째 결과값을 텍스트뷰에 출력
                 runOnUiThread {
                     volumeUp()
                     val txt = texts?.get(0)
-                    //startUsingSpeechSDK2("들은 내용은 $txt")
+                    //정확도가 높은 첫번째 결과값을 텍스트뷰에 출력
                     test_tv.text = txt
-                    nextStep(txt)
+                    if(isOutside){
+                        nextStep2(txt,intent)
+                    } else {
+                        nextStep(txt)
+                    }
                 }
             }
 
@@ -193,6 +218,21 @@ class SpeechAPI : AppCompatActivity() {
         var intent = Intent(this@SpeechAPI, TabActivity::class.java)
         var type = ""
         var isUnderstand = true
+        var again = true
+        /*
+        launch(Dispatchers.Main) {
+            val res = HttpRequestHelper().requestKtorIo()
+            val jsonArray = JSONArray(res)
+            val json = jsonArray.getJSONObject(0)
+            val command : Int = json.getInt("name")
+            val view : Int = json.getInt("view")
+            val value : Int = json.getInt("value")
+            val stock: String = json.getString("stock")
+            val price: Int = json.getInt("price")
+            Log.d(TAG, "testtest: $command")
+            Log.d(TAG, "testtest: $view")
+        }*/
+
 
             if(txt!!.indexOf("수익률")>-1) {
                 intent = Intent(this@SpeechAPI, AccountInfo::class.java)
@@ -239,24 +279,48 @@ class SpeechAPI : AppCompatActivity() {
                 intent = Intent(this@SpeechAPI, Trade::class.java)
                 type = "buy"
                 intent.putExtra("target", txt.split(" ")[0])
+                isUnderstand = false
+                again = false
+
+                startUsingSpeechSDK2("이트론 1주 매수하시겠습니까?")
+                Thread.sleep(5000)
             }
             else if (txt.indexOf("매도")>-1) {
                 intent = Intent(this@SpeechAPI, Trade::class.java)
                 type = "sell"
                 intent.putExtra("target", txt.split(" ")[0])
+                again = false
             }
             else{
                 isUnderstand = false
-                startUsingSpeechSDK2("무슨말인지 모르겠어요")
             }
 
 
         if(isUnderstand) {
+            startUsingSpeechSDK2("처리중입니다")
+            Thread.sleep(3000)
             intent.putExtra("type", type)
             startActivity(intent)
             finish()
+        } else {
+            if(again){
+                startUsingSpeechSDK2("무슨말인지 모르겠어요. 다시 한 번 말씀해 주세요")
+                Thread.sleep(5000)
+                startUsingSpeechSDK()
+            } else {
+                intent.putExtra("type", type)
+                startUsingSpeechSDK(true ,intent)
+            }
+
         }
 
+    }
+
+    private fun nextStep2(txt: String?,intent:Intent?) {
+        if(txt!!.indexOf("네")>-1 || txt.indexOf("그래")>-1 || txt.indexOf("응")>-1 || txt.indexOf("맞아")>-1) {
+            startActivity(intent)
+            finish()
+        }
     }
 
     private fun volumeUp(){

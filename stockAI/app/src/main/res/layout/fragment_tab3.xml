@@ -74,14 +74,7 @@
                     android:textSize="35dp"
                     android:text="중간" />
             </LinearLayout>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/nanumsquare_eb"
-                android:text="강도가 낮을수록 돈을 잃은 위험도가 낮지만 기대 수익또한 낮습니다. "
-                android:textColor="@color/gray2"
-                android:textSize="20dp"
-                android:layout_marginBottom="10dp"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -121,36 +114,6 @@
             </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_margin="10dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.5"
-                    android:gravity="center"
-                    android:fontFamily="@font/nanumsquare_eb"
-                    android:textSize="35dp"
-                    android:text="투자 종목 설정: "
-                    android:textColor="@color/second" />
-                <Button
-                    android:id="@+id/button_for_select_tradeStock"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/nanumsquare_eb"
-                    android:textSize="35dp"
-                    android:text="수동" />
-            </LinearLayout>
-        </LinearLayout>
         <View
             android:layout_width="match_parent"
             android:layout_height="15dp"
