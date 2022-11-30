@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat
 import com.kakao.sdk.newtoneapi.*
 import com.stucs17.stockai.R
 import com.stucs17.stockai.TabActivity
+import com.stucs17.stockai.sql.HttpRequestHelper
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.features.*
@@ -23,6 +24,8 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import kotlinx.coroutines.*
+import org.json.JSONArray
+import org.json.JSONObject
 import kotlin.coroutines.CoroutineContext
 
 
@@ -120,7 +123,7 @@ class SpeechAPI : AppCompatActivity(), CoroutineScope {
         }
     }
 
-    private fun startUsingSpeechSDK(isOutside:Boolean = false, intent: Intent? = null){
+    fun startUsingSpeechSDK(isOutside:Boolean = false, intent: Intent? = null){
         Toast.makeText(this, "말하세요", Toast.LENGTH_SHORT).show()
 
         test_tv.text = ""
@@ -219,21 +222,132 @@ class SpeechAPI : AppCompatActivity(), CoroutineScope {
         var type = ""
         var isUnderstand = true
         var again = true
-        /*
+
         launch(Dispatchers.Main) {
-            val res = HttpRequestHelper().requestKtorIo()
-            val jsonArray = JSONArray(res)
-            val json = jsonArray.getJSONObject(0)
-            val command : Int = json.getInt("name")
+            val res = HttpRequestHelper().requestKtorIo(txt!!)
+            val json = JSONObject(res)
+
+            val command : Int = json.getInt("command")
             val view : Int = json.getInt("view")
             val value : Int = json.getInt("value")
             val stock: String = json.getString("stock")
             val price: Int = json.getInt("price")
-            Log.d(TAG, "testtest: $command")
-            Log.d(TAG, "testtest: $view")
-        }*/
 
+            when(command){
+                0->{// 이해 못함
+                    isUnderstand = false
+                }
+                1->{ //홈 화면 이동
 
+                }
+                2->{ //계좌 정보
+                    intent = Intent(this@SpeechAPI, AccountInfo::class.java)
+                    type = "total_info"
+                }
+                3->{ //총자산
+                    intent = Intent(this@SpeechAPI, AccountInfo::class.java)
+                    type = "total_assets"
+                }
+                4->{ //주문 가능 금액
+                    intent = Intent(this@SpeechAPI, AccountInfo::class.java)
+                    type = "available_to_order"
+                }
+                5->{ //보유 주식 정보
+                   intent = Intent(this@SpeechAPI, AccountInfo::class.java)
+                    type = "my_stocks"
+                }
+                6->{ //특정 보유 주식 정보
+
+                }
+                7->{ //미체결 목록
+                    intent = Intent(this@SpeechAPI, AccountInfo::class.java)
+                    type = "not_sign_stocks"
+                }
+                8->{ //관심 주식 추가 삭제
+
+                }
+                9->{ //지수 정보
+                    intent = Intent(this@SpeechAPI, StockIndex::class.java)
+                    if(value == 0) {
+                        type = "kospi"
+                    } else {
+                        type = "kosdaq"
+                    }
+                }
+                10->{ // 뉴스 정보
+
+                }
+                17->{ //특정 주식 정보
+                    intent = Intent(this@SpeechAPI, StockIndex::class.java)
+                    type = "stockPrice"
+                    intent.putExtra("target", stock)
+                }
+                21->{ //시장가 매수
+                    intent = Intent(this@SpeechAPI, Trade::class.java)
+                    type = "buy_mp"
+                    intent.putExtra("target", stock)
+                    isUnderstand = false
+                    again = false
+
+                    startUsingSpeechSDK2("$stock 시장가 매수하시겠습니까?")
+                    Thread.sleep(5000)
+                }
+                22->{//시장가 매도
+                    intent = Intent(this@SpeechAPI, Trade::class.java)
+                    type = "sell_mp"
+                    intent.putExtra("target", stock)
+                    isUnderstand = false
+                    again = false
+
+                    startUsingSpeechSDK2("$stock 시장가 매도하시겠습니까?")
+                    Thread.sleep(5000)
+                }
+                23->{ //지정가 매수
+                    intent = Intent(this@SpeechAPI, Trade::class.java)
+                    type = "buy"
+                    intent.putExtra("target", stock)
+                    intent.putExtra("quantity", value)
+                    intent.putExtra("price", price)
+                    isUnderstand = false
+                    again = false
+
+                    startUsingSpeechSDK2("$stock $value 주 $price 원에 매수하시겠습니까?")
+                    Thread.sleep(6000)
+                }
+                24->{ //지정가 매도
+                    intent = Intent(this@SpeechAPI, Trade::class.java)
+                    type = "sell"
+                    intent.putExtra("target", stock)
+                    intent.putExtra("quantity", value)
+                    intent.putExtra("price", price)
+                    isUnderstand = false
+                    again = false
+
+                    startUsingSpeechSDK2("$stock $value 주 $price 원에 매도하시겠습니까?")
+                    Thread.sleep(6000)
+                }
+            }
+
+            if(isUnderstand) {
+                startUsingSpeechSDK2("처리중입니다")
+                Thread.sleep(3000)
+                intent.putExtra("type", type)
+                startActivity(intent)
+                finish()
+            } else {
+                if(again){
+                    startUsingSpeechSDK2("무슨말인지 모르겠어요. 다시 한 번 말씀해 주세요")
+                    Thread.sleep(5000)
+                    startUsingSpeechSDK()
+                } else {
+                    intent.putExtra("type", type)
+                    startUsingSpeechSDK(true ,intent)
+                }
+
+            }
+        }
+
+/*
             if(txt!!.indexOf("수익률")>-1) {
                 intent = Intent(this@SpeechAPI, AccountInfo::class.java)
                 type = "profit_or_loss"
@@ -296,24 +410,8 @@ class SpeechAPI : AppCompatActivity(), CoroutineScope {
             }
 
 
-        if(isUnderstand) {
-            startUsingSpeechSDK2("처리중입니다")
-            Thread.sleep(3000)
-            intent.putExtra("type", type)
-            startActivity(intent)
-            finish()
-        } else {
-            if(again){
-                startUsingSpeechSDK2("무슨말인지 모르겠어요. 다시 한 번 말씀해 주세요")
-                Thread.sleep(5000)
-                startUsingSpeechSDK()
-            } else {
-                intent.putExtra("type", type)
-                startUsingSpeechSDK(true ,intent)
-            }
 
-        }
-
+*/
     }
 
     private fun nextStep2(txt: String?,intent:Intent?) {

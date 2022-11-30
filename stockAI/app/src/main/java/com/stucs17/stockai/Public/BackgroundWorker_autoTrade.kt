@@ -49,11 +49,11 @@ class BackgroundWorker_autoTrade: BroadcastReceiver(), ITranDataListener, IRealD
     private val db = Database()
     private val stockInfo = StockIndex()
     private val trade = Trade()
+    private val speechAPI = SpeechAPI()
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onReceive(context: Context?, intent: Intent?) {
         val dateNow = LocalDate.now()
-        val timeNow = LocalDateTime.now()
         val dayOfWeek = dateNow.dayOfWeek.toString()
 
         if(intent != null && dayOfWeek != "SATURDAY" && dayOfWeek != "SUNDAY" ){
@@ -72,12 +72,21 @@ class BackgroundWorker_autoTrade: BroadcastReceiver(), ITranDataListener, IRealD
             dbHelper = DBHelper(context, "mydb.db", null, 1)
             database = dbHelper.writableDatabase
 
-            c = db.select_like(database)!!
-            if(c.moveToNext()){
-                target = c.getString(c.getColumnIndex("code"))
-                currentPriceRqId = stockInfo.getStockInfo(expertTranProc,target)
-                cnt++
+            val user = db.select(database)!!
+            user.moveToNext()
+            val isAuto = user.getString(user.getColumnIndex("autoTrade")).toInt()
+
+            if(isAuto == 1){
+                c = db.select_autoTradeTarget(database)!!
+                if(c.moveToNext()){
+                    target = c.getString(c.getColumnIndex("code"))
+                    Log.d("target", target)
+                    currentPriceRqId = stockInfo.getStockInfo(expertTranProc,target)
+                    cnt++
+                }
             }
+
+
         }
     }
 
@@ -135,18 +144,25 @@ class BackgroundWorker_autoTrade: BroadcastReceiver(), ITranDataListener, IRealD
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onTranDataReceived(sTranID: String?, nRqId: Int) {
+        if(sTranID!! === "scp"){
+            val info11 = expertTranProc.GetSingleData(0, 11).toInt() // 11 : 주식 현재가
 
-        val info11 = expertTranProc.GetSingleData(0, 11).toInt() // 11 : 주식 현재가
+            if (info11 < 100) {
+                m_nOrderRqId = trade.runBuy(m_OrderTranProc, database, target, "01", "1", "")!!
+                speechAPI.startUsingSpeechSDK2("자동 매수가 체결되었습니다")
+                val inList = (arrItemKospiCode+arrItemKosdaqCode).sorted().filter{ it.code.startsWith(target) }[0].name //입력한 텍스트와 주식 목록 비교->필터링
+                createNotificationChannel(cnt)
+                displayNotification(cnt,ctt,inList,"매수")
+            }
 
-        if (info11 < 1) {
-            m_nOrderRqId = trade.runBuy(m_OrderTranProc, database, target, "01", "1", "")!!
-        }
+            if (c.moveToNext()) {
 
-        if (c.moveToNext()) {
-            Thread.sleep(5000)
-            target = c.getString(c.getColumnIndex("code"))
-            currentPriceRqId = stockInfo.getStockInfo(expertTranProc, target)
-            cnt++
+                Thread.sleep(5000)
+                target = c.getString(c.getColumnIndex("code"))
+
+                currentPriceRqId = stockInfo.getStockInfo(expertTranProc, target)
+                cnt++
+            }
         }
     }
 
@@ -160,7 +176,9 @@ class BackgroundWorker_autoTrade: BroadcastReceiver(), ITranDataListener, IRealD
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onRealDataReceived(strServiceId: String) {
+        Log.d("test1", "test1")
         if (strServiceId === "scn_r" || strServiceId === "scn_m") {
+            Log.d("test2", "test2")
             val strOrderNumber = m_OrderRealProc!!.GetRealData(0, 2) //주문번호
             val strOrderGubun = m_OrderRealProc!!.GetRealData(0, 4) //매도매수구분
             val strCode = m_OrderRealProc!!.GetRealData(0, 8) //종목코드
@@ -169,8 +187,7 @@ class BackgroundWorker_autoTrade: BroadcastReceiver(), ITranDataListener, IRealD
                 "==주식 체결통보==",
                 String.format("주문번호:%s 매도매수구분:%s 종목코드:%s", strOrderNumber, strOrderGubun, strCode)
             )
-            createNotificationChannel(cnt)
-            displayNotification(cnt,ctt,inList,strOrderGubun)
+
         }
     }
 }

@@ -119,9 +119,9 @@ class MainActivity : AppCompatActivity(), IExpertInitListener, IExpertLoginListe
             Toast.makeText(this, "서버가 연결되지 않았습니다.", Toast.LENGTH_SHORT).show()
         } else {
 
-            val c = db.select(database)
+            val c = db.select(database)!!
 
-            if(c!!.moveToNext()) {
+            if(c.moveToNext()) {
 
                 idStr = c.getString(c.getColumnIndex("id"))
                 pwStr = c.getString(c.getColumnIndex("pwd"))

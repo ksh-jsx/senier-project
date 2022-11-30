@@ -99,7 +99,7 @@ class Tab1 : Fragment(), ITranDataListener, IRealDataListener {
 
         Thread {
             while (!Thread.interrupted()) try {
-                Thread.sleep(10000)
+                Thread.sleep(2000)
                 tabActivity.runOnUiThread {
                     getInterestingStock()
                     m_nJangoRqId = info.getJangoInfo(database,m_JangoTranProc)

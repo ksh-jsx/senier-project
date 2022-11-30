@@ -57,18 +57,37 @@ class Trade : AppCompatActivity(), ITranDataListener, IRealDataListener {
         }
 
         when(type){
-            "buy"->{
-                m_nOrderRqId = runBuy(m_OrderTranProc,database,code,"01","1","")!!
-
+            "buy_mp"->{
+                val quantity = intent.getStringExtra("quantity")!!
+                m_nOrderRqId = runBuy(m_OrderTranProc,database,code,"01",quantity,"")!!
             }
-            "sell"->{
+            "sell_mp"->{
 
+                val quantity = intent.getStringExtra("quantity")!!
                 m_JangoTranProc = ExpertTranProc(this)
                 m_JangoTranProc!!.InitInstance(this)
                 m_JangoTranProc!!.SetShowTrLog(false)
 
                 m_nJangoRqId = info.getJangoInfo(database,m_JangoTranProc)
-                m_nOrderRqId = runSell(m_OrderTranProc,database,code,"00","1","160")!!
+                m_nOrderRqId = runSell(m_OrderTranProc,database,code,"01",quantity,"")!!
+            }
+            "buy"->{
+                val price = intent.getStringExtra("price")!!
+                val quantity = intent.getStringExtra("quantity")!!
+                Log.d("test",price)
+                Log.d("test",quantity)
+                m_nOrderRqId = runBuy(m_OrderTranProc,database,code,"00",quantity,price)!!
+
+            }
+            "sell"->{
+                val price = intent.getStringExtra("price")!!
+                val quantity = intent.getStringExtra("quantity")!!
+                m_JangoTranProc = ExpertTranProc(this)
+                m_JangoTranProc!!.InitInstance(this)
+                m_JangoTranProc!!.SetShowTrLog(false)
+
+                m_nJangoRqId = info.getJangoInfo(database,m_JangoTranProc)
+                m_nOrderRqId = runSell(m_OrderTranProc,database,code,"00",quantity,price)!!
             }
         }
     }
@@ -105,7 +124,11 @@ class Trade : AppCompatActivity(), ITranDataListener, IRealDataListener {
         setTrade(database,currentCode,m_OrderTranProc)
         m_OrderTranProc?.SetSingleData(0, 4, orderType) //주문구분  00:지정가 01:시장가
         m_OrderTranProc?.SetSingleData(0, 5, currentQty)//주문수량
-        m_OrderTranProc?.SetSingleData(0, 6, currentPrice)//주문단가
+        if(orderType === "01") {
+            m_OrderTranProc?.SetSingleData(0, 6, "0")//주문단가
+        } else {
+            m_OrderTranProc?.SetSingleData(0, 6, currentPrice)//주문단가
+        }
         m_OrderTranProc?.SetSingleData(0, 7, " ") //연락전화번호
         m_OrderTranProc?.SetCertType(1) //축약서명
 
@@ -118,7 +141,11 @@ class Trade : AppCompatActivity(), ITranDataListener, IRealDataListener {
         m_OrderTranProc?.SetSingleData(0, 4, "01") //01
         m_OrderTranProc?.SetSingleData(0, 5, orderType) //주문구분  00:지정가 01:시장가
         m_OrderTranProc?.SetSingleData(0, 6, currentQty) //주문수량
-        m_OrderTranProc?.SetSingleData(0, 7, currentPrice) //주문단가
+        if(orderType === "01") {
+            m_OrderTranProc?.SetSingleData(0, 7, "0")//주문단가
+        } else {
+            m_OrderTranProc?.SetSingleData(0, 7, currentPrice)//주문단가
+        }
         m_OrderTranProc?.SetSingleData(0, 8, " ") //연락전화번호
         m_OrderTranProc?.SetCertType(1) //축약서명
 

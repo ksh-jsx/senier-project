@@ -134,10 +134,13 @@ class StockIndex : AppCompatActivity(), ITranDataListener {
         val info11 = expertTranProc.GetSingleData(0, 11).toInt() // 11 : 주식 현재가
         val info12 = expertTranProc.GetSingleData(0, 12).toInt() // 12 : 전일 대비
         val info13 = expertTranProc.GetSingleData(0, 13).toInt() // 13 :전일 대비 부호
-        val tmp = if (info13 == 1) "상승" else "하락"
+        val info19 = expertTranProc.GetSingleData(0, 19).toInt() // 19 :최고가
+        val info20 = expertTranProc.GetSingleData(0, 20).toInt() // 20 :최저가
+        val info18 = expertTranProc.GetSingleData(0, 18).toInt() // 18 :시가
+        val tmp = if (info13 == 1) "올랐" else "떨어졌"
 
-        speechAPI.startUsingSpeechSDK2("현재 $target 주가는 $info11 로 전일대비 ${kotlin.math.abs(info12)} 원 $tmp 하였습니다.")
-        Thread.sleep(3000)
+        speechAPI.startUsingSpeechSDK2("현재 $target 주가는 $info11 로 전일대비 ${kotlin.math.abs(info12)} 원 $tmp 어요. 최고가는 $info19 원, 최저가는 $info20 원, 시가는 $info18 원 이에요")
+        Thread.sleep(5000)
         gotoStockDetail()
 
     }

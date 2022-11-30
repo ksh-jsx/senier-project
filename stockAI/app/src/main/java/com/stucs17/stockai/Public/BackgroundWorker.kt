@@ -48,7 +48,6 @@ class BackgroundWorker: BroadcastReceiver(), ITranDataListener, IRealDataListene
 
     private val db = Database()
     private val stockInfo = StockIndex()
-    private val trade = Trade()
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onReceive(context: Context?, intent: Intent?) {
@@ -56,6 +55,7 @@ class BackgroundWorker: BroadcastReceiver(), ITranDataListener, IRealDataListene
         val timeNow = LocalDateTime.now()
         val dayOfHour = timeNow.hour
         val dayOfWeek = dateNow.dayOfWeek.toString()
+
 //&& dayOfHour>8 && dayOfHour<15
         if(intent != null && dayOfWeek != "SATURDAY" && dayOfWeek != "SUNDAY" && dayOfHour>8 && dayOfHour<15){
             if (context != null) {
@@ -103,36 +103,6 @@ class BackgroundWorker: BroadcastReceiver(), ITranDataListener, IRealDataListene
                 .setSmallIcon(R.drawable.logo) // 아이콘
                 .setContentTitle("로보스톡") // 제목
                 .setContentText("관심종목 ${name}: $per% $word 중입니다.") // 내용
-                .setContentIntent(contentPendingIntent)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setAutoCancel(true)
-                .setDefaults(NotificationCompat.DEFAULT_ALL)
-        }
-
-        if (builder != null) {
-            notificationManager.notify(0, builder.build())
-        }
-    }
-
-    private fun displayNotification2(cnt:Int, context :Context?, name:String, strOrderGubun:String) {
-        val contentIntent = Intent(context, MainActivity::class.java)
-        val contentPendingIntent = PendingIntent.getActivity(
-            context,
-            0, // requestCode
-            contentIntent, // 알림 클릭 시 이동할 인텐트
-            PendingIntent.FLAG_UPDATE_CURRENT
-            /*
-            1. FLAG_UPDATE_CURRENT : 현재 PendingIntent를 유지하고, 대신 인텐트의 extra data는 새로 전달된 Intent로 교체
-            2. FLAG_CANCEL_CURRENT : 현재 인텐트가 이미 등록되어있다면 삭제, 다시 등록
-            3. FLAG_NO_CREATE : 이미 등록된 인텐트가 있다면, null
-            4. FLAG_ONE_SHOT : 한번 사용되면, 그 다음에 다시 사용하지 않음
-             */
-        )
-        val builder = context?.let {
-            NotificationCompat.Builder(it, CHANNEL_ID+cnt.toString())
-                .setSmallIcon(R.drawable.logo) // 아이콘
-                .setContentTitle("로보스톡") // 제목
-                .setContentText("$name - $strOrderGubun 되었습니다.") // 내용
                 .setContentIntent(contentPendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true)

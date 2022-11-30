@@ -1,19 +1,28 @@
 package com.stucs17.stockai
 
+import android.Manifest
 import android.app.*
 import android.app.NotificationManager.IMPORTANCE_HIGH
 import android.app.PendingIntent.FLAG_ONE_SHOT
 import android.app.PendingIntent.getActivity
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
+import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import com.commexpert.ExpertTranProc
+import com.kakao.sdk.newtoneapi.SpeechRecognizerManager
+import com.kakao.sdk.newtoneapi.TextToSpeechManager
 import com.stucs17.stockai.Public.BackgroundWorker
 import com.stucs17.stockai.Public.BackgroundWorker_autoTrade
 import com.stucs17.stockai.Public.SpeechAPI
@@ -24,6 +33,10 @@ import java.util.*
 import kotlin.random.Random.Default.nextInt
 
 class TabActivity : AppCompatActivity() {
+
+    private val RECORD_REQUEST_CODE = 1000
+    private val STORAGE_REQUEST_CODE = 1000
+    private val NETWORK_STATE_CODE = 0
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,6 +61,58 @@ class TabActivity : AppCompatActivity() {
         addAlarm()
         addAutoTrade()
         //displayNotification()
+        setupPermissions()
+    }
+
+    private fun setupPermissions(){
+        val permission_audio = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
+        val permission_storage = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        val permission_network = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NETWORK_STATE)
+
+        if(permission_audio != PackageManager.PERMISSION_GRANTED) {
+            Log.d(ContentValues.TAG, "Permission to recode denied")
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.RECORD_AUDIO), RECORD_REQUEST_CODE)
+        } else if(permission_storage != PackageManager.PERMISSION_GRANTED) {
+            Log.d(ContentValues.TAG, "Permission to recode denied")
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), STORAGE_REQUEST_CODE)
+        } else if(permission_network != PackageManager.PERMISSION_GRANTED){
+            Log.d(ContentValues.TAG, "Permission to recode denied")
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.RECORD_AUDIO), NETWORK_STATE_CODE)
+        }
+        else {
+            //본문실행
+            SpeechRecognizerManager.getInstance().initializeLibrary(this)
+            TextToSpeechManager.getInstance().initializeLibrary(this)
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        when (requestCode) {
+            RECORD_REQUEST_CODE -> {
+                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            STORAGE_REQUEST_CODE -> {
+                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show()
+                }
+            }
+            NETWORK_STATE_CODE -> {
+                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
@@ -70,6 +135,7 @@ class TabActivity : AppCompatActivity() {
 
         val cal = Calendar.getInstance()
         cal.set(Calendar.SECOND, 0)
+
         alarmManager.setInexactRepeating (AlarmManager.RTC_WAKEUP, cal.timeInMillis,1000*60, pIntent)
     }
 
@@ -80,8 +146,10 @@ class TabActivity : AppCompatActivity() {
         val pIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT)
 
         val cal = Calendar.getInstance()
-        cal.set(Calendar.HOUR_OF_DAY, 13)
+        cal.set(Calendar.HOUR_OF_DAY, 9)
+        cal.set(Calendar.MINUTE,1)
+        cal.set(Calendar.SECOND, 0)
 
-        alarmManager.setInexactRepeating (AlarmManager.RTC_WAKEUP, cal.timeInMillis,1000*60*60*24, pIntent)
+        alarmManager.setInexactRepeating (AlarmManager.RTC_WAKEUP, cal.timeInMillis,AlarmManager.INTERVAL_DAY, pIntent)
     }
 }

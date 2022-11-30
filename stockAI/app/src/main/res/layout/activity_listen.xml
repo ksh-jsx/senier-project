@@ -14,7 +14,7 @@
     <TextView
         android:id="@+id/test_tv"
         android:layout_width="300dp"
-        android:layout_height="50dp"
+        android:layout_height="350dp"
         android:textAlignment="center"
         android:textSize="30sp"
         android:text="말하세요"

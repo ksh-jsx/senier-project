@@ -175,11 +175,13 @@ class AccountInfo: AppCompatActivity(), ITranDataListener, IRealDataListener {
 
             Log.d(TAG, "type: $type")
             when(type){
-                "profit_or_loss"->{ //손익
-                    speechAPI.startUsingSpeechSDK2("당신의 수익률은 $strTotal2 원입니다.")
+                "total_info"->{ //손익
+                    speechAPI.startUsingSpeechSDK2("현재 계좌와 보유주식 현황입니다." +
+                            "총 자산은 $strTotal1 원이고 수익률은 $strTotal2 원입니다" +
+                            "이 중 주문가능 금액은 ${(strTotal1-strTotal2)-buyPriceSum}원이에요")
                 }
                 "total_assets"->{ //총자산
-                    speechAPI.startUsingSpeechSDK2("당신의 총 자산은 $strTotal1 원입니다.")
+                    speechAPI.startUsingSpeechSDK2("당신의 총 자산은 $strTotal1 원이고 수익률은 $strTotal2 원입니다.")
                 }
                 "available_to_order"->{ // 주문가능
                     speechAPI.startUsingSpeechSDK2("당신의 주문 가능 금액은 ${(strTotal1-strTotal2)-buyPriceSum} 원입니다.")
@@ -187,12 +189,23 @@ class AccountInfo: AppCompatActivity(), ITranDataListener, IRealDataListener {
                 "my_stocks"->{ //매입 주식 목록
                     val arrs = array.mapNotNull { it?.stockName }.joinToString(",","","")
                     speechAPI.startUsingSpeechSDK2("당신이 매입한 주식은 $arrs 입니다.")
+                    val names = array.mapNotNull { it?.stockName }
+                    val qtys = array.mapNotNull { it?.stockQty }
+                    val profits = array.mapNotNull { it?.stockProfit }
+                    val pers = array.mapNotNull { it?.stockProfitPer }
+                    Thread.sleep(5000)
+                    for(i in 0 until nCount){
+                        if(qtys[i].toInt() > 0) {
+                            speechAPI.startUsingSpeechSDK2("${names[i]} ${qtys[i]} 주는 총 ${pers[i]} %이고 손익은 ${profits[i]}원 입니다")
+                            Thread.sleep(8000)
+                        }
+                    }
+
                 }
                 "total_order_price"->{
                     speechAPI.startUsingSpeechSDK2("당신의 총 매입가는 $buyPriceSum 원 입니다.")
                 }
             }
-            Thread.sleep(1000)
             gotoTab1()
         } else if(m_nOrderListRqId == nRqId) { //취소 대상 주문 리스트
 

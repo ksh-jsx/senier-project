@@ -5,12 +5,14 @@ import android.content.DialogInterface
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.commexpert.ExpertRealProc
 import com.commexpert.ExpertTranProc
 import com.stucs17.stockai.Public.AccountInfo
+import com.stucs17.stockai.Public.SpeechAPI
 import com.stucs17.stockai.Public.Trade
 import com.stucs17.stockai.sql.DBHelper
 import com.truefriend.corelib.commexpert.intrf.IRealDataListener
@@ -50,6 +52,7 @@ class SellActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
     private val gb = GlobalBackground()
     private val info = AccountInfo()
     private val trade = Trade()
+    private val speechAPI = SpeechAPI()
 
     //sql 관련
     lateinit var dbHelper: DBHelper
@@ -98,9 +101,17 @@ class SellActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
 
         radio_group.setOnCheckedChangeListener{ group, checkedId ->
             when(checkedId){
-                R.id.radio_btn1 -> orderType =  "00"
+                R.id.radio_btn1 -> {
+                    orderType =  "00"
+                    btn_plus2.visibility = View.VISIBLE
+                    btn_minus2.visibility = View.VISIBLE
+                }
 
-                R.id.radio_btn2 -> orderType =  "01"
+                R.id.radio_btn2 -> {
+                    orderType =  "01"
+                    btn_plus2.visibility = View.GONE
+                    btn_minus2.visibility = View.GONE
+                }
             }
         }
 
@@ -173,6 +184,7 @@ class SellActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
     @SuppressLint("SetTextI18n")
     override fun onTranDataReceived(sTranID: String, nRqId: Int) {
         if (m_nJangoRqId == nRqId) {
+            speechAPI.startUsingSpeechSDK2("매도 주문 접수되었습니다")
             val nCount = m_JangoTranProc!!.GetValidCount(0)
             for (i in 0 until nCount) {
                 val strName = m_JangoTranProc!!.GetMultiData(0, 1, i)
@@ -192,7 +204,8 @@ class SellActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
         nRqId: Int, strMsgCode: String?,
         strErrorType: String?, strMessage: String?
     ) {
-        // TODO Auto-generated method stub
+        Toast.makeText(this, strMessage, Toast.LENGTH_LONG).show()
+        Thread.sleep(3000)
         Log.e("onTranMessageReceived", String.format("MsgCode:%s ErrorType:%s %s",  strMsgCode ,  strErrorType  , strMessage));
     }
 
@@ -206,6 +219,8 @@ class SellActivity : AppCompatActivity(), ITranDataListener, IRealDataListener {
             val strOrderNumber = m_OrderRealProc!!.GetRealData(0, 2) //주문번호
             val strOrderGubun = m_OrderRealProc!!.GetRealData(0, 4) //매도매수구분
             val strCode = m_OrderRealProc!!.GetRealData(0, 8) //종목코드
+
+            speechAPI.startUsingSpeechSDK2("매도가 체결되었습니다")
             Log.d(
                 "==주식 체결통보==",
                 String.format("주문번호:%s 매도매수구분:%s 종목코드:%s", strOrderNumber, strOrderGubun, strCode)

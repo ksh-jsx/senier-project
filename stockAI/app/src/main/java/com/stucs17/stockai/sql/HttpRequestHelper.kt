@@ -15,9 +15,9 @@ import kotlinx.coroutines.withContext
 class HttpRequestHelper {
     private val client: HttpClient = HttpClient(CIO)
 
-    suspend fun requestKtorIo(): String = withContext(Dispatchers.IO) {
-        val url = "https://kdt-frontend.cat-api.programmers.co.kr/1"
-        val response: HttpResponse = client.get(url)
+    suspend fun requestKtorIo(txt:String): String = withContext(Dispatchers.IO) {
+        val url = "https://robostock-server.herokuapp.com/voice/?value="
+        val response: HttpResponse = client.get(url+txt)
         val responseStatus = response.status
         Log.d(ContentValues.TAG, "requestKtorIo: $responseStatus")
 

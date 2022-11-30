@@ -39,6 +39,7 @@
             android:windowSoftInputMode="adjustNothing" />
 
         <receiver android:name=".Public.BackgroundWorker" />
+        <receiver android:name=".Public.BackgroundWorker_autoTrade" />
 
         <uses-library
             android:name="org.apache.http.legacy"
