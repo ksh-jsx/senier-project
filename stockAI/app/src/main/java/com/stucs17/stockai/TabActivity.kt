@@ -53,66 +53,13 @@ class TabActivity : AppCompatActivity() {
         if(intent.hasExtra("tab")) {
             currTab = intent.getIntExtra("tab", 0)
         }
-
+        Log.d("test", currTab.toString())
         viewpager.adapter = adapter
         tab_layout.setupWithViewPager(viewpager)
         viewpager.currentItem = currTab
 
         addAlarm()
         addAutoTrade()
-        //displayNotification()
-        setupPermissions()
-    }
-
-    private fun setupPermissions(){
-        val permission_audio = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
-        val permission_storage = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        val permission_network = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NETWORK_STATE)
-
-        if(permission_audio != PackageManager.PERMISSION_GRANTED) {
-            Log.d(ContentValues.TAG, "Permission to recode denied")
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.RECORD_AUDIO), RECORD_REQUEST_CODE)
-        } else if(permission_storage != PackageManager.PERMISSION_GRANTED) {
-            Log.d(ContentValues.TAG, "Permission to recode denied")
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), STORAGE_REQUEST_CODE)
-        } else if(permission_network != PackageManager.PERMISSION_GRANTED){
-            Log.d(ContentValues.TAG, "Permission to recode denied")
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.RECORD_AUDIO), NETWORK_STATE_CODE)
-        }
-        else {
-            //본문실행
-            SpeechRecognizerManager.getInstance().initializeLibrary(this)
-            TextToSpeechManager.getInstance().initializeLibrary(this)
-        }
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
-        when (requestCode) {
-            RECORD_REQUEST_CODE -> {
-                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            STORAGE_REQUEST_CODE -> {
-                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show()
-                }
-            }
-            NETWORK_STATE_CODE -> {
-                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
@@ -147,9 +94,9 @@ class TabActivity : AppCompatActivity() {
 
         val cal = Calendar.getInstance()
         cal.set(Calendar.HOUR_OF_DAY, 9)
-        cal.set(Calendar.MINUTE,1)
+        cal.set(Calendar.MINUTE,0)
         cal.set(Calendar.SECOND, 0)
 
-        alarmManager.setInexactRepeating (AlarmManager.RTC_WAKEUP, cal.timeInMillis,AlarmManager.INTERVAL_DAY, pIntent)
+        alarmManager.setInexactRepeating (AlarmManager.RTC_WAKEUP, cal.timeInMillis,1000*60*60*24, pIntent)
     }
 }

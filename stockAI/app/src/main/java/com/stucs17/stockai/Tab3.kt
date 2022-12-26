@@ -38,6 +38,7 @@ class Tab3 : Fragment() {
     private lateinit var rv_myStock : RecyclerView
     private val datas = mutableListOf<InterestingStockData>()
     private var state = 0
+    private var tradeLevel = 2
     lateinit var tabActivity: TabActivity
     private lateinit var interestingStockAdapter: InterestingStockAdapter
     private val db = Database()
@@ -63,10 +64,14 @@ class Tab3 : Fragment() {
         textView_for_risk = v.findViewById(R.id.textView_for_risk)
         rv_myStock = v.findViewById(R.id.rv_myStock
         )
+        val strArr = arrayOf<String>("매우 낮음","낮음","중간","높음","매우 높음")
+
         seekBar_for_risk.setOnSeekBarChangeListener(object :SeekBar.OnSeekBarChangeListener{
-            val strArr = arrayOf<String>("매우 낮음","낮음","중간","높음","매우 높음")
+
+
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 textView_for_risk.text = strArr[progress]
+                db.updateTradeLevel(database,progress)
             }
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
                 textView_for_risk.text = strArr[seekBar!!.progress]
@@ -82,8 +87,10 @@ class Tab3 : Fragment() {
         val c = db.select(database)
         if(c!!.moveToNext()) {
             state = c.getString(c.getColumnIndex("autoTrade")).toInt()
+            tradeLevel = c.getString(c.getColumnIndex("autoTradeLevel")).toInt()
         }
-
+        textView_for_risk.text = strArr[tradeLevel]
+        seekBar_for_risk.progress = tradeLevel
         if(state == 0) {
             button_for_autoTrade.text = "켜기"
         } else {
@@ -116,7 +123,6 @@ class Tab3 : Fragment() {
                 // ooops
             }
         }.start()
-
 
         return v
     }

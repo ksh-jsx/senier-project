@@ -144,17 +144,25 @@ class BackgroundWorker_autoTrade: BroadcastReceiver(), ITranDataListener, IRealD
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onTranDataReceived(sTranID: String?, nRqId: Int) {
-        if(sTranID!! === "scp"){
-            val info11 = expertTranProc.GetSingleData(0, 11).toInt() // 11 : 주식 현재가
+        if(sTranID!! === "scp") {
+            val target_decision = "buy"
+            val target_qty = "1"
 
-            if (info11 < 100) {
-                m_nOrderRqId = trade.runBuy(m_OrderTranProc, database, target, "01", "1", "")!!
+            if (target_decision === "buy"){
+                m_nOrderRqId = trade.runBuy(m_OrderTranProc, database, target, "01", target_qty, "")!!
                 speechAPI.startUsingSpeechSDK2("자동 매수가 체결되었습니다")
-                val inList = (arrItemKospiCode+arrItemKosdaqCode).sorted().filter{ it.code.startsWith(target) }[0].name //입력한 텍스트와 주식 목록 비교->필터링
+                val inList = (arrItemKospiCode + arrItemKosdaqCode).sorted()
+                    .filter { it.code.startsWith(target) }[0].name //입력한 텍스트와 주식 목록 비교->필터링
                 createNotificationChannel(cnt)
-                displayNotification(cnt,ctt,inList,"매수")
+                displayNotification(cnt, ctt, inList, "매수")
+            } else if (target_decision === "sell") {
+                m_nOrderRqId = trade.runSell(m_OrderTranProc, database, target, "01", target_qty, "")!!
+                speechAPI.startUsingSpeechSDK2("자동 매도가 체결되었습니다")
+                val inList = (arrItemKospiCode + arrItemKosdaqCode).sorted()
+                    .filter { it.code.startsWith(target) }[0].name //입력한 텍스트와 주식 목록 비교->필터링
+                createNotificationChannel(cnt)
+                displayNotification(cnt, ctt, inList, "매도")
             }
-
             if (c.moveToNext()) {
 
                 Thread.sleep(5000)
@@ -165,6 +173,7 @@ class BackgroundWorker_autoTrade: BroadcastReceiver(), ITranDataListener, IRealD
             }
         }
     }
+
 
     override fun onTranMessageReceived(p0: Int, p1: String?, p2: String?, p3: String?) {
         Log.d("onTranMessageReceived", "$p0/$p1")

@@ -77,7 +77,7 @@ class NotSignedStockAdapter(private val context: Context) : RecyclerView.Adapter
             }
 
             btn_cancelOrder.setOnClickListener{
-                m_nOrderRqId = trade.runCancel(m_OrderTranProc,database,item.strOrderNumber)!!
+                m_nOrderRqId = trade.runCancel(m_OrderTranProc,database,strOrderNumber)!!
             }
 
             val type = if (item.tradeType == "01") "매도" else "매수"

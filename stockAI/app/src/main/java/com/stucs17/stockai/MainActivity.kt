@@ -222,7 +222,7 @@ class MainActivity : AppCompatActivity(), IExpertInitListener, IExpertLoginListe
 
         //var arr : Array<String> = arrayOf("shkim787")
         //database.delete("user","id=?",arr)
-
+        Log.d("test", isLoggedin.toString())
         if(isLoggedin) {
             val contentValues = ContentValues()
             contentValues.put("id", idStr)
@@ -230,6 +230,9 @@ class MainActivity : AppCompatActivity(), IExpertInitListener, IExpertLoginListe
             contentValues.put("certPwd", caPwStr)
             contentValues.put("numPwd", numPwStr)
             contentValues.put("autoTrade", 0)
+            contentValues.put("autoTradeLevel", 0)
+            contentValues.put("setting12", 1)
+            contentValues.put("setting13", 50)
             db.insert(contentValues,database)
             Toast.makeText(this, "추가되었습니다.", Toast.LENGTH_SHORT).show()
         }

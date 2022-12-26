@@ -17,6 +17,7 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
 import java.lang.Math.abs
+import kotlin.math.roundToInt
 
 class StockIndex : AppCompatActivity(), ITranDataListener {
 
@@ -48,6 +49,9 @@ class StockIndex : AppCompatActivity(), ITranDataListener {
             "kosdaq"->{ //코스닥
                 MyAsyncTask().execute(weburl)
             }
+            "news"->{ //코스닥
+                MyAsyncTask().execute(weburl)
+            }
             "stockPrice"->{ //주가
                 expertTranProc = ExpertTranProc(this)
                 expertTranProc.InitInstance(this)
@@ -60,8 +64,6 @@ class StockIndex : AppCompatActivity(), ITranDataListener {
 
             }
         }
-
-
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -73,9 +75,11 @@ class StockIndex : AppCompatActivity(), ITranDataListener {
             val doc: Document = Jsoup.connect(weburl).get()
             val kospi: Elements = doc.select("#content > div.article > div.section2 > div.section_stock_market > div.section_stock > div.kospi_area.group_quot.quot_opn > div.heading_area > a > span span")
             val kosdaq: Elements = doc.select("#content > div.article > div.section2 > div.section_stock_market > div.section_stock > div.kosdaq_area.group_quot > div.heading_area > a > span span")
+            val news: Elements = doc.select("#content > div.article > div.section > div.news_area > div.section_strategy > ul > li")
 
             val listKospi = ArrayList<String>()
             val listKosdaq = ArrayList<String>()
+            val listNewsText = ArrayList<String>()
 
             kospi.forEachIndexed { index, elem ->
                 val kospiText = elem.select("span").text()
@@ -85,19 +89,26 @@ class StockIndex : AppCompatActivity(), ITranDataListener {
                 val kosdaqText = elem.select("span").text()
                 listKosdaq.add(kosdaqText)
             }
-            speak(listKospi,listKosdaq)
+            news.forEachIndexed { index, elem ->
+                val newsText = elem.select("li > span > a").text()
+                listNewsText.add(newsText)
+            }
+            speak(listKospi,listKosdaq,listNewsText)
             return ""
         }
     }
 
-    private fun speak(listKospi:ArrayList<String>,listKosdaq:ArrayList<String>) {
+    private fun speak(listKospi:ArrayList<String>,listKosdaq:ArrayList<String>,listNewsText:ArrayList<String>) {
 
         when(type){
             "kospi"->{ //손익
-                speechAPI.startUsingSpeechSDK2("현재 코스피 지수는 ${listKospi[0]} 포인트 입니다. 어제보다 ${listKospi[1]} 포인트 ${listKospi[5]} 했습니다.")
+                speechAPI.startUsingSpeechSDK2("현재 코스피 지수는 전보다 ${listKospi[1]} 포인트 ${listKospi[5]}한 ${listKospi[0]}포인트 입니다.")
             }
             "kosdaq"->{ //총자산
-                speechAPI.startUsingSpeechSDK2("현재 코스닥 지수는 ${listKosdaq[0]} 포인트 입니다. 어제보다 ${listKosdaq[1]} 포인트 ${listKospi[5]} 했습니다.")
+                speechAPI.startUsingSpeechSDK2("현재 코스피 지수는 전보다 ${listKosdaq[1]} 포인트 ${listKosdaq[5]}한 ${listKosdaq[0]}포인트 입니다.")
+            }
+            "news"->{
+                speechAPI.startUsingSpeechSDK2("현재 주요 뉴스입니다. ${listNewsText[0]}.... ${listNewsText[1]} ....${listNewsText[2]} ....${listNewsText[3]}")
             }
         }
         Thread.sleep(5000)
@@ -130,6 +141,7 @@ class StockIndex : AppCompatActivity(), ITranDataListener {
 
     override fun onTranDataReceived(sTranID: String?, nRqId: Int) {
         Log.d(TAG, "this is: $sTranID")
+        val option = intent.getIntExtra("option" ,0)
 
         val info11 = expertTranProc.GetSingleData(0, 11).toInt() // 11 : 주식 현재가
         val info12 = expertTranProc.GetSingleData(0, 12).toInt() // 12 : 전일 대비
@@ -138,8 +150,29 @@ class StockIndex : AppCompatActivity(), ITranDataListener {
         val info20 = expertTranProc.GetSingleData(0, 20).toInt() // 20 :최저가
         val info18 = expertTranProc.GetSingleData(0, 18).toInt() // 18 :시가
         val tmp = if (info13 == 1) "올랐" else "떨어졌"
+        val variancePercent = (kotlin.math.abs(info12.toDouble()) /(info11+info12*(-1)).toDouble())*100
+        val setDecimal = (variancePercent * 100).roundToInt() /100f
 
-        speechAPI.startUsingSpeechSDK2("현재 $target 주가는 $info11 로 전일대비 ${kotlin.math.abs(info12)} 원 $tmp 어요. 최고가는 $info19 원, 최저가는 $info20 원, 시가는 $info18 원 이에요")
+        if(option==1){
+            speechAPI.startUsingSpeechSDK2("현재 $target 의 가격은  $info11 원 이고 전일보다  ${kotlin.math.abs(info12)} 원, $setDecimal 퍼센트 $tmp 어요")
+        }
+        else if(option==2){
+            if(intent.getIntExtra("value" ,10)==0) {
+                speechAPI.startUsingSpeechSDK2("현재 $target 의 최고가는 $info19 이에요")
+            } else {
+                speechAPI.startUsingSpeechSDK2("현재 $target 의 최저가는 $info20 이에요")
+            }
+
+        }
+        else {
+            speechAPI.startUsingSpeechSDK2(
+                "$target 정보 알려드릴게요. 현재 $info11 이고 전일보다  ${
+                    kotlin.math.abs(
+                        info12
+                    )
+                } 원, $setDecimal 퍼센트 $tmp 어요. 최고가는 $info19 원, 최저가는 $info20 원, 시가는 $info18 원 이에요"
+            )
+        }
         Thread.sleep(5000)
         gotoStockDetail()
 

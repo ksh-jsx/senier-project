@@ -15,11 +15,13 @@ import com.stucs17.stockai.data.NotSignedStockData
 import com.stucs17.stockai.sql.DBHelper
 import com.truefriend.corelib.commexpert.intrf.IRealDataListener
 import com.truefriend.corelib.commexpert.intrf.ITranDataListener
+import java.lang.Math.abs
 
 class AccountInfo: AppCompatActivity(), ITranDataListener, IRealDataListener {
     private val db = Database()
     private val speechAPI = SpeechAPI()
     private var type : String? = ""
+    private var target : String? = "tmp"
     //한투Api 관련
     private var m_JangoTranProc: ExpertTranProc? = null //잔고 조회
     private var m_OrderListTranProc : ExpertTranProc? = null //주문
@@ -53,6 +55,10 @@ class AccountInfo: AppCompatActivity(), ITranDataListener, IRealDataListener {
         when(type){
             "not_sign_stocks"->{
                 m_nOrderListRqId = getNotSignedList(database,m_OrderListTranProc )
+            }
+            "cancel"->{
+                m_nOrderListRqId = getNotSignedList(database,m_OrderListTranProc )
+                target = intent.getStringExtra("target")
             }
             "interesting_stocks"->{
                 val c = db.select_like(database)
@@ -176,9 +182,15 @@ class AccountInfo: AppCompatActivity(), ITranDataListener, IRealDataListener {
             Log.d(TAG, "type: $type")
             when(type){
                 "total_info"->{ //손익
+                    var txt = "벌었"
+                    if(strTotal2<0){
+                        txt = "잃었"
+                    }
                     speechAPI.startUsingSpeechSDK2("현재 계좌와 보유주식 현황입니다." +
-                            "총 자산은 $strTotal1 원이고 수익률은 $strTotal2 원입니다" +
+                            "총 자산은 $strTotal1 원이고,${kotlin.math.abs(strTotal2)} 원 $txt 어요.." +
                             "이 중 주문가능 금액은 ${(strTotal1-strTotal2)-buyPriceSum}원이에요")
+                    Thread.sleep(10000)
+                    getStocksInfo(array)
                 }
                 "total_assets"->{ //총자산
                     speechAPI.startUsingSpeechSDK2("당신의 총 자산은 $strTotal1 원이고 수익률은 $strTotal2 원입니다.")
@@ -187,20 +199,13 @@ class AccountInfo: AppCompatActivity(), ITranDataListener, IRealDataListener {
                     speechAPI.startUsingSpeechSDK2("당신의 주문 가능 금액은 ${(strTotal1-strTotal2)-buyPriceSum} 원입니다.")
                 }
                 "my_stocks"->{ //매입 주식 목록
-                    val arrs = array.mapNotNull { it?.stockName }.joinToString(",","","")
-                    speechAPI.startUsingSpeechSDK2("당신이 매입한 주식은 $arrs 입니다.")
-                    val names = array.mapNotNull { it?.stockName }
-                    val qtys = array.mapNotNull { it?.stockQty }
-                    val profits = array.mapNotNull { it?.stockProfit }
-                    val pers = array.mapNotNull { it?.stockProfitPer }
-                    Thread.sleep(5000)
-                    for(i in 0 until nCount){
-                        if(qtys[i].toInt() > 0) {
-                            speechAPI.startUsingSpeechSDK2("${names[i]} ${qtys[i]} 주는 총 ${pers[i]} %이고 손익은 ${profits[i]}원 입니다")
-                            Thread.sleep(8000)
-                        }
-                    }
-
+                    //val arrs = array.mapNotNull { it?.stockName }.joinToString(",","","")
+                    speechAPI.startUsingSpeechSDK2("현재 보유주식 현황입니다.")
+                    Thread.sleep(2000)
+                    getStocksInfo(array)
+                }
+                "my_stock_target"->{ //특정 주식
+                    getStocksInfo(array,false)
                 }
                 "total_order_price"->{
                     speechAPI.startUsingSpeechSDK2("당신의 총 매입가는 $buyPriceSum 원 입니다.")
@@ -211,7 +216,8 @@ class AccountInfo: AppCompatActivity(), ITranDataListener, IRealDataListener {
 
             val nCount: Int = m_OrderListTranProc!!.GetValidCount(0)
             val array = Array<NotSignedStockData?>(nCount) { null }
-
+            var isCanCancel = false
+            var targetStrOrderNumber = ""
             for (i in 0 until nCount) {
                 val strNo = m_OrderListTranProc!!.GetMultiData(0, 0, i) //주문채번지점번호
                 val strOrderNumber = m_OrderListTranProc!!.GetMultiData(0, 1, i) //주문번호
@@ -221,6 +227,11 @@ class AccountInfo: AppCompatActivity(), ITranDataListener, IRealDataListener {
                 val nOrderCount = m_OrderListTranProc!!.GetMultiData(0, 7, i).toInt() //주문수량
                 val nOrderPrice = m_OrderListTranProc!!.GetMultiData(0, 8, i).toInt() //주문단가
                 val tradeType = m_OrderListTranProc!!.GetMultiData(0, 13, i)
+
+                if(target !== "tmp" && target === strName){
+                    isCanCancel = true
+                    targetStrOrderNumber = strOrderNumber
+                }
 
                 if (strOrderNumber.isEmpty()) continue
                 else{
@@ -238,17 +249,71 @@ class AccountInfo: AppCompatActivity(), ITranDataListener, IRealDataListener {
                 "not_sign_stocks"->{ //미체결
                     if(arrs.isNotEmpty()) speechAPI.startUsingSpeechSDK2("현재 미체결 주식은 $arrs 입니다")
                     else speechAPI.startUsingSpeechSDK2("현재 미체결 주식은 없습니다")
+
+                    Thread.sleep(1000)
+                    gotoTab1()
+                }
+                "cancel" -> {
+                    if(isCanCancel){
+                        speechAPI.startUsingSpeechSDK2("$target 주문을 취소했어요.")
+
+                        Thread.sleep(2000)
+                        gotoTrade(targetStrOrderNumber)
+                    } else {
+                        speechAPI.startUsingSpeechSDK2("취소할 주문이 없어요")
+
+                        Thread.sleep(1000)
+                        gotoTab1()
+                    }
                 }
             }
-            Thread.sleep(1000)
-            gotoTab1()
+
 
         }
+    }
+
+    private fun getStocksInfo(array: Array<MyStockData?>, all: Boolean =true) {
+
+        val names = array.mapNotNull { it?.stockName }
+        val qtys = array.mapNotNull { it?.stockQty }
+        val profits = array.mapNotNull { it?.stockProfit }
+        val pers = array.mapNotNull { it?.stockProfitPer }
+        val targetStock = intent.getStringExtra("type")
+
+        for(i in 0 until names.count{true}){
+            if(all) {
+                if (qtys[i].toInt() > 0) {
+                    var txt1 = "올라"
+                    var txt2 = "벌었"
+                    if (pers[i].indexOf("-") > -1) {
+                        txt1 = "내려"
+                        txt2 = "잃었"
+                    }
+                    if(all || targetStock === names[i]) {
+                        speechAPI.startUsingSpeechSDK2(
+                            "${names[i]} ${qtys[i]} 주는 총 ${pers[i].replace("-", "")} % " +
+                                    "$txt1 서 ${profits[i].replace("-", "")}원 $txt2 어요"
+                        )
+                        Thread.sleep(6000)
+                    }
+                }
+            }
+        }
+        Log.d("test2","test2")
     }
 
     private fun gotoTab1() {
         val intent = Intent(this@AccountInfo, TabActivity::class.java)
         intent.putExtra("tab", 0)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun gotoTrade(strOrderNumber:String) {
+        val intent = Intent(this@AccountInfo, Trade::class.java)
+        intent.putExtra("type", "cancel")
+        intent.putExtra("strOrderNumber", strOrderNumber)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         startActivity(intent)
         finish()

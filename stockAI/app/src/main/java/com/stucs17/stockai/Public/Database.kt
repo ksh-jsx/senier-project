@@ -47,6 +47,18 @@ class Database: AppCompatActivity() {
         val query = "UPDATE user SET autoTrade = '$state';"
         database.execSQL(query)
     }
+    fun updateTradeLevel(database:SQLiteDatabase,state:Int) {
+        val query = "UPDATE user SET autoTradeLevel = '$state';"
+        database.execSQL(query)
+    }
+    fun update12(database:SQLiteDatabase,state:Int) {
+        val query = "UPDATE user SET setting12 = '$state';"
+        database.execSQL(query)
+    }
+    fun update13(database:SQLiteDatabase,state:Int) {
+        val query = "UPDATE user SET setting13 = '$state';"
+        database.execSQL(query)
+    }
 
     fun select_like(database:SQLiteDatabase): Cursor? {
         val query = "SELECT * FROM likes;"

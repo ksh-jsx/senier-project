@@ -1,9 +1,11 @@
 package com.stucs17.stockai.Public
 
 import android.Manifest
+import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.sqlite.SQLiteDatabase
 import android.media.AudioManager
 import android.os.Bundle
 import android.util.Log
@@ -13,9 +15,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.commexpert.CommExpertMng
 import com.kakao.sdk.newtoneapi.*
 import com.stucs17.stockai.R
 import com.stucs17.stockai.TabActivity
+import com.stucs17.stockai.sql.DBHelper
 import com.stucs17.stockai.sql.HttpRequestHelper
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
@@ -38,6 +42,14 @@ class SpeechAPI : AppCompatActivity(), CoroutineScope {
     private lateinit var test_tv : TextView
     private var isFirst = true
 
+    private val arrItemKospiCode = CommExpertMng.getInstance().GetKospiCodeList() // 코스피 주식 목록
+    private val arrItemKosdaqCode = CommExpertMng.getInstance().GetKosdaqCodeList() // 코스닥 주식 목록
+
+    //sql 관련
+    private lateinit var dbHelper: DBHelper
+    lateinit var database: SQLiteDatabase
+    private val db = Database()
+
     private lateinit var mAudioManager: AudioManager
 
     private lateinit var job: Job
@@ -47,6 +59,9 @@ class SpeechAPI : AppCompatActivity(), CoroutineScope {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_listen)
+
+        dbHelper = DBHelper(this, "mydb.db", null, 1)
+        database = dbHelper.writableDatabase
 
         mAudioManager = getSystemService(AUDIO_SERVICE) as AudioManager
 
@@ -76,6 +91,7 @@ class SpeechAPI : AppCompatActivity(), CoroutineScope {
         val permission_audio = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
         val permission_storage = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
         val permission_network = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NETWORK_STATE)
+
         if(permission_audio != PackageManager.PERMISSION_GRANTED) {
             Log.d(TAG, "Permission to recode denied")
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.RECORD_AUDIO), RECORD_REQUEST_CODE)
@@ -123,7 +139,7 @@ class SpeechAPI : AppCompatActivity(), CoroutineScope {
         }
     }
 
-    fun startUsingSpeechSDK(isOutside:Boolean = false, intent: Intent? = null){
+    fun startUsingSpeechSDK(isOutside:Boolean = false, intent: Intent? = null,type: String? =null){
         Toast.makeText(this, "말하세요", Toast.LENGTH_SHORT).show()
 
         test_tv.text = ""
@@ -169,7 +185,7 @@ class SpeechAPI : AppCompatActivity(), CoroutineScope {
                     //정확도가 높은 첫번째 결과값을 텍스트뷰에 출력
                     test_tv.text = txt
                     if(isOutside){
-                        nextStep2(txt,intent)
+                        nextStep2(txt,intent,type)
                     } else {
                         nextStep(txt)
                     }
@@ -233,12 +249,16 @@ class SpeechAPI : AppCompatActivity(), CoroutineScope {
             val stock: String = json.getString("stock")
             val price: Int = json.getInt("price")
 
+
             when(command){
                 0->{// 이해 못함
                     isUnderstand = false
                 }
                 1->{ //홈 화면 이동
-
+                    startUsingSpeechSDK2("홈 화면으로 이동할게요")
+                    val intent = Intent(this@SpeechAPI, TabActivity::class.java)
+                    intent.putExtra("tab", 0)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 }
                 2->{ //계좌 정보
                     intent = Intent(this@SpeechAPI, AccountInfo::class.java)
@@ -253,11 +273,13 @@ class SpeechAPI : AppCompatActivity(), CoroutineScope {
                     type = "available_to_order"
                 }
                 5->{ //보유 주식 정보
-                   intent = Intent(this@SpeechAPI, AccountInfo::class.java)
+                    intent = Intent(this@SpeechAPI, AccountInfo::class.java)
                     type = "my_stocks"
                 }
                 6->{ //특정 보유 주식 정보
-
+                    intent = Intent(this@SpeechAPI, AccountInfo::class.java)
+                    type = "my_stock_target"
+                    intent.putExtra("target", stock)
                 }
                 7->{ //미체결 목록
                     intent = Intent(this@SpeechAPI, AccountInfo::class.java)
@@ -265,6 +287,25 @@ class SpeechAPI : AppCompatActivity(), CoroutineScope {
                 }
                 8->{ //관심 주식 추가 삭제
 
+                    val resultList = (arrItemKospiCode+arrItemKosdaqCode).sorted().filter{ it.name.startsWith(stock) } //입력한 텍스트와 주식 목록 비교->필터링
+                    if (resultList.isNotEmpty()) {
+                        val stockCode =resultList[0].code
+                        val c = db.isExist_like(database,stockCode)!!
+                        if(c.count> 0){
+                            db.delete_like(database,stockCode)
+                            startUsingSpeechSDK2("$stock 종목이 관심종목에서 제어어되었어요")
+                       } else {
+                            val contentValues = ContentValues()
+
+                            contentValues.put("code", stockCode)
+                            contentValues.put("name", stock)
+                            db.insert_like(contentValues, database)
+                            startUsingSpeechSDK2("$stock 종목이 관심종목에 추가되었어요")
+                        }
+
+                    } else {
+                        startUsingSpeechSDK2("해당주식을 찾지 못했어요")
+                    }
                 }
                 9->{ //지수 정보
                     intent = Intent(this@SpeechAPI, StockIndex::class.java)
@@ -275,17 +316,93 @@ class SpeechAPI : AppCompatActivity(), CoroutineScope {
                     }
                 }
                 10->{ // 뉴스 정보
+                    intent = Intent(this@SpeechAPI, StockIndex::class.java)
+                    type="news"
+                }
+                11->{ //자동매매 on
+                    db.update(database,value)
+                    intent = Intent(this@SpeechAPI, TabActivity::class.java)
+                    intent.putExtra("tab", 2)
 
+                    type="auto_onoff"
+                    isUnderstand = false
+                    again = false
+
+                    var state ="켤"
+                    if(value == 0){
+                        state = "끌"
+                    }
+                    startUsingSpeechSDK2("자동매매 $state 까요?")
+                    Thread.sleep(2000)
+                }
+                12 ->{
+                    db.update12(database,value)
+                    val voice = if(value ==1) "켤게요" else "끌게요"
+                    startUsingSpeechSDK2("실시간 알림을 $voice")
+                    type="alarm_onoff"
+                }
+                13 -> {
+                    if(value == 0) {
+                        db.update13(database,0)
+                        startUsingSpeechSDK2("목소리를 껐어요")
+                    } else if(value==1) {
+                        db.update13(database,50)
+                        startUsingSpeechSDK2("목소리를 켰어요")
+                    }else if(value==2) {
+                        db.update13(database,70)
+                        startUsingSpeechSDK2("목소리를 키웠어요")
+                    }else if(value==3) {
+                        db.update13(database,30)
+                        startUsingSpeechSDK2("목소리를 줄였어요")
+                    }
+                }
+                15->{
+                    var txt = "중간"
+                    db.updateTradeLevel(database,value)
+                    when(value) {
+                        0 -> {
+                            txt = "매우낮음"
+                        }
+                        1 -> {
+                            txt = "낮음"
+                        }
+                        2 -> {
+                            txt = "중간"
+                        }
+                        3 -> {
+                            txt = "높음"
+                        }
+                        4 -> {
+                            txt = "매우높음"
+                        }
+                    }
+
+                    startUsingSpeechSDK2("투자 강도를 $txt 으로 설정했어요.")
                 }
                 17->{ //특정 주식 정보
                     intent = Intent(this@SpeechAPI, StockIndex::class.java)
                     type = "stockPrice"
                     intent.putExtra("target", stock)
                 }
+                18->{
+                    intent = Intent(this@SpeechAPI, StockIndex::class.java)
+                    type = "stockPrice"
+                    intent.putExtra("target", stock)
+                    intent.putExtra("option", 1)
+                }
+                19->{
+                    intent = Intent(this@SpeechAPI, StockIndex::class.java)
+                    type = "stockPrice"
+                    intent.putExtra("target", stock)
+                    intent.putExtra("option", 2)
+                    intent.putExtra("value", value)
+
+                }
                 21->{ //시장가 매수
                     intent = Intent(this@SpeechAPI, Trade::class.java)
                     type = "buy_mp"
                     intent.putExtra("target", stock)
+                    intent.putExtra("quantity", value.toString())
                     isUnderstand = false
                     again = false
 
@@ -296,35 +413,47 @@ class SpeechAPI : AppCompatActivity(), CoroutineScope {
                     intent = Intent(this@SpeechAPI, Trade::class.java)
                     type = "sell_mp"
                     intent.putExtra("target", stock)
+                    intent.putExtra("quantity", value.toString())
                     isUnderstand = false
                     again = false
 
                     startUsingSpeechSDK2("$stock 시장가 매도하시겠습니까?")
-                    Thread.sleep(5000)
+                    Thread.sleep(4000)
                 }
                 23->{ //지정가 매수
                     intent = Intent(this@SpeechAPI, Trade::class.java)
                     type = "buy"
                     intent.putExtra("target", stock)
-                    intent.putExtra("quantity", value)
-                    intent.putExtra("price", price)
+                    intent.putExtra("quantity", value.toString())
+                    intent.putExtra("price", price.toString())
                     isUnderstand = false
                     again = false
 
+
                     startUsingSpeechSDK2("$stock $value 주 $price 원에 매수하시겠습니까?")
-                    Thread.sleep(6000)
+                    Thread.sleep(5000)
                 }
                 24->{ //지정가 매도
                     intent = Intent(this@SpeechAPI, Trade::class.java)
                     type = "sell"
                     intent.putExtra("target", stock)
-                    intent.putExtra("quantity", value)
-                    intent.putExtra("price", price)
+                    intent.putExtra("quantity", value.toString())
+                    intent.putExtra("price", price.toString())
                     isUnderstand = false
                     again = false
 
                     startUsingSpeechSDK2("$stock $value 주 $price 원에 매도하시겠습니까?")
                     Thread.sleep(6000)
+                }
+                25->{
+                    intent = Intent(this@SpeechAPI, AccountInfo::class.java)
+                    type = "cancel"
+                    intent.putExtra("target", stock)
+                    isUnderstand = false
+                    again = false
+
+                    startUsingSpeechSDK2("$stock 주문을 취소할까요?")
+                    Thread.sleep(3500)
                 }
             }
 
@@ -341,91 +470,34 @@ class SpeechAPI : AppCompatActivity(), CoroutineScope {
                     startUsingSpeechSDK()
                 } else {
                     intent.putExtra("type", type)
-                    startUsingSpeechSDK(true ,intent)
+                    startUsingSpeechSDK(true ,intent,type)
                 }
 
             }
         }
-
-/*
-            if(txt!!.indexOf("수익률")>-1) {
-                intent = Intent(this@SpeechAPI, AccountInfo::class.java)
-                type = "profit_or_loss"
-            }
-            else if(txt.indexOf("총 자산")>-1) {
-                intent = Intent(this@SpeechAPI, AccountInfo::class.java)
-                type = "total_assets"
-            }
-            else if(txt.indexOf("주문 가능")>-1){
-                intent = Intent(this@SpeechAPI, AccountInfo::class.java)
-                type = "available_to_order"
-            }
-            else if(txt.indexOf("총 매입가")>-1){
-                intent = Intent(this@SpeechAPI, AccountInfo::class.java)
-                type = "total_order_price"
-            }
-            else if(txt.indexOf("내 주식")>-1){
-                intent = Intent(this@SpeechAPI, AccountInfo::class.java)
-                type = "my_stocks"
-            }
-            else if(txt.indexOf("미체결")>-1){
-                intent = Intent(this@SpeechAPI, AccountInfo::class.java)
-                type = "not_sign_stocks"
-            }
-            else if(txt.indexOf("관심 목록")>-1){
-                intent = Intent(this@SpeechAPI, AccountInfo::class.java)
-                type = "interesting_stocks"
-            }
-            else if(txt.indexOf("코스피")>-1){
-                intent = Intent(this@SpeechAPI, StockIndex::class.java)
-                type = "kospi"
-            }
-            else if(txt.indexOf("코스닥")>-1){
-                intent = Intent(this@SpeechAPI, StockIndex::class.java)
-                type = "kosdaq"
-            }
-            else if (txt.indexOf("주가")>-1) {
-                intent = Intent(this@SpeechAPI, StockIndex::class.java)
-                type = "stockPrice"
-                intent.putExtra("target", txt.split(" ")[0])
-            }
-            else if (txt.indexOf("매수")>-1) {
-                intent = Intent(this@SpeechAPI, Trade::class.java)
-                type = "buy"
-                intent.putExtra("target", txt.split(" ")[0])
-                isUnderstand = false
-                again = false
-
-                startUsingSpeechSDK2("이트론 1주 매수하시겠습니까?")
-                Thread.sleep(5000)
-            }
-            else if (txt.indexOf("매도")>-1) {
-                intent = Intent(this@SpeechAPI, Trade::class.java)
-                type = "sell"
-                intent.putExtra("target", txt.split(" ")[0])
-                again = false
-            }
-            else{
-                isUnderstand = false
-            }
-
-
-
-*/
     }
 
-    private fun nextStep2(txt: String?,intent:Intent?) {
+    private fun nextStep2(txt: String?,intent:Intent?,type:String?) {
         if(txt!!.indexOf("네")>-1 || txt.indexOf("그래")>-1 || txt.indexOf("응")>-1 || txt.indexOf("맞아")>-1) {
+            if(type=="auto_onoff"){
+                startUsingSpeechSDK2("자동매매 설정을 교체합니다.")
+            }
+
             startActivity(intent)
             finish()
         }
     }
 
     private fun volumeUp(){
-          mAudioManager.ringerMode = AudioManager.RINGER_MODE_NORMAL
+        val c = db.select(database)!!
+        var vol = 50;
+        if(c.moveToNext()) {
+            vol = c.getString(c.getColumnIndex("setting13")).toInt()
+        }
+        mAudioManager.ringerMode = AudioManager.RINGER_MODE_NORMAL
         mAudioManager.setStreamVolume(
             AudioManager.STREAM_MUSIC,
-            (mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC) * 50/100.0).toInt(),
+            (mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC) * vol/100.0).toInt(),
            0
         )
     }

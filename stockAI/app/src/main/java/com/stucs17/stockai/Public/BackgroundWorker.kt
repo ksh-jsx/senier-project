@@ -33,6 +33,7 @@ class BackgroundWorker: BroadcastReceiver(), ITranDataListener, IRealDataListene
     private lateinit var ctt : Context
     private var target =  ""
     private var cnt =  0
+    private var isOn =  1
     private lateinit var c: Cursor
     private val arrItemKospiCode = CommExpertMng.getInstance().GetKospiCodeList() // 코스피 주식 목록
     private val arrItemKosdaqCode = CommExpertMng.getInstance().GetKosdaqCodeList() // 코스닥 주식 목록
@@ -57,27 +58,34 @@ class BackgroundWorker: BroadcastReceiver(), ITranDataListener, IRealDataListene
         val dayOfWeek = dateNow.dayOfWeek.toString()
 
 //&& dayOfHour>8 && dayOfHour<15
-        if(intent != null && dayOfWeek != "SATURDAY" && dayOfWeek != "SUNDAY" && dayOfHour>8 && dayOfHour<15){
-            if (context != null) {
-                ctt = context
-                notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            }
-            expertTranProc = ExpertTranProc(context)
-            expertTranProc.InitInstance(this)
-            expertTranProc.SetShowTrLog(true)
+        val c = db.select(database)!!
+        if(c.moveToNext()) {
+            isOn = c.getString(c.getColumnIndex("setting12")).toInt()
+        }
+        if(isOn==1) {
+            if (intent != null && dayOfWeek != "SATURDAY" && dayOfWeek != "SUNDAY" && dayOfHour > 8 && dayOfHour < 15) {
+                if (context != null) {
+                    ctt = context
+                    notificationManager =
+                        context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                }
+                expertTranProc = ExpertTranProc(context)
+                expertTranProc.InitInstance(this)
+                expertTranProc.SetShowTrLog(true)
 
-            m_OrderTranProc = ExpertTranProc(context)
-            m_OrderTranProc!!.InitInstance(this)
-            m_OrderTranProc!!.SetShowTrLog(true)
+                m_OrderTranProc = ExpertTranProc(context)
+                m_OrderTranProc!!.InitInstance(this)
+                m_OrderTranProc!!.SetShowTrLog(true)
 
-            dbHelper = DBHelper(context, "mydb.db", null, 1)
-            database = dbHelper.writableDatabase
+                dbHelper = DBHelper(context, "mydb.db", null, 1)
+                database = dbHelper.writableDatabase
 
-            c = db.select_like(database)!!
-            if(c.moveToNext()){
-                target = c.getString(c.getColumnIndex("code"))
-                currentPriceRqId = stockInfo.getStockInfo(expertTranProc,target)
-                cnt++
+                val c = db.select_like(database)!!
+                if (c.moveToNext()) {
+                    target = c.getString(c.getColumnIndex("code"))
+                    currentPriceRqId = stockInfo.getStockInfo(expertTranProc, target)
+                    cnt++
+                }
             }
         }
     }

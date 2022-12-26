@@ -17,7 +17,11 @@ class DBHelper(
                 "pwd text," +
                 "certPwd text," +
                 "numPwd integer," +
-                "autoTrade integer);"
+                "autoTrade integer," +
+                "autoTradeLevel integer," +
+                "setting12 integer," +
+                "setting13 integer" +
+                ");"
 
         db.execSQL(sql)
         val sql2: String = "CREATE TABLE if not exists likes (" +
@@ -32,6 +36,7 @@ class DBHelper(
                 "code text primary key ," +
                 "name text);"
         db.execSQL(sql4)
+
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {

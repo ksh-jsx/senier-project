@@ -26,6 +26,8 @@ class Trade : AppCompatActivity(), ITranDataListener, IRealDataListener {
 
     private var type : String = ""
     private var target : String = ""
+    private var price : String = ""
+    private var quantity : String = ""
     private var code : String = ""
     private var sellableQty : Int = 0
 
@@ -53,17 +55,17 @@ class Trade : AppCompatActivity(), ITranDataListener, IRealDataListener {
         if(intent.hasExtra("type")) {
             type = intent.getStringExtra("type")!!
             target = intent.getStringExtra("target")!!
+            price = intent.getStringExtra("price")!!
+            quantity = intent.getStringExtra("quantity")!!
             code = (arrItemKospiCode+arrItemKosdaqCode).sorted().filter{ it.name.startsWith(target) }[0].code //입력한 텍스트와 주식 목록 비교->필터링
         }
 
         when(type){
             "buy_mp"->{
-                val quantity = intent.getStringExtra("quantity")!!
                 m_nOrderRqId = runBuy(m_OrderTranProc,database,code,"01",quantity,"")!!
             }
             "sell_mp"->{
 
-                val quantity = intent.getStringExtra("quantity")!!
                 m_JangoTranProc = ExpertTranProc(this)
                 m_JangoTranProc!!.InitInstance(this)
                 m_JangoTranProc!!.SetShowTrLog(false)
@@ -72,22 +74,18 @@ class Trade : AppCompatActivity(), ITranDataListener, IRealDataListener {
                 m_nOrderRqId = runSell(m_OrderTranProc,database,code,"01",quantity,"")!!
             }
             "buy"->{
-                val price = intent.getStringExtra("price")!!
-                val quantity = intent.getStringExtra("quantity")!!
-                Log.d("test",price)
-                Log.d("test",quantity)
                 m_nOrderRqId = runBuy(m_OrderTranProc,database,code,"00",quantity,price)!!
-
             }
             "sell"->{
-                val price = intent.getStringExtra("price")!!
-                val quantity = intent.getStringExtra("quantity")!!
                 m_JangoTranProc = ExpertTranProc(this)
                 m_JangoTranProc!!.InitInstance(this)
                 m_JangoTranProc!!.SetShowTrLog(false)
 
                 m_nJangoRqId = info.getJangoInfo(database,m_JangoTranProc)
                 m_nOrderRqId = runSell(m_OrderTranProc,database,code,"00",quantity,price)!!
+            }
+            "cancel"->{
+                m_nOrderRqId = runCancel(m_OrderTranProc,database,intent.getStringExtra("strOrderNumber")!!)!!
             }
         }
     }
@@ -155,13 +153,12 @@ class Trade : AppCompatActivity(), ITranDataListener, IRealDataListener {
     fun runCancel(m_OrderTranProc:ExpertTranProc?,database: SQLiteDatabase,strOrderNumber:String): Int? {
         var OrderNumberKET = ""
 
-        val c = db.select_order(database,strOrderNumber)
-        if (c != null) {
-            if(c.moveToNext()){
-                OrderNumberKET = c.getString(c.getColumnIndex("OrderNumberKET"))
-            }
+        val c = db.select_order(database,strOrderNumber)!!
+
+        if(c.moveToNext()){
+            OrderNumberKET = c.getString(c.getColumnIndex("OrderNumberKET"))
         }
-        Log.d("test", OrderNumberKET)
+
         setTrade(database,"",m_OrderTranProc)
         m_OrderTranProc?.SetSingleData(0, 3, OrderNumberKET) // 한국거래소전송주문조직번호
         m_OrderTranProc?.SetSingleData(0, 4, strOrderNumber) // 원주문번호
